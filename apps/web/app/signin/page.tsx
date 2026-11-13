@@ -52,9 +52,9 @@ export default async function SignInPage({
             margin: "16px 0",
             padding: "12px 14px",
             borderRadius: 10,
-            border: "1px solid #f87171",
-            color: "#fecaca",
-            background: "rgba(248, 113, 113, 0.08)",
+            border: "1px solid var(--error)",
+            color: "var(--error)",
+            background: "var(--error-bg)",
             fontSize: "0.9rem",
           }}
         >

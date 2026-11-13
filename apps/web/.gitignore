@@ -4,3 +4,5 @@ content/
 .vercel/
 .env*
 !.env.example
+
+certificates

@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: ["ux-kb-site.vercel.app"],
     },
   },
+  allowedDevOrigins: ['192.168.0.100'],
   async headers() {
     return [
       {

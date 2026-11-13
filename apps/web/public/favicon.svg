@@ -1,5 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="UX-KB">
-  <rect width="64" height="64" rx="14" fill="#0a0b0d"/>
-  <rect x="8" y="8" width="48" height="48" rx="10" fill="#161922" stroke="#262a38"/>
-  <text x="32" y="40" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="22" font-weight="700" fill="#5eead4">UX</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" role="img" aria-labelledby="title desc" width="768" height="768"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><title id="title">UX-KB geometric cat mascot</title><desc id="desc">A friendly geometric cat face in midnight navy, kestrel orange, and warm ivory.</desc><defs>
+    <linearGradient id="navyFace" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#303B53"></stop>
+      <stop offset="1" stop-color="#101828"></stop>
+    </linearGradient>
+    <linearGradient id="ivoryMuzzle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF7ED"></stop>
+      <stop offset="1" stop-color="#FCE8D0"></stop>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF922F"></stop>
+      <stop offset="1" stop-color="#F97316"></stop>
+    </linearGradient>
+  </defs><path d="M160 300 L161 81 L303 207 L315 302 Z" fill="#101828" stroke="#101828" stroke-width="9" stroke-linejoin="round"></path><path d="M175 272 L176 112 L287 215 Z" fill="#34445D"></path><path d="M190 266 L191 148 L258 232 Z" fill="url(#orange)"></path><path d="M608 300 L607 81 L465 207 L453 302 Z" fill="#101828" stroke="#101828" stroke-width="9" stroke-linejoin="round"></path><path d="M593 272 L592 112 L481 215 Z" fill="#34445D"></path><path d="M578 266 L577 148 L510 232 Z" fill="url(#orange)"></path><path d="M103 467 L161 296 L303 208 L384 176 L465 208 L607 296 L665 467 L565 576 L384 686 L203 576 Z" fill="url(#navyFace)" stroke="#101828" stroke-width="10" stroke-linejoin="round"></path><path d="M163 296 L303 218 L384 185 L465 218 L605 296 L384 250 Z" fill="#46536C" opacity=".55"></path><path d="M123 466 L181 397 Q231 362 281 382 L338 431 L338 478 Q338 510 384 540 Q430 510 430 478 L430 431 L487 382 Q537 362 587 397 L645 466 L561 557 L384 675 L207 557 Z" fill="url(#ivoryMuzzle)"></path><path d="M124 468 L207 557 L384 675 L561 557 L644 468 L610 500 L554 551 L384 645 L214 551 L158 500 Z" fill="#F6D7B5" opacity=".55"></path><g stroke="#101828" stroke-width="8">
+    <circle cx="273" cy="378" r="67" fill="#101828"></circle>
+    <circle cx="495" cy="378" r="67" fill="#101828"></circle>
+  </g><circle cx="273" cy="378" r="49" fill="url(#orange)"></circle><circle cx="495" cy="378" r="49" fill="url(#orange)"></circle><circle cx="273" cy="378" r="37" fill="#0B1220"></circle><circle cx="495" cy="378" r="37" fill="#0B1220"></circle><circle cx="289" cy="360" r="11" fill="#FFFFFF"></circle><circle cx="511" cy="360" r="11" fill="#FFFFFF"></circle><path d="M350 465 Q355 458 366 458 H402 Q413 458 418 465 L384 510 Z" fill="url(#orange)" stroke="#101828" stroke-width="7" stroke-linejoin="round"></path><g fill="none" stroke="#101828" stroke-width="5" stroke-linecap="round">
+    <path d="M291 474 L58 423"></path>
+    <path d="M290 486 L45 485"></path>
+    <path d="M291 501 L59 553"></path>
+    <path d="M291 516 L98 603"></path>
+    <path d="M477 474 L710 423"></path>
+    <path d="M478 486 L723 485"></path>
+    <path d="M477 501 L709 553"></path>
+    <path d="M477 516 L670 603"></path>
+  </g><g fill="none" stroke="#101828" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M384 506 L384 533"></path>
+    <path d="M384 533 C384 572 342 584 321 561 C311 551 308 540 308 529"></path>
+    <path d="M384 533 C384 572 426 584 447 561 C457 551 460 540 460 529"></path>
+  </g></svg>
