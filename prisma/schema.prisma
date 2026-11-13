@@ -78,18 +78,52 @@ model Route {
 
 // --- Access and observability ---------------------------------------------
 
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+// One row per GitHub identity that has signed in.
+model User {
+  id          String    @id @default(cuid())
+  githubId    String    @unique
+  login       String    @unique
+  email       String?
+  name        String?
+  avatarUrl   String?
+  role        Role      @default(MEMBER)
+  suspendedAt DateTime?
+  createdAt   DateTime  @default(now())
+  lastLoginAt DateTime?
+
+  apiKeys   ApiKey[]
+  auditLogs AuditLog[]
+
+  @@index([role])
+}
+
 model ApiKey {
   id            String    @id @default(cuid())
   name          String // "claude-code-laptop"
   hashedKey     String    @unique
+  prefix        String    @default("") // "uxkb_AbCdEf" for display only
+  scopes        String[]  @default(["mcp:read"])
   pinnedVersion String? // null = follow the active release
-  rateLimit     Int       @default(120) // requests per minute
+  rateLimit     Int       @default(60) // requests per minute
+  expiresAt     DateTime?
   revokedAt     DateTime?
+  revokedReason String?
   createdAt     DateTime  @default(now())
   lastUsedAt    DateTime?
+  lastUsedIp    String?
+
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   sessions Session[]
   usage    UsageLog[]
+
+  @@index([ownerId, revokedAt])
 }
 
 model Session {
@@ -148,19 +182,27 @@ model KbGap {
 }
 
 model AuditLog {
-  id        String   @id @default(cuid())
-  actor     String
-  action    String
-  target    String
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  actor       String // human-readable label, e.g. "github:Vinoth82003"
+  actorUserId String?
+  actorUser   User?    @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  action      String
+  target      String
+  metadata    Json?
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
 
   @@index([createdAt])
+  @@index([actorUserId])
+  @@index([action, createdAt])
 }
 
 model RateLimitWindow {
-  keyId       String
+  keyId       String // api key id, or "ip:<hash>" for anonymous callers
+  kind        String   @default("minute") // minute | day | hour
   windowStart DateTime
   count       Int      @default(0)
-  @@id([keyId, windowStart])
+  @@id([keyId, kind, windowStart])
   @@index([windowStart])
 }

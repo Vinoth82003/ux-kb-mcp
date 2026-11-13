@@ -43,13 +43,13 @@ Register it with Claude Code:
 
 ```bash
 claude mcp add ux-kb -- node --import tsx \
-  /absolute/path/to/ux-kb/apps/mcp-server/src/index.ts
+  /absolute/path/to/ux-kb/apps/stdio/src/index.ts
 ```
 
 Or with the built server (run `pnpm build` first):
 
 ```bash
-claude mcp add ux-kb -- node /absolute/path/to/ux-kb/apps/mcp-server/dist/index.js
+claude mcp add ux-kb -- node /absolute/path/to/ux-kb/apps/stdio/dist/index.js
 ```
 
 Cursor / Claude Desktop JSON equivalent:
@@ -59,7 +59,7 @@ Cursor / Claude Desktop JSON equivalent:
   "mcpServers": {
     "ux-kb": {
       "command": "node",
-      "args": ["--import", "tsx", "/absolute/path/to/ux-kb/apps/mcp-server/src/index.ts"]
+      "args": ["--import", "tsx", "/absolute/path/to/ux-kb/apps/stdio/src/index.ts"]
     }
   }
 }
@@ -100,8 +100,8 @@ in a sliding one-minute window; over-limit responses return `429` with
 `Retry-After`.
 
 Environment (see `.env.example`): `MCP_TRANSPORT`, `MCP_PORT`, `MCP_HOST`,
-`ADMIN_ORIGIN`, `UX_KB_CONTENT_DIR`, `KB_STORE`, `DATABASE_URL`,
-`KEY_HASH_SECRET`, `MCP_DEV_KEY`, `MCP_DEV_KEY_RATE_LIMIT`.
+`ADMIN_ORIGIN`, `MCP_MAX_CONCURRENCY`, `UX_KB_CONTENT_DIR`, `KB_STORE`,
+`DATABASE_URL`, `KEY_HASH_SECRET`, `MCP_DEV_KEY`, `MCP_DEV_KEY_RATE_LIMIT`.
 
 ## Tools and resources
 
@@ -190,8 +190,8 @@ ux-kb/
     store/                 KbStore boundary: memory + Prisma implementations
     lint/                  doc + catalog linter
     cli/                   lint, info and key/gap commands
-  apps/mcp-server/src/     MCP server (stdio + stateless HTTP)
-  apps/mcp-server/scripts/ smoke.ts (stdio), http-smoke.ts (auth/429)
+  apps/stdio/src/     MCP server (stdio + stateless HTTP)
+  apps/stdio/scripts/ smoke.ts (stdio), http-smoke.ts (auth/429)
 ```
 
 ## Known limits

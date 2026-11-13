@@ -42,7 +42,7 @@ before proposing a design.
 | Feature routes | 10 |
 | MCP tools | 7 |
 | MCP resources | 3 |
-| Core unit tests | 23 |
+| Core unit tests | 35 |
 
 Content release candidate: `1.0.0-rc.1` (`content/release.json`).
 
@@ -92,13 +92,13 @@ Node.js ≥ 20 and pnpm 10 are required. Postgres is optional for local dev.
 
 ```bash
 claude mcp add ux-kb -- node --import tsx \
-  /absolute/path/to/ux-kb/apps/mcp-server/src/index.ts
+  /absolute/path/to/ux-kb/apps/stdio/src/index.ts
 ```
 
 Or with the built server (`pnpm build` first):
 
 ```bash
-claude mcp add ux-kb -- node /absolute/path/to/ux-kb/apps/mcp-server/dist/index.js
+claude mcp add ux-kb -- node /absolute/path/to/ux-kb/apps/stdio/dist/index.js
 ```
 
 ### Cursor / Claude Desktop
@@ -108,7 +108,7 @@ claude mcp add ux-kb -- node /absolute/path/to/ux-kb/apps/mcp-server/dist/index.
   "mcpServers": {
     "ux-kb": {
       "command": "node",
-      "args": ["--import", "tsx", "/absolute/path/to/ux-kb/apps/mcp-server/src/index.ts"]
+      "args": ["--import", "tsx", "/absolute/path/to/ux-kb/apps/stdio/src/index.ts"]
     }
   }
 }
@@ -179,12 +179,12 @@ The seed is idempotent.
 ## Testing
 
 ```bash
-pnpm lint:kb:strict   # 0 errors, 0 warnings across 73 docs
-pnpm typecheck        # tsc, both packages
-pnpm test             # 23 core unit tests
-pnpm build            # tsup bundle
-pnpm smoke            # stdio end-to-end
-pnpm smoke:http       # HTTP auth, pinning, revocation, 429
+pnpm lint:kb:strict                 # 0 errors, 0 warnings across 73 docs
+pnpm typecheck                      # tsc in core, mcp, stdio, web
+pnpm test                           # 35 core unit tests (incl. auth/security)
+pnpm smoke                          # stdio end-to-end
+pnpm smoke:http                     # HTTP auth, pinning, revocation, 429
+pnpm --filter @ux-kb/web build      # Next.js production build
 ```
 
 See `docs/testing.md` for the full manual test guide.
@@ -232,23 +232,66 @@ Surfaces:
 - `/` — public landing page
 - `/api/healthz` — health and KB version
 - `/api/mcp` — Streamable HTTP MCP (Bearer API key, rate limited in Postgres)
-- `/signin` — GitHub OAuth (allowlisted accounts only)
-- `/dashboard` — keys, usage, gaps, releases (requires sign-in)
+- `/signin` — GitHub OAuth; any GitHub user can sign in, allowlisted logins become admins
+- `/dashboard` — your keys, usage, and releases (requires sign-in)
+- `/dashboard/users`, `/dashboard/gaps` — admin only
 
 HTTPS is provided by Vercel in production (HSTS + security headers configured in
 `next.config.ts`). Local dev uses `next dev --experimental-https`.
 
+### Accounts and API keys
+
+1. Open `/signin` and authorize with GitHub. Only `id` and `login` are used for
+   identity; the OAuth token is not stored.
+2. Create a key at `/dashboard/keys`. The plaintext is shown once; the database
+   stores only an HMAC-SHA256 hash.
+3. Use it as a Bearer token:
+
+   ```bash
+   claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \
+     --header "Authorization: Bearer <your-key>"
+   ```
+
+Quotas are applied per key:
+
+| Limit | Member | Admin |
+|---|---|---|
+| Active keys | 3 | 10 |
+| Requests / minute | 10–120 (default 60) | 10–600 (default 300) |
+| Requests / day | 10 000 | 100 000 |
+| Key expiry | 30 / 90 / 365 days | same, plus "never" |
+
+Rotate issues a replacement and revokes the old key in one step. Revocation is
+immediate. Admins can suspend an account, which blocks new sessions and stops
+its keys from working.
+
 ## Security and limitations
 
+- Keys are `uxkb_` + 192 random bits, stored only as an HMAC-SHA256 hash, and
+  checked syntactically before any database lookup. Revocation and expiry are
+  enforced on every request.
+- `/api/mcp` is `POST`-only, requires `application/json`, caps bodies at 256 KB
+  and batches at 20, and enforces per-key minute and daily quotas plus a
+  per-IP limit for unauthenticated callers.
+- Dashboard and API responses are `no-store`; CSP, HSTS, `X-Frame-Options`,
+  `nosniff`, and COOP are set in `next.config.ts`.
+- Every dashboard query is filtered by key owner; admin pages re-check the role
+  server-side.
 - The server trusts **reviewed Markdown**. A bad doc becomes an instruction the
   agent follows, so review is the security boundary.
 - Citation verification proves **fetch history**, not that a source semantically
   supports a claim.
-- Rate limiting is Postgres-backed in production (`RateLimitWindow`); the
-  in-memory limiter remains for tests and local dev.
+- Rate limiting is a Postgres fixed window. It is abuse control, not billing:
+  a caller can burst across a window boundary.
+- The concurrency guard is per serverless instance, so it bounds per-instance
+  pressure rather than global throughput.
 - Usage logs store tool arguments — avoid sending secrets in `feature`,
   `context`, or query text.
 - Token estimates are approximate (±15% for prose); pack budgets are advisory.
+
+See [`docs/security-checklist.md`](./docs/security-checklist.md) (OWASP API Top
+10) and [`docs/auth-checklist.md`](./docs/auth-checklist.md) for the full control
+list and known limitations.
 
 ---
 

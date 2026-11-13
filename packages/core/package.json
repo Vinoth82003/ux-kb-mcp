@@ -13,7 +13,7 @@
     "lint:kb": "tsx src/cli/lint.ts",
     "kb:info": "tsx src/cli/info.ts",
     "kb:keys": "tsx src/cli/keys.ts",
-    "test": "tsx --test src/__tests__/core.test.ts src/__tests__/phase3.test.ts",
+    "test": "tsx --test src/__tests__/core.test.ts src/__tests__/phase3.test.ts src/__tests__/auth-security.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

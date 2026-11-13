@@ -4,11 +4,19 @@ export interface RateLimitResult {
   retryAfterMs: number;
 }
 
+export type WindowKind = "minute" | "hour" | "day";
+
+export const WINDOW_MS: Record<WindowKind, number> = {
+  minute: 60_000,
+  hour: 3_600_000,
+  day: 86_400_000,
+};
+
 /**
- * In-memory sliding-window limiter, one window per API key.
+ * In-memory sliding-window limiter, one window per key.
  *
- * Single-process only: a multi-instance deployment must move this to Redis or
- * Postgres. Rate limits are advisory protection, not billing enforcement.
+ * Single-process only. The Postgres limiter is used in production; this one
+ * stays for tests and local development.
  */
 export class RateLimiter {
   private readonly hits = new Map<string, number[]>();
@@ -51,19 +59,25 @@ export class RateLimiter {
 export class PrismaRateLimiter {
   constructor(
     private readonly prisma: import("@prisma/client").PrismaClient,
-    private readonly windowMs = 60_000,
+    private readonly defaultKind: WindowKind = "minute",
   ) {}
 
-  async check(keyId: string, limit: number, now = Date.now()): Promise<RateLimitResult> {
+  async check(
+    keyId: string,
+    limit: number,
+    now = Date.now(),
+    kind: WindowKind = this.defaultKind,
+  ): Promise<RateLimitResult> {
     if (!Number.isFinite(limit) || limit <= 0) {
       return { allowed: true, remaining: Number.POSITIVE_INFINITY, retryAfterMs: 0 };
     }
 
-    const windowStart = new Date(Math.floor(now / this.windowMs) * this.windowMs);
+    const windowMs = WINDOW_MS[kind];
+    const windowStart = new Date(Math.floor(now / windowMs) * windowMs);
     const rows = await this.prisma.$queryRaw<{ count: number }[]>`
-      INSERT INTO "RateLimitWindow" ("keyId", "windowStart", "count")
-      VALUES (${keyId}, ${windowStart}, 1)
-      ON CONFLICT ("keyId", "windowStart")
+      INSERT INTO "RateLimitWindow" ("keyId", "kind", "windowStart", "count")
+      VALUES (${keyId}, ${kind}, ${windowStart}, 1)
+      ON CONFLICT ("keyId", "kind", "windowStart")
       DO UPDATE SET "count" = "RateLimitWindow"."count" + 1
       RETURNING "count"`;
     const count = Number(rows[0]?.count ?? 1);
@@ -72,10 +86,15 @@ export class PrismaRateLimiter {
       return {
         allowed: false,
         remaining: 0,
-        retryAfterMs: Math.max(windowStart.getTime() + this.windowMs - now, 0),
+        retryAfterMs: Math.max(windowStart.getTime() + windowMs - now, 0),
       };
     }
     return { allowed: true, remaining: Math.max(0, limit - count), retryAfterMs: 0 };
+  }
+
+  /** Convenience for a second, coarser quota layer. */
+  async checkQuota(keyId: string, limit: number, now = Date.now()): Promise<RateLimitResult> {
+    return this.check(keyId, limit, now, "day");
   }
 
   async reset(keyId?: string): Promise<void> {
@@ -84,5 +103,14 @@ export class PrismaRateLimiter {
     } else {
       await this.prisma.rateLimitWindow.deleteMany({});
     }
+  }
+
+  /** Delete stale windows. Safe to call opportunistically. */
+  async prune(olderThanMs = 2 * 86_400_000, now = Date.now()): Promise<number> {
+    const cutoff = new Date(now - olderThanMs);
+    const result = await this.prisma.rateLimitWindow.deleteMany({
+      where: { windowStart: { lt: cutoff } },
+    });
+    return result.count;
   }
 }
