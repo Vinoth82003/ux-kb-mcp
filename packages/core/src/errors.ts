@@ -6,6 +6,7 @@ export type KbErrorCode =
   | "INVALID_INPUT"
   | "SESSION_NOT_FOUND"
   | "SESSION_FORBIDDEN"
+  | "KEY_LIMIT_REACHED"
   | "CONTENT_INVALID";
 
 export class KbError extends Error {

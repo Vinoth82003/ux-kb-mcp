@@ -13,6 +13,6 @@ Initial tool surface (seven):
 
 Call `start_session` first. Resolve one immutable release per session. Reject unknown, draft and deprecated docs. Search returns metadata; retrieve the full doc before relying on a rule. Checklist retrieval does not mean checks were performed. Citation verification proves fetch history, not semantic support.
 
-**Phase 3 status:** all seven tools, the three resources and `start_session` are implemented in `apps/mcp-server`. Sessions record fetched IDs; `verify_citations` persists a compliance row; `report_gap` upserts by topic. HTTP requests require an API key and pass through revocation, version pinning and a per-key sliding-window rate limit. Usage rows are written for every tool call (stdio uses an internal `stdio-local` key).
+**Phase 3 status:** all seven tools, the three resources and `start_session` are implemented in `packages/mcp` (the server factory) and `apps/stdio` (the local transport). Sessions record fetched IDs; `verify_citations` persists a compliance row; `report_gap` upserts by topic. HTTP requests must pass revocation, scope, suspension, and version-pin checks, then a per-key fixed-window rate limit and a daily quota. Usage rows are written for every tool call (stdio uses an internal `stdio-local` key).
 
 Resources: `kb://doc/{id}`, `kb://pack/{stage}`, `kb://core`. Pipeline: auth → revocation → pin check → rate limit → release resolution → validation → core service → usage log. Return explicit errors; never silently return an empty pack.

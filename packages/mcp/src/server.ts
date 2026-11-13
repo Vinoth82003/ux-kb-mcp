@@ -114,7 +114,11 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Call FIRST. Creates a session tied to your API key and returns a sessionId, the KB version and feature-routed docs to consider. Every other session-scoped tool needs this ID.",
       inputSchema: {
-        feature: z.string().describe("What is being designed, in one or two sentences"),
+        feature: z
+          .string()
+          .min(1)
+          .max(2000)
+          .describe("What is being designed, in one or two sentences"),
       },
     },
     tracked("start_session", async ({ feature }: { feature: string }) => {
@@ -140,7 +144,7 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Return the core rules plus every document for a workflow stage, including docs routed from the session's feature. Call before each stage.",
       inputSchema: {
-        sessionId: z.string().describe("ID returned by start_session"),
+        sessionId: z.string().max(64).describe("ID returned by start_session"),
         stage: z.enum(STAGES).describe("Workflow stage"),
       },
     },
@@ -163,8 +167,8 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Return one topic document by ID (for example CMP-001). Fetch the ID from search_kb or get_stage_pack; do not guess.",
       inputSchema: {
-        sessionId: z.string().describe("ID returned by start_session"),
-        id: z.string().describe("Document ID such as CMP-001"),
+        sessionId: z.string().max(64).describe("ID returned by start_session"),
+        id: z.string().max(64).describe("Document ID such as CMP-001"),
       },
     },
     tracked("get_doc", async ({ sessionId, id }: { sessionId: string; id: string }) => {
@@ -182,7 +186,11 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Keyword search over doc IDs, titles, tags, summaries and bodies. Returns IDs to fetch with get_doc.",
       inputSchema: {
-        query: z.string().describe("Keywords, for example 'button loading state'"),
+        query: z
+          .string()
+          .min(1)
+          .max(200)
+          .describe("Keywords, for example 'button loading state'"),
         domain: z
           .enum(DOMAINS)
           .optional()
@@ -210,7 +218,11 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Return only the CHECK items for the given doc IDs. Cheap to call before critique; retrieving a checklist does not prove the checks were performed.",
       inputSchema: {
-        ids: z.array(z.string()).min(1).describe("Document IDs, e.g. ['CMP-001']"),
+        ids: z
+          .array(z.string().max(64))
+          .min(1)
+          .max(50)
+          .describe("Document IDs, e.g. ['CMP-001']"),
       },
     },
     tracked("get_checklist", async ({ ids }: { ids: string[] }) => {
@@ -226,8 +238,12 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Check cited IDs against this session's fetch history. Returns unfetched, unknown and deprecated IDs. Call before submitting a proposal.",
       inputSchema: {
-        sessionId: z.string().describe("ID returned by start_session"),
-        citedIds: z.array(z.string()).min(1).describe("Doc IDs cited in the proposal"),
+        sessionId: z.string().max(64).describe("ID returned by start_session"),
+        citedIds: z
+          .array(z.string().max(64))
+          .min(1)
+          .max(100)
+          .describe("Doc IDs cited in the proposal"),
       },
     },
     tracked(
@@ -247,8 +263,15 @@ export function buildServer(options: BuildOptions): McpServer {
       description:
         "Record a topic the KB does not cover. Repeated reports of the same topic increment its count. Do not invent rules to fill the gap.",
       inputSchema: {
-        topic: z.string().describe("Missing topic, e.g. 'offline sync conflict UI'"),
-        context: z.string().describe("What the agent needed and why the KB was insufficient"),
+        topic: z
+          .string()
+          .min(1)
+          .max(200)
+          .describe("Missing topic, e.g. 'offline sync conflict UI'"),
+        context: z
+          .string()
+          .max(2000)
+          .describe("What the agent needed and why the KB was insufficient"),
       },
     },
     tracked("report_gap", async ({ topic, context }: { topic: string; context: string }) => {

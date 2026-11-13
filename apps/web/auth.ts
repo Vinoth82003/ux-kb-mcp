@@ -1,39 +1,80 @@
 import NextAuth, { type NextAuthResult } from "next-auth";
-import GitHub from "next-auth/providers/github";
+import { authConfig } from "./auth.config";
+import { getStore } from "./lib/store";
 
-const allowedEmails = (process.env.ALLOWED_EMAILS ?? "")
-  .split(",")
-  .map((s) => s.trim().toLowerCase())
-  .filter(Boolean);
-const allowedLogins = (process.env.ALLOWED_GITHUB_LOGINS ?? "")
-  .split(",")
-  .map((s) => s.trim().toLowerCase())
-  .filter(Boolean);
+function adminLogins(): Set<string> {
+  return new Set(
+    (process.env.ALLOWED_GITHUB_LOGINS ?? "")
+      .split(",")
+      .map((value) => value.trim().toLowerCase())
+      .filter(Boolean),
+  );
+}
 
+/**
+ * Full Auth.js instance with the database-backed sign-in callback.
+ *
+ * Policy: any GitHub identity may sign in and receive a quota-limited API key.
+ * Logins listed in ALLOWED_GITHUB_LOGINS become admins. Suspended accounts are
+ * rejected at the door.
+ */
 export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
-  secret: process.env.AUTH_SECRET,
-  trustHost: true,
-  providers: [
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
-    }),
-  ],
+  ...authConfig,
   callbacks: {
-    async signIn({ user, profile }) {
-      const email = (user.email ?? "").toLowerCase();
-      const login = ((profile as { login?: string } | null)?.login ?? "").toLowerCase();
-      if (allowedEmails.length === 0 && allowedLogins.length === 0) return false;
-      if (allowedEmails.length > 0 && allowedEmails.includes(email)) return true;
-      if (allowedLogins.length > 0 && allowedLogins.includes(login)) return true;
-      return false;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        (session.user as { id?: string }).id = token.sub ?? undefined;
+    ...authConfig.callbacks,
+    async signIn({ user, profile, account }) {
+      const gh = profile as
+        | { id?: number | string; login?: string; name?: string; email?: string; avatar_url?: string }
+        | null;
+
+      const githubId = String(gh?.id ?? account?.providerAccountId ?? "");
+      const login = (gh?.login ?? "").toLowerCase();
+      if (!githubId || !login) return false;
+
+      const store = await getStore();
+      const existing = await store.findUserByGithubId(githubId);
+      if (existing?.suspendedAt) {
+        await store
+          .audit({
+            actor: `github:${login}`,
+            action: "auth.denied",
+            target: githubId,
+            metadata: { reason: "suspended" },
+          })
+          .catch(() => undefined);
+        return false;
       }
-      return session;
+
+      const role = adminLogins().has(login) ? "ADMIN" : "MEMBER";
+      const dbUser = await store.upsertUser({
+        githubId,
+        login,
+        email: gh?.email ?? user.email ?? null,
+        name: gh?.name ?? user.name ?? null,
+        avatarUrl: gh?.avatar_url ?? null,
+        role,
+      });
+
+      await store
+        .audit({
+          actor: `github:${login}`,
+          actorUserId: dbUser.id,
+          action: "auth.signin",
+          target: dbUser.id,
+          metadata: { role: dbUser.role },
+        })
+        .catch(() => undefined);
+
+      // Carried into the `jwt` callback so the token gets the database id.
+      const enriched = user as {
+        dbUserId?: string;
+        role?: "MEMBER" | "ADMIN";
+        login?: string;
+      };
+      enriched.dbUserId = dbUser.id;
+      enriched.role = dbUser.role;
+      enriched.login = dbUser.login;
+      return true;
     },
   },
-  pages: { signIn: "/signin" },
 });

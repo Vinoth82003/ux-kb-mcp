@@ -14,11 +14,9 @@ const CODE_DESKTOP = `{
   }
 }`;
 
-const CODE_HTTP = `MCP_DEV_KEY=dev-local-key pnpm dev:mcp:http
-
-# then register
-claude mcp add --transport http ux-kb http://127.0.0.1:3333/mcp \\
-  --header "Authorization: Bearer dev-local-key"`;
+const CODE_HTTP = `# create a key at https://ux-kb-site.vercel.app/dashboard/keys
+claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \\
+  --header "Authorization: Bearer <your-key>"`;
 
 type Tab = "stdio" | "desktop" | "http";
 
@@ -58,6 +56,9 @@ export default function Landing() {
             <a href="#tools">Tools</a>
             <a href="#connect">Connect</a>
             <a href="#testing">Testing</a>
+            <a className="nav-cta" href="/signin">
+              Sign in
+            </a>
             <a className="nav-cta" href="https://github.com/Vinoth82003/ux-kb-mcp" rel="noopener">
               GitHub
             </a>
