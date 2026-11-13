@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/copy-content.mjs",
-    "prebuild": "node scripts/copy-content.mjs",
+    "prebuild": "node scripts/copy-content.mjs && prisma generate --schema ../../prisma/schema.prisma",
     "dev": "next dev --webpack --experimental-https",
     "dev:http": "next dev --webpack",
     "build": "next build --webpack",

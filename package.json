@@ -8,6 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "lint:kb": "tsx packages/core/src/cli/lint.ts",
     "lint:kb:strict": "tsx packages/core/src/cli/lint.ts --max-warnings 0",
     "kb:info": "pnpm --filter @ux-kb/core kb:info",
