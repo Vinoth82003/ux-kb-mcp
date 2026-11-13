@@ -101,7 +101,7 @@ export default function Landing() {
                 <span>MCP tools</span>
               </li>
               <li>
-                <strong>23</strong>
+                <strong>35</strong>
                 <span>unit tests</span>
               </li>
             </ul>
@@ -192,7 +192,7 @@ export default function Landing() {
                 <span>resources</span>
               </div>
               <div className="stat">
-                <strong>23</strong>
+                <strong>35</strong>
                 <span>unit tests</span>
               </div>
             </div>
@@ -382,8 +382,8 @@ export default function Landing() {
             <pre>
               <code>{`pnpm lint:kb:strict   # 0 errors, 0 warnings across 73 docs
 pnpm typecheck        # tsc, both packages
-pnpm test             # 23 core unit tests
-pnpm build            # tsup bundle
+pnpm test             # 35 core unit tests
+pnpm build            # builds stdio + web
 pnpm smoke            # stdio end-to-end (7 tools + 3 resources)
 pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
             </pre>
