@@ -31,7 +31,16 @@ export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
       const login = (gh?.login ?? "").toLowerCase();
       if (!githubId || !login) return false;
 
-      const store = await getStore();
+      let store: Awaited<ReturnType<typeof getStore>>;
+      try {
+        store = await getStore();
+      } catch (error) {
+        console.error("auth.store_unavailable", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        return false;
+      }
+
       const existing = await store.findUserByGithubId(githubId);
       if (existing?.suspendedAt) {
         await store
@@ -46,14 +55,24 @@ export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
       }
 
       const role = adminLogins().has(login) ? "ADMIN" : "MEMBER";
-      const dbUser = await store.upsertUser({
-        githubId,
-        login,
-        email: gh?.email ?? user.email ?? null,
-        name: gh?.name ?? user.name ?? null,
-        avatarUrl: gh?.avatar_url ?? null,
-        role,
-      });
+      let dbUser: Awaited<ReturnType<typeof store.upsertUser>>;
+      try {
+        dbUser = await store.upsertUser({
+          githubId,
+          login,
+          email: gh?.email ?? user.email ?? null,
+          name: gh?.name ?? user.name ?? null,
+          avatarUrl: gh?.avatar_url ?? null,
+          role,
+        });
+      } catch (error) {
+        // A unique-constraint race or a database outage must not surface as a 500.
+        console.error("auth.upsert_failed", {
+          login,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        return false;
+      }
 
       await store
         .audit({
