@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+packages/core/node_modules/
+apps/*/node_modules/
+apps/*/.next/
+packages/core/src/generated/
+.vercel/
+*.tsbuildinfo

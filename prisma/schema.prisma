@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// --- Knowledge content -----------------------------------------------------
+
+model Doc {
+  id        String   @id // "CMP-001"
+  domain    String
+  group     String?
+  tags      String[]
+  stages    String[]
+  priority  String   @default("core")
+  appliesTo String[]
+  sourceUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  versions DocVersion[]
+
+  @@index([domain])
+  @@index([priority])
+}
+
+// Every edit creates a row. Immutable history; latest reviewed row is publishable.
+model DocVersion {
+  id          String   @id @default(cuid())
+  docId       String
+  doc         Doc      @relation(fields: [docId], references: [id], onDelete: Cascade)
+  rev         Int
+  title       String
+  summary     String
+  body        String // Markdown: Summary / MUST / SHOULD / AVOID / DECIDE / STATES / CHECK
+  status      String // draft | reviewed | published | deprecated
+  frontMatter Json
+  contentHash String
+  author      String   @default("seed")
+  createdAt   DateTime @default(now())
+
+  @@unique([docId, rev])
+  @@index([docId, status])
+}
+
+// Immutable snapshot. Publishing flips isActive; rollback flips it back.
+model Release {
+  id        String   @id @default(cuid())
+  version   String   @unique // "1.4.0"
+  notes     String   @default("")
+  snapshot  Json // { docs: { id: { rev, hash } }, packs: {...}, routes: [...] }
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isActive])
+}
+
+model Pack {
+  stage        String   @id
+  docIds       String[]
+  budgetTokens Int      @default(6000)
+  includeCore  Boolean  @default(true)
+  updatedAt    DateTime @updatedAt
+}
+
+model Route {
+  id        String   @id @default(cuid())
+  match     String[]
+  add       String[]
+  createdAt DateTime @default(now())
+
+  @@index([match], type: Gin)
+}
+
+// --- Access and observability ---------------------------------------------
+
+model ApiKey {
+  id            String    @id @default(cuid())
+  name          String // "claude-code-laptop"
+  hashedKey     String    @unique
+  pinnedVersion String? // null = follow the active release
+  rateLimit     Int       @default(120) // requests per minute
+  revokedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  lastUsedAt    DateTime?
+
+  sessions Session[]
+  usage    UsageLog[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  apiKeyId   String
+  apiKey     ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  feature    String
+  kbVersion  String
+  fetched    String[] // doc IDs actually retrieved
+  startedAt  DateTime @default(now())
+
+  compliance Compliance[]
+  usage      UsageLog[]
+
+  @@index([apiKeyId, startedAt])
+}
+
+model UsageLog {
+  id        String   @id @default(cuid())
+  apiKeyId  String
+  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  tool      String
+  args      Json
+  latencyMs Int
+  ok        Boolean
+  createdAt DateTime @default(now())
+
+  @@index([apiKeyId, createdAt])
+  @@index([tool, createdAt])
+}
+
+model Compliance {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  citedIds  String[]
+  unfetched String[]
+  unknown   String[]
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model KbGap {
+  id        String   @id @default(cuid())
+  topic     String   @unique
+  context   String
+  count     Int      @default(1)
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([resolved, count])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String
+  target    String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model RateLimitWindow {
+  keyId       String
+  windowStart DateTime
+  count       Int      @default(0)
+  @@id([keyId, windowStart])
+  @@index([windowStart])
+}

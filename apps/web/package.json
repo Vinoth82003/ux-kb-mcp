@@ -1,0 +1,33 @@
+{
+  "name": "@ux-kb/web",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/copy-content.mjs",
+    "prebuild": "node scripts/copy-content.mjs",
+    "dev": "next dev --webpack --experimental-https",
+    "dev:http": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@auth/core": "^0.41.3",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@prisma/client": "6.19.3",
+    "@ux-kb/core": "workspace:*",
+    "@ux-kb/mcp": "workspace:*",
+    "next": "16.4.6",
+    "next-auth": "5.0.0-beta.32",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.3"
+  }
+}

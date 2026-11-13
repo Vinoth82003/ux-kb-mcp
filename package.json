@@ -1,0 +1,41 @@
+{
+  "name": "ux-kb",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.18.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint:kb": "tsx packages/core/src/cli/lint.ts",
+    "lint:kb:strict": "tsx packages/core/src/cli/lint.ts --max-warnings 0",
+    "kb:info": "pnpm --filter @ux-kb/core kb:info",
+    "kb:keys": "tsx packages/core/src/cli/keys.ts",
+    "test": "pnpm --filter @ux-kb/core test",
+    "smoke": "pnpm --filter @ux-kb/stdio smoke",
+    "smoke:http": "pnpm --filter @ux-kb/stdio smoke:http",
+    "typecheck": "pnpm -r typecheck",
+    "dev:mcp": "pnpm --filter @ux-kb/stdio dev",
+    "start:mcp": "pnpm --filter @ux-kb/stdio start",
+    "start:mcp:http": "pnpm --filter @ux-kb/stdio start:http",
+    "dev:mcp:http": "pnpm --filter @ux-kb/stdio dev:http",
+    "dev:web": "pnpm --filter @ux-kb/web dev",
+    "build": "pnpm -r build",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed"
+  },
+  "devDependencies": {
+    "@prisma/client": "6.19.3",
+    "@types/node": "^24.19.2",
+    "@ux-kb/core": "workspace:*",
+    "@ux-kb/mcp": "workspace:*",
+    "prisma": "6.19.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
