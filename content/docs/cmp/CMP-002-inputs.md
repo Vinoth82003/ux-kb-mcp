@@ -5,12 +5,12 @@ domain: components
 group: M03
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: core
-stages: [proposal, critique, implement]
+stages: [audit, proposal, critique, implement]
 tags: [inputs, components]
 applies_to: [web, mobile]
-related: [A11Y-003, A11Y-005, INT-004, RSP-005]
+related: [A11Y-004, A11Y-005, CW-002, CW-005]
 sources:
   - name: "NN/g Form Design"
     url: "https://www.nngroup.com/articles/web-form-design/"
@@ -18,7 +18,7 @@ sources:
     url: "https://design-system.service.gov.uk/components/"
   - name: "W3C WCAG 2.2"
     url: "https://www.w3.org/TR/WCAG22/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # CMP-002 — Inputs
@@ -28,43 +28,49 @@ Inputs collect structured data; labels, constraints and feedback determine compl
 
 ## MUST
 - CMP-002.M1: Associate a persistent visible label with every field; placeholders are examples, not labels.
+- CMP-002.M2: Use native input/select/textarea with appropriate type and autocomplete; preserve paste and autofill.
+- CMP-002.M3: Identify input errors in text and associate them with the field (aria-describedby/aria-invalid).
 
 ## SHOULD
-- CMP-002.S1: Show format constraints before submission; preserve valid data after errors.
+- CMP-002.S1: Show format constraints and required/optional status before submission; preserve valid data after errors.
+- CMP-002.S2: Provide an accessible name, hint and (where needed) visible helper text adjacent to the field.
 
 ## AVOID
 - CMP-002.A1: Do not block paste or use placeholder-only labels.
+- CMP-002.A2: Do not clear valid input on validation failure.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Simple task | Use least complex semantic control |
-| Custom behavior | Document keyboard/focus model |
-| Mobile constraint | Preserve target size and labels |
+| Single-line value | Native input with type and label |
+| Constrained format | Hint + example + validation |
+| Optional field | Mark optional or omit required marker consistently |
+| Error | Inline message + preserve value + focus field |
 
 ## STATES
 - Default
-- Hover
 - Focus
-- Selected/active
+- Filled
+- Invalid
 - Disabled
+- Read-only
 - Loading
-- Error
 - Responsive
 
 ## EXAMPLE
-Keep an invalid email value and explain the accepted format.
+Good: “Work email” label + hint “We send receipts here” + placeholder “name@company.com”; invalid value retained with a message. Bad: placeholder-only label “Enter email” that clears on error.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Placeholder-only labels disappear on input and fail screen readers.
+- Clearing valid values forces rework and abandonment.
+- Unannounced or color-only errors are missed by assistive-tech users.
 
 ## CHECK
-- [ ] Visible labels?
-- [ ] Required state clear?
+- [ ] Visible persistent label?
+- [ ] Required/optional clear?
 - [ ] Paste/autofill works?
-- [ ] Errors preserve data?
+- [ ] Errors preserve data and are announced?
+- [ ] Format constraints shown before submit?
 
 ## SOURCE NOTES
 - [NN/g Form Design](https://www.nngroup.com/articles/web-form-design/) — authoritative reference; this document paraphrases relevant guidance.
@@ -72,7 +78,7 @@ Keep an invalid email value and explain the accepted format.
 - [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `A11Y-003` — retrieve when the feature crosses into this topic.
+- `A11Y-004` — retrieve when the feature crosses into this topic.
 - `A11Y-005` — retrieve when the feature crosses into this topic.
-- `INT-004` — retrieve when the feature crosses into this topic.
-- `RSP-005` — retrieve when the feature crosses into this topic.
+- `CW-002` — retrieve when the feature crosses into this topic.
+- `CW-005` — retrieve when the feature crosses into this topic.

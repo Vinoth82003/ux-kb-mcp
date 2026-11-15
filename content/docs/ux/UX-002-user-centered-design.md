@@ -5,20 +5,20 @@ domain: ux
 group: M01
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [need_check, research, audit, proposal]
 tags: [user-centered-design, ux]
 applies_to: [web, mobile]
-related: [UX-001, UX-001, EVAL-007]
+related: [UX-001, UX-003, UX-004, EVAL-007]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Form Design"
-    url: "https://www.nngroup.com/articles/web-form-design/"
-  - name: "W3C WCAG 2.2"
-    url: "https://www.w3.org/TR/WCAG22/"
-updated: 2026-11-12
+  - name: "ISO 9241-210:2019 Human-centred design for interactive systems"
+    url: "https://www.iso.org/standard/77520.html"
+  - name: "Nielsen Norman Group — When to Use Which User-Experience Research Methods"
+    url: "https://www.nngroup.com/articles/which-ux-research-methods/"
+  - name: "GOV.UK Service Manual — User research"
+    url: "https://www.gov.uk/service-manual/user-research"
+updated: 2026-11-15
 ---
 
 # UX-002 — User-Centered Design
@@ -42,9 +42,9 @@ User-centered design makes user tasks and evidence authoritative while treating 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Need unknown | Interview or observe |
+| Need or problem unknown | Interview or observe users in context |
 | Workflow known, usability unknown | Run task-based usability test |
-| Prevalence unknown | Survey after exploratory research |
+| Prevalence or priority unknown | Survey after exploratory research |
 
 ## STATES
 - Recruit
@@ -57,9 +57,9 @@ User-centered design makes user tasks and evidence authoritative while treating 
 Ask participants to locate an overdue invoice rather than asking whether they like a dashboard.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Recruiting people who do not match the real task or context produces findings that do not transfer.
+- Leading questions validate a preferred solution instead of revealing user needs.
+- Summative metrics without formative insight leave the cause of failure unexplained.
 
 ## CHECK
 - [ ] Method matches question?
@@ -67,11 +67,12 @@ Ask participants to locate an overdue invoice rather than asking whether they li
 - [ ] Findings include evidence and confidence?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Form Design](https://www.nngroup.com/articles/web-form-design/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
+- [ISO 9241-210:2019 Human-centred design for interactive systems](https://www.iso.org/standard/77520.html) — authoritative reference; this document paraphrases relevant guidance.
+- [Nielsen Norman Group — When to Use Which User-Experience Research Methods](https://www.nngroup.com/articles/which-ux-research-methods/) — authoritative reference; this document paraphrases relevant guidance.
+- [GOV.UK Service Manual — User research](https://www.gov.uk/service-manual/user-research) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
 - `UX-001` — retrieve when the feature crosses into this topic.
-- `UX-001` — retrieve when the feature crosses into this topic.
+- `UX-003` — retrieve when the feature crosses into this topic.
+- `UX-004` — retrieve when the feature crosses into this topic.
 - `EVAL-007` — retrieve when the feature crosses into this topic.

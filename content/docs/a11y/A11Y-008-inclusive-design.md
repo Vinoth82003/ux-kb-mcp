@@ -5,71 +5,74 @@ domain: accessibility
 group: M06
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, proposal, critique, implement]
 tags: [inclusive-design, accessibility]
 applies_to: [web, mobile]
-related: [VIS-006, INT-004, CMP-002, CMP-005]
+related: [UX-001, UX-002, CW-002]
 sources:
-  - name: "W3C WCAG 2.2"
-    url: "https://www.w3.org/TR/WCAG22/"
-  - name: "W3C WCAG 2.2 Quick Reference"
-    url: "https://www.w3.org/WAI/WCAG22/quickref/"
-  - name: "W3C Understanding Focus Appearance"
-    url: "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html"
-updated: 2026-11-12
+  - name: "Microsoft Inclusive Design"
+    url: "https://inclusive.microsoft.design/"
+  - name: "W3C WAI Fundamentals"
+    url: "https://www.w3.org/WAI/fundamentals/"
+updated: 2026-11-15
 ---
 
 # A11Y-008 — Inclusive Design
 
 ## Summary
-Inclusive design identifies exclusion across ability, language, culture, device and context.
+Inclusive design identifies exclusion across ability, language, culture, device and context, then builds flexible paths.
 
 ## MUST
-- A11Y-008.M1: Define supported user/context range and test edge cases affecting task success.
+- A11Y-008.M1: Define the supported user and context range and test edge cases affecting task success.
+- A11Y-008.M2: Provide equivalent paths for users with different abilities, devices, languages or contexts.
+- A11Y-008.M3: Justify any assumption about user identity, input format or environment.
+- A11Y-008.M4: Include people with disabilities in research and testing where feasible.
 
 ## SHOULD
 - A11Y-008.S1: Accept flexible input formats where data integrity permits.
+- A11Y-008.S2: Support localization and adaptable layouts.
 
 ## AVOID
 - A11Y-008.A1: Do not infer identity or intent from names, appearance or demographics.
+- A11Y-008.A2: Do not ship single-path designs that exclude edge cases.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Native element fits | Use native semantics |
-| Custom widget needed | Follow pattern and test |
-| Scan passes | Continue manual review |
+| Narrow user assumption | Broaden range or document exclusion |
+| Strict input format | Normalize and accept variants |
+| Edge case rare | Test if task-critical |
+| Localization | Plan content and layout flexibility |
 
 ## STATES
-- Default
-- Keyboard
-- Screen reader
-- Zoom/reflow
-- Error
-- High contrast/reduced motion
+- Baseline user
+- Constrained context
+- Alternate input
+- Localized
+- Edge case
+- Recovery
 
 ## EXAMPLE
-Accept phone numbers with country code and normalize punctuation.
+Good: "Accept phone numbers with country code and normalize punctuation." Bad: "Reject names containing hyphens."
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Excluding edge cases hides task failures.
+- Assumptions about devices or contexts reduce reach.
+- Inflexible inputs cause abandonment.
 
 ## CHECK
 - [ ] Exclusion risks recorded?
 - [ ] Input assumptions justified?
 - [ ] Equivalent paths exist?
+- [ ] Edge cases tested?
 
 ## SOURCE NOTES
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C Understanding Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) — authoritative reference; this document paraphrases relevant guidance.
+- [Microsoft Inclusive Design](https://inclusive.microsoft.design/) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WAI Fundamentals](https://www.w3.org/WAI/fundamentals/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `VIS-006` — retrieve when the feature crosses into this topic.
-- `INT-004` — retrieve when the feature crosses into this topic.
-- `CMP-002` — retrieve when the feature crosses into this topic.
-- `CMP-005` — retrieve when the feature crosses into this topic.
+- `UX-001` — retrieve when the feature crosses into this topic.
+- `UX-002` — retrieve when the feature crosses into this topic.
+- `CW-002` — retrieve when the feature crosses into this topic.

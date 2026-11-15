@@ -5,30 +5,24 @@ domain: evaluation
 group: M10
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, critique]
 tags: [fitts-s-law, evaluation]
 applies_to: [web, mobile]
-related: [UX-005, A11Y-001, VIS-001, INT-001]
+related: [RSP-005, CMP-001, A11Y-003, INT-004]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Cognitive Load"
-    url: "https://www.nngroup.com/articles/minimize-cognitive-load/"
   - name: "NN/g Fitts's Law"
     url: "https://www.nngroup.com/articles/fitts-law/"
-  - name: "NN/g Hick's Law"
-    url: "https://www.nngroup.com/articles/hick-law/"
-  - name: "NN/g UX Metrics"
-    url: "https://www.nngroup.com/articles/ux-metrics/"
-updated: 2026-11-12
+  - name: "W3C WCAG 2.2"
+    url: "https://www.w3.org/TR/WCAG22/"
+updated: 2026-11-15
 ---
 
 # EVAL-003 — Fitts's Law
 
 ## Summary
-Fitts predicts target acquisition time increases with distance and decreases as target size increases; it is a heuristic, not a WCAG criterion.
+Fitts predicts target acquisition time increases with distance and decreases as target size increases; treat as heuristic, not WCAG criterion (see RSP-005 for target sizes).
 
 ## MUST
 - EVAL-003.M1: Make frequent/critical controls easy to acquire and near task context.
@@ -37,29 +31,29 @@ Fitts predicts target acquisition time increases with distance and decreases as 
 - EVAL-003.S1: Separate adjacent targets and consider pointer/touch precision.
 
 ## AVOID
-- EVAL-003.A1: Do not use Fitts to excuse WCAG target-size failure.
+- EVAL-003.A1: Do not use Fitts to excuse WCAG target-size failure; meet RSP-005 (at least 24×24 CSS px).
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Observed failure | Record evidence and severity |
-| Potential risk | Validate with task test |
-| Metric movement | Inspect definition and guardrails |
+| Frequent action | Enlarge and bring near context |
+| Dense toolbar | Increase separation or size |
+| Touch input | Follow RSP-005 sizes |
 
 ## STATES
-- Task start
-- Primary task
-- Error/recovery
-- Completion
-- Repeat use
+- Pointer
+- Touch
+- Keyboard
+- Dense layout
+- Mobile
 
 ## EXAMPLE
-Place Save near edited form with comfortable hit area.
+Good: Save button 44px hit area adjacent to edited field. Bad: 16px icon with no hit area 300px from field.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Large targets can crowd layouts and hide hierarchy; balance size with grouping.
+- Distance savings vanish if target is visually ambiguous; keep labels clear.
+- Fitts ignores cognitive choice; pair with Hick (EVAL-004) for menus.
 
 ## CHECK
 - [ ] Critical targets easy?
@@ -67,14 +61,11 @@ Place Save near edited form with comfortable hit area.
 - [ ] WCAG checked independently?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Cognitive Load](https://www.nngroup.com/articles/minimize-cognitive-load/) — authoritative reference; this document paraphrases relevant guidance.
 - [NN/g Fitts's Law](https://www.nngroup.com/articles/fitts-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Hick's Law](https://www.nngroup.com/articles/hick-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g UX Metrics](https://www.nngroup.com/articles/ux-metrics/) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-005` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `VIS-001` — retrieve when the feature crosses into this topic.
-- `INT-001` — retrieve when the feature crosses into this topic.
+- `RSP-005` — retrieve when the feature crosses into this topic.
+- `CMP-001` — retrieve when the feature crosses into this topic.
+- `A11Y-003` — retrieve when the feature crosses into this topic.
+- `INT-004` — retrieve when the feature crosses into this topic.

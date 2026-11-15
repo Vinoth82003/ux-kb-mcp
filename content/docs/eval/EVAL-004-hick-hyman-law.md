@@ -5,24 +5,16 @@ domain: evaluation
 group: M10
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, critique]
 tags: [hick-hyman-law, evaluation]
 applies_to: [web, mobile]
-related: [UX-005, A11Y-001, VIS-001, INT-001]
+related: [CMP-003, CMP-007, CMP-006, CW-005]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Cognitive Load"
-    url: "https://www.nngroup.com/articles/minimize-cognitive-load/"
-  - name: "NN/g Fitts's Law"
-    url: "https://www.nngroup.com/articles/fitts-law/"
   - name: "NN/g Hick's Law"
     url: "https://www.nngroup.com/articles/hick-law/"
-  - name: "NN/g UX Metrics"
-    url: "https://www.nngroup.com/articles/ux-metrics/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # EVAL-004 — Hick-Hyman Law
@@ -42,24 +34,24 @@ Choice time tends to increase with number and uncertainty of choices; reduce unn
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Observed failure | Record evidence and severity |
-| Potential risk | Validate with task test |
-| Metric movement | Inspect definition and guardrails |
+| Many low-value options | Group/search/filter |
+| Comparison task | Keep options visible |
+| Expert workflow | Allow shortcuts and saved defaults |
 
 ## STATES
-- Task start
-- Primary task
-- Error/recovery
-- Completion
+- First choice
+- Comparison
+- Filtering
+- Confirmation
 - Repeat use
 
 ## EXAMPLE
-Plan choice uses comparison table; 300 integrations use search.
+Good: Plan choice uses comparison table; 300 integrations use search. Bad: 300 integrations in one dropdown.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Fewer options can remove needed control; validate against task goals.
+- Grouping by vendor instead of user goal increases scanning; test findability.
+- Search hides options without good metadata; ensure keywords and empty states.
 
 ## CHECK
 - [ ] Choices map to goals?
@@ -67,14 +59,10 @@ Plan choice uses comparison table; 300 integrations use search.
 - [ ] Alternatives discoverable?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Cognitive Load](https://www.nngroup.com/articles/minimize-cognitive-load/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Fitts's Law](https://www.nngroup.com/articles/fitts-law/) — authoritative reference; this document paraphrases relevant guidance.
 - [NN/g Hick's Law](https://www.nngroup.com/articles/hick-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g UX Metrics](https://www.nngroup.com/articles/ux-metrics/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-005` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `VIS-001` — retrieve when the feature crosses into this topic.
-- `INT-001` — retrieve when the feature crosses into this topic.
+- `CMP-003` — retrieve when the feature crosses into this topic.
+- `CMP-007` — retrieve when the feature crosses into this topic.
+- `CMP-006` — retrieve when the feature crosses into this topic.
+- `CW-005` — retrieve when the feature crosses into this topic.

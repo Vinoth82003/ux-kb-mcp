@@ -5,18 +5,18 @@ domain: ux
 group: M01
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [need_check, research, audit]
 tags: [what-is-ux, ux]
 applies_to: [web, mobile]
 related: [UX-002, UX-005, EVAL-007]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "Apple Human Interface Guidelines"
-    url: "https://developer.apple.com/design/human-interface-guidelines/"
-updated: 2026-11-12
+  - name: "Nielsen Norman Group — The Definition of User Experience (UX)"
+    url: "https://www.nngroup.com/articles/definition-user-experience/"
+  - name: "ISO 9241-210:2019 Human-centred design for interactive systems"
+    url: "https://www.iso.org/standard/77520.html"
+updated: 2026-11-15
 ---
 
 # UX-001 — What Is UX
@@ -40,9 +40,9 @@ UX is the quality of the complete journey: usefulness, usability, accessibility,
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Need is evidenced | Build or improve the path |
-| Need uncertain | Research before interface design |
-| Duplicate feature | Compare task cost; recommend consolidation |
+| User, task or context unknown | Research before proposing screens |
+| Evidence and assumption blurred | Label each and name a validation method |
+| Journey has a gap (discovery, recovery, post-task) | Map and improve the full path |
 
 ## STATES
 - Discovery
@@ -57,8 +57,8 @@ An invoice experience includes finding, understanding, downloading and recoverin
 
 ## FAILURE MODES
 - A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Optimizing one touchpoint while ignoring discovery or recovery leaves the end-to-end journey broken.
+- Personas or metrics invented without evidence produce decisions that do not match real users.
 
 ## CHECK
 - [ ] User and task explicit?
@@ -66,8 +66,8 @@ An invoice experience includes finding, understanding, downloading and recoverin
 - [ ] Evidence separated from assumptions?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
+- [Nielsen Norman Group — The Definition of User Experience (UX)](https://www.nngroup.com/articles/definition-user-experience/) — authoritative reference; this document paraphrases relevant guidance.
+- [ISO 9241-210:2019 Human-centred design for interactive systems](https://www.iso.org/standard/77520.html) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
 - `UX-002` — retrieve when the feature crosses into this topic.

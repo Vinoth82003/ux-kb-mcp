@@ -5,20 +5,18 @@ domain: saas
 group: M08
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [research, proposal, critique, implement]
 tags: [empty-dashboard-states, saas]
 applies_to: [web, mobile]
-related: [UX-002, A11Y-001, CW-001, EVAL-008]
+related: [SAAS-001, SAAS-003, CW-004, SAAS-004]
 sources:
-  - name: "NN/g Dashboard Design"
-    url: "https://www.nngroup.com/articles/dashboard-design/"
-  - name: "NN/g Onboarding"
-    url: "https://www.nngroup.com/articles/onboarding/"
-  - name: "NN/g Form Design"
-    url: "https://www.nngroup.com/articles/web-form-design/"
-updated: 2026-11-12
+  - name: "NN/g Empty State Interface Design"
+    url: "https://www.nngroup.com/articles/empty-state-interface-design/"
+  - name: "Material Design Empty States"
+    url: "https://m2.material.io/design/communication/empty-states.html"
+updated: 2026-11-15
 ---
 
 # SAAS-008 — Empty Dashboard States
@@ -38,25 +36,25 @@ An empty dashboard distinguishes setup incomplete, no activity, no permission an
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Decision support | Prioritize metric/action |
-| Setup incomplete | Offer minimum next step |
-| High-risk billing action | Disclose consequence |
+| Setup incomplete | Show minimum next step |
+| No permission | Explain and request access |
+| Demo data | Label and isolate |
 
 ## STATES
-- First use
-- Populated
+- Setup incomplete
+- No activity
 - Filtered empty
 - No permission
-- Stale/loading
+- Unavailable
 - Error
 
 ## EXAMPLE
-Connect your bank account only if that is truly required.
+Good: "No invoices yet — create your first" with a Create action. Bad: Blank chart reading 0 with no reason or action.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Blank charts imply zero; state the reason.
+- Fake zeros mislead; distinguish missing/unavailable.
+- Demo data mixed with production; label and isolate.
 
 ## CHECK
 - [ ] Reason accurate?
@@ -64,12 +62,11 @@ Connect your bank account only if that is truly required.
 - [ ] Demo data isolated?
 
 ## SOURCE NOTES
-- [NN/g Dashboard Design](https://www.nngroup.com/articles/dashboard-design/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Onboarding](https://www.nngroup.com/articles/onboarding/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Form Design](https://www.nngroup.com/articles/web-form-design/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g Empty State Interface Design](https://www.nngroup.com/articles/empty-state-interface-design/) — authoritative reference; this document paraphrases relevant guidance.
+- [Material Design Empty States](https://m2.material.io/design/communication/empty-states.html) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-002` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `CW-001` — retrieve when the feature crosses into this topic.
-- `EVAL-008` — retrieve when the feature crosses into this topic.
+- `SAAS-001` — retrieve when the feature crosses into this topic.
+- `SAAS-003` — retrieve when the feature crosses into this topic.
+- `CW-004` — retrieve when the feature crosses into this topic.
+- `SAAS-004` — retrieve when the feature crosses into this topic.

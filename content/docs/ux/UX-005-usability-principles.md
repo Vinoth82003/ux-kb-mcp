@@ -5,18 +5,18 @@ domain: ux
 group: M01
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, proposal, critique]
 tags: [usability-principles, ux]
 applies_to: [web, mobile]
-related: [EVAL-001, EVAL-002, EVAL-003, EVAL-004]
+related: [UX-001, EVAL-001, EVAL-002, EVAL-003, EVAL-004]
 sources:
   - name: "Nielsen Norman Group 10 Usability Heuristics"
     url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
   - name: "W3C WCAG 2.2"
     url: "https://www.w3.org/TR/WCAG22/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # UX-005 — Usability Principles
@@ -54,9 +54,9 @@ Usability is task effectiveness, efficiency and satisfaction in context; heurist
 A payment blocker is critical even if rare; a slightly inconsistent divider is not equivalent.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Averaging away a blocker on a critical task hides release risk.
+- Declaring usability from a component library ignores task evidence.
+- Heuristic findings without severity and recovery cost cannot be prioritized.
 
 ## CHECK
 - [ ] Success criteria explicit?
@@ -68,6 +68,7 @@ A payment blocker is critical even if rare; a slightly inconsistent divider is n
 - [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
+- `UX-001` — retrieve when the feature crosses into this topic.
 - `EVAL-001` — retrieve when the feature crosses into this topic.
 - `EVAL-002` — retrieve when the feature crosses into this topic.
 - `EVAL-003` — retrieve when the feature crosses into this topic.

@@ -75,3 +75,4 @@
 | `EVAL-006` | Conversion Evaluation | evaluation | core |
 | `EVAL-007` | UX Audit | evaluation | core |
 | `EVAL-008` | UX Metrics | evaluation | core |
+| `EVAL-009` | Independent Critic Rubric | evaluation | core |

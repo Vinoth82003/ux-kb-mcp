@@ -5,20 +5,20 @@ domain: accessibility
 group: M06
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, proposal, critique, implement]
 tags: [screen-reader-support, accessibility]
 applies_to: [web, mobile]
-related: [VIS-006, INT-004, CMP-002, CMP-005]
+related: [A11Y-005, A11Y-006, CMP-002, CMP-010]
 sources:
   - name: "W3C WCAG 2.2"
     url: "https://www.w3.org/TR/WCAG22/"
-  - name: "W3C WCAG 2.2 Quick Reference"
-    url: "https://www.w3.org/WAI/WCAG22/quickref/"
-  - name: "W3C Understanding Focus Appearance"
-    url: "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html"
-updated: 2026-11-12
+  - name: "W3C Understanding Name, Role, Value"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+  - name: "W3C WAI-ARIA 1.2"
+    url: "https://www.w3.org/TR/wai-aria-1.2/"
+updated: 2026-11-15
 ---
 
 # A11Y-004 — Screen Reader Support
@@ -28,48 +28,53 @@ Screen-reader usability depends on names, roles, values, structure, order and ti
 
 ## MUST
 - A11Y-004.M1: Expose semantic headings, landmarks, labels, table headers and control states.
+- A11Y-004.M2: SC 4.1.2: name, role and value programmatically determinable and updated.
+- A11Y-004.M3: Announce dynamic status or result changes without unnecessary focus movement.
 
 ## SHOULD
-- A11Y-004.S1: Announce asynchronous status without moving focus unnecessarily.
+- A11Y-004.S1: Use live regions for async status; keep messages concise.
+- A11Y-004.S2: Test with at least one screen reader and keyboard only.
 
 ## AVOID
 - A11Y-004.A1: Do not use ARIA to recreate native semantics unnecessarily.
+- A11Y-004.A2: Do not announce every change or move focus on status updates.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Native element fits | Use native semantics |
-| Custom widget needed | Follow pattern and test |
-| Scan passes | Continue manual review |
+| Native semantics sufficient | Do not add ARIA |
+| Dynamic content changes | Announce via live region |
+| Complex widget | Use APG pattern and test |
 
 ## STATES
-- Default
-- Keyboard
-- Screen reader
-- Zoom/reflow
-- Error
-- High contrast/reduced motion
+- Initial load
+- Navigation
+- Form interaction
+- Async update
+- Error announcement
+- Modal/dialog
 
 ## EXAMPLE
-After filtering, announce result count and keep focus predictable.
+Good: "After filtering, announce '12 results' via polite live region." Bad: "Silent filter update with focus unchanged."
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Missing labels make controls announced as "button".
+- Dynamic updates are not announced.
+- Overuse of ARIA overrides native semantics.
 
 ## CHECK
 - [ ] Reading order correct?
 - [ ] Name/role/value?
 - [ ] Dynamic status announced?
+- [ ] Tested with screen reader?
 
 ## SOURCE NOTES
 - [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C Understanding Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C Understanding Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WAI-ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `VIS-006` — retrieve when the feature crosses into this topic.
-- `INT-004` — retrieve when the feature crosses into this topic.
+- `A11Y-005` — retrieve when the feature crosses into this topic.
+- `A11Y-006` — retrieve when the feature crosses into this topic.
 - `CMP-002` — retrieve when the feature crosses into this topic.
-- `CMP-005` — retrieve when the feature crosses into this topic.
+- `CMP-010` — retrieve when the feature crosses into this topic.

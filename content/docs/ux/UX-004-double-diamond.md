@@ -5,18 +5,18 @@ domain: ux
 group: M01
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [need_check, research, proposal]
 tags: [double-diamond, ux]
 applies_to: [web, mobile]
 related: [UX-002, UX-003, EVAL-007]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "Apple Human Interface Guidelines"
-    url: "https://developer.apple.com/design/human-interface-guidelines/"
-updated: 2026-11-12
+  - name: "Design Council — The Double Diamond"
+    url: "https://www.designcouncil.org.uk/resources/the-double-diamond/"
+  - name: "Nielsen Norman Group — Design Thinking 101"
+    url: "https://www.nngroup.com/articles/design-thinking/"
+updated: 2026-11-15
 ---
 
 # UX-004 — Double Diamond
@@ -54,9 +54,9 @@ Double Diamond separates discovering the right problem from developing the right
 Find invoice-total confusion, narrow the problem to tax breakdown clarity, test alternatives, then deliver the validated pattern.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Treating the four phases as a rigid waterfall prevents returning to discovery.
+- Using the diagram as a substitute for research or testing skips evidence.
+- Converging without recorded criteria makes the chosen direction indefensible.
 
 ## CHECK
 - [ ] Problem and solution spaces distinct?
@@ -64,8 +64,8 @@ Find invoice-total confusion, narrow the problem to tax breakdown clarity, test 
 - [ ] Feedback loops allowed?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
+- [Design Council — The Double Diamond](https://www.designcouncil.org.uk/resources/the-double-diamond/) — authoritative reference; this document paraphrases relevant guidance.
+- [Nielsen Norman Group — Design Thinking 101](https://www.nngroup.com/articles/design-thinking/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
 - `UX-002` — retrieve when the feature crosses into this topic.

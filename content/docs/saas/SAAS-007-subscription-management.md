@@ -5,20 +5,18 @@ domain: saas
 group: M08
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [research, proposal, critique, implement]
 tags: [subscription-management, saas]
 applies_to: [web, mobile]
-related: [UX-002, A11Y-001, CW-001, EVAL-008]
+related: [SAAS-006, CW-004, EVAL-006, INT-007]
 sources:
-  - name: "NN/g Dashboard Design"
-    url: "https://www.nngroup.com/articles/dashboard-design/"
-  - name: "NN/g Onboarding"
-    url: "https://www.nngroup.com/articles/onboarding/"
-  - name: "NN/g Form Design"
-    url: "https://www.nngroup.com/articles/web-form-design/"
-updated: 2026-11-12
+  - name: "FTC Click-to-Cancel Rule"
+    url: "https://www.ftc.gov/news-events/news/press-releases/2024/10/federal-trade-commission-announces-final-click-cancel-rule-making-it-easier-consumers-end-recurring"
+  - name: "Deceptive Patterns (Brignull)"
+    url: "https://www.deceptive.design/"
+updated: 2026-11-15
 ---
 
 # SAAS-007 — Subscription Management
@@ -38,25 +36,25 @@ Subscription management clarifies entitlement, renewal, changes and cancellation
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Decision support | Prioritize metric/action |
-| Setup incomplete | Offer minimum next step |
-| High-risk billing action | Disclose consequence |
+| Plan change | State effective date and access |
+| Cancellation | Make discoverable, no dark pattern |
+| Renewal | Notify before charge |
 
 ## STATES
-- First use
-- Populated
-- Filtered empty
-- No permission
-- Stale/loading
+- Active
+- Trial
+- Past due
+- Cancelled
+- Expired
 - Error
 
 ## EXAMPLE
-Cancel at period end on 30 June; access remains until then.
+Good: Cancel at period end on 30 June; access remains until then. Bad: Cancel button hidden in settings submenu.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Hidden cancellation traps users; make discoverable.
+- Ambiguous effective dates cause disputes; state exact date.
+- Usage/entitlement unclear; show current plan and usage.
 
 ## CHECK
 - [ ] Dates explicit?
@@ -64,12 +62,11 @@ Cancel at period end on 30 June; access remains until then.
 - [ ] Cancellation discoverable?
 
 ## SOURCE NOTES
-- [NN/g Dashboard Design](https://www.nngroup.com/articles/dashboard-design/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Onboarding](https://www.nngroup.com/articles/onboarding/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Form Design](https://www.nngroup.com/articles/web-form-design/) — authoritative reference; this document paraphrases relevant guidance.
+- [FTC Click-to-Cancel Rule](https://www.ftc.gov/news-events/news/press-releases/2024/10/federal-trade-commission-announces-final-click-cancel-rule-making-it-easier-consumers-end-recurring) — authoritative reference; this document paraphrases relevant guidance.
+- [Deceptive Patterns (Brignull)](https://www.deceptive.design/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-002` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `CW-001` — retrieve when the feature crosses into this topic.
-- `EVAL-008` — retrieve when the feature crosses into this topic.
+- `SAAS-006` — retrieve when the feature crosses into this topic.
+- `CW-004` — retrieve when the feature crosses into this topic.
+- `EVAL-006` — retrieve when the feature crosses into this topic.
+- `INT-007` — retrieve when the feature crosses into this topic.

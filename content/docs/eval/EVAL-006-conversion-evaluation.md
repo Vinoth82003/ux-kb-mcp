@@ -5,24 +5,18 @@ domain: evaluation
 group: M10
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, critique]
 tags: [conversion-evaluation, evaluation]
 applies_to: [web, mobile]
-related: [UX-005, A11Y-001, VIS-001, INT-001]
+related: [SAAS-006, SAAS-004, CW-002, EVAL-008]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Cognitive Load"
-    url: "https://www.nngroup.com/articles/minimize-cognitive-load/"
-  - name: "NN/g Fitts's Law"
-    url: "https://www.nngroup.com/articles/fitts-law/"
-  - name: "NN/g Hick's Law"
-    url: "https://www.nngroup.com/articles/hick-law/"
-  - name: "NN/g UX Metrics"
-    url: "https://www.nngroup.com/articles/ux-metrics/"
-updated: 2026-11-12
+  - name: "Deceptive Patterns (Brignull)"
+    url: "https://www.deceptive.design/"
+  - name: "FTC Dark Patterns Report"
+    url: "https://www.ftc.gov/news-events/news/press-releases/2022/09/ftc-report-shows-rise-sophisticated-dark-patterns-designed-trick-trap-consumers"
+updated: 2026-11-15
 ---
 
 # EVAL-006 — Conversion Evaluation
@@ -42,24 +36,24 @@ Conversion evaluation tests whether qualified users complete meaningful actions 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Observed failure | Record evidence and severity |
-| Potential risk | Validate with task test |
-| Metric movement | Inspect definition and guardrails |
+| Metric rises but guardrail falls | Investigate before celebrating |
+| Experiment risk | Stop on harm threshold |
+| Deceptive pattern temptation | Reject; redesign value proposition |
 
 ## STATES
-- Task start
-- Primary task
-- Error/recovery
-- Completion
-- Repeat use
+- Landing
+- Checkout
+- Confirmation
+- Post-purchase
+- Cancellation/refund
 
 ## EXAMPLE
-Valid subscriptions / eligible checkout starts plus refund rate.
+Good: Valid subscriptions / eligible checkout starts plus refund rate. Bad: Counting all page views as conversions.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Conversion lifts can come from coercion; audit copy and defaults.
+- Guardrails lag; define stop rules before launch.
+- Dark patterns may pass short-term metrics but increase refunds/support; track downstream.
 
 ## CHECK
 - [ ] Event/denominator defined?
@@ -67,14 +61,11 @@ Valid subscriptions / eligible checkout starts plus refund rate.
 - [ ] No deceptive pattern?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Cognitive Load](https://www.nngroup.com/articles/minimize-cognitive-load/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Fitts's Law](https://www.nngroup.com/articles/fitts-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Hick's Law](https://www.nngroup.com/articles/hick-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g UX Metrics](https://www.nngroup.com/articles/ux-metrics/) — authoritative reference; this document paraphrases relevant guidance.
+- [Deceptive Patterns (Brignull)](https://www.deceptive.design/) — authoritative reference; this document paraphrases relevant guidance.
+- [FTC Dark Patterns Report](https://www.ftc.gov/news-events/news/press-releases/2022/09/ftc-report-shows-rise-sophisticated-dark-patterns-designed-trick-trap-consumers) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-005` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `VIS-001` — retrieve when the feature crosses into this topic.
-- `INT-001` — retrieve when the feature crosses into this topic.
+- `SAAS-006` — retrieve when the feature crosses into this topic.
+- `SAAS-004` — retrieve when the feature crosses into this topic.
+- `CW-002` — retrieve when the feature crosses into this topic.
+- `EVAL-008` — retrieve when the feature crosses into this topic.

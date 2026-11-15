@@ -5,71 +5,77 @@ domain: interaction
 group: M04
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
-stages: [proposal, critique, implement]
+stages: [audit, proposal, critique, implement]
 tags: [microinteractions, interaction]
 applies_to: [web, mobile]
-related: [EVAL-001, A11Y-003, A11Y-006, INT-006]
+related: [INT-001, INT-005, INT-007, A11Y-003]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "W3C WCAG 2.2"
-    url: "https://www.w3.org/TR/WCAG22/"
-  - name: "GOV.UK Error Message"
-    url: "https://design-system.service.gov.uk/components/error-message/"
-updated: 2026-11-12
+  - name: "NN/g Microinteractions in User Experience"
+    url: "https://www.nngroup.com/articles/microinteractions/"
+  - name: "NN/g The Role of Animation and Motion in UX"
+    url: "https://www.nngroup.com/articles/animation-purpose-ux/"
+  - name: "W3C WCAG 2.2 Understanding Animation from Interactions"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+updated: 2026-11-15
 ---
 
 # INT-002 — Microinteractions
 
 ## Summary
-Microinteractions provide feedback around a single trigger, rule, response and loop.
+Microinteractions give immediate, single-purpose feedback around one trigger, rule and response; motion is a communication tool, not decoration.
 
 ## MUST
-- INT-002.M1: Animate only when motion clarifies cause, state or spatial continuity.
+- INT-002.M1: Animate only when motion clarifies cause, state change or spatial continuity.
+- INT-002.M2: Provide an equivalent non-motion cue (color, text, icon) for every animated state change.
+- INT-002.M3: Respect prefers-reduced-motion by removing or replacing non-essential motion.
 
 ## SHOULD
-- INT-002.S1: Respect reduced-motion preferences and avoid delaying task completion.
+- INT-002.S1: Keep routine feedback animations to 100–200 ms; reserve 200–300 ms for spatial transitions.
+- INT-002.S2: Avoid delaying task completion; animation must not block input or navigation.
 
 ## AVOID
 - INT-002.A1: Do not animate every hover, loading event or number by default.
+- INT-002.A2: Do not use motion as the only signal of success, error or state change.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Immediate/reversible | Update and offer undo if useful |
-| Asynchronous | Show honest progress |
-| Irreversible | Explain before commit |
+| Triggered feedback | Animate state change ≤200 ms |
+| Reduced motion requested | Remove motion, keep static cue |
+| Spatial transition | Use 200–300 ms directional motion |
+| Decorative delight | Omit unless it serves comprehension |
 
 ## STATES
 - Idle
 - Triggered
-- Pending
+- Animating
 - Success
 - Failure
-- Cancelled
+- Reduced motion
 
 ## EXAMPLE
-Bookmark state changes briefly and announces Saved.
+Good: "Bookmark icon fills and 'Saved' appears in 120 ms; with reduced motion, only 'Saved' appears." Bad: "Heart pulses for 1.2 s on every tap and blocks repeated taps."
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Decorative motion competes with task content and slows completion.
+- Missing reduced-motion handling excludes vestibular-sensitive users.
+- Motion-only feedback is invisible to screen-reader and reduced-motion users.
 
 ## CHECK
-- [ ] Motion communicates?
+- [ ] Motion communicates state?
 - [ ] Reduced motion respected?
 - [ ] Non-motion feedback exists?
+- [ ] Duration ≤300 ms for routine feedback?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
-- [GOV.UK Error Message](https://design-system.service.gov.uk/components/error-message/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g Microinteractions in User Experience](https://www.nngroup.com/articles/microinteractions/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g The Role of Animation and Motion in UX](https://www.nngroup.com/articles/animation-purpose-ux/) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WCAG 2.2 Understanding Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `EVAL-001` — retrieve when the feature crosses into this topic.
+- `INT-001` — retrieve when the feature crosses into this topic.
+- `INT-005` — retrieve when the feature crosses into this topic.
+- `INT-007` — retrieve when the feature crosses into this topic.
 - `A11Y-003` — retrieve when the feature crosses into this topic.
-- `A11Y-006` — retrieve when the feature crosses into this topic.
-- `INT-006` — retrieve when the feature crosses into this topic.

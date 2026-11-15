@@ -5,12 +5,12 @@ domain: design_systems
 group: M09
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [proposal, critique, implement]
 tags: [design-system-architecture, design-systems]
 applies_to: [web, mobile]
-related: [VIS-003, VIS-004, CMP-001, A11Y-001]
+related: [DS-002, DS-003, DS-006, CMP-001]
 sources:
   - name: "IBM Carbon Design System"
     url: "https://carbondesignsystem.com/"
@@ -18,50 +18,54 @@ sources:
     url: "https://m3.material.io/"
   - name: "Apple Human Interface Guidelines"
     url: "https://developer.apple.com/design/human-interface-guidelines/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # DS-001 — Design System Architecture
 
 ## Summary
-A design system connects principles, tokens, components, patterns, documentation and governance.
+A design system connects principles, tokens, components, patterns, documentation and governance into one evolvable product.
 
 ## MUST
-- DS-001.M1: Separate foundations, components and task-level patterns.
+- DS-001.M1: Separate foundations (tokens), components and task-level patterns into distinct layers with documented boundaries.
+- DS-001.M2: Define ownership, contribution, review, release and deprecation paths before publishing components.
 
 ## SHOULD
-- DS-001.S1: Define ownership, contribution, review, release and deprecation paths.
+- DS-001.S1: Version the system with semver and publish migration notes for breaking changes.
 
 ## AVOID
 - DS-001.A1: Do not treat a component catalogue without usage guidance as a complete system.
+- DS-001.A2: Do not let application teams fork components without a contribution path.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Repeated decision | Promote token/component |
-| Unique workflow | Keep as pattern |
-| Breaking change | Version and migration note |
+| Repeated decision across 2+ products | Promote to token/component |
+| Unique workflow or one-off | Keep as pattern/page-level solution |
+| Breaking API or visual change | Major version + migration note |
+| Deprecated component | Keep for one release cycle with warning |
 
 ## STATES
-- Default
-- Variants
-- States
-- Theme
-- Responsive
+- Foundations
+- Components
+- Patterns
+- Documentation
+- Governance
 - Deprecated
 
 ## EXAMPLE
-Date picker is component; invoice creation is a pattern.
+Good: "Date picker is a component; invoice creation flow is a pattern composing it." Bad: "A Figma component library with no code, docs or owner called a design system."
 
 ## FAILURE MODES
 - A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Systems without ownership decay into inconsistent forks.
+- Treating a catalogue as complete skips usage and accessibility guidance.
 
 ## CHECK
-- [ ] Layers/owners clear?
-- [ ] Contribution path exists?
+- [ ] Layers and owners clear?
+- [ ] Contribution and review path exists?
 - [ ] Pattern distinct from component?
+- [ ] Versioning and deprecation documented?
 
 ## SOURCE NOTES
 - [IBM Carbon Design System](https://carbondesignsystem.com/) — authoritative reference; this document paraphrases relevant guidance.
@@ -69,7 +73,7 @@ Date picker is component; invoice creation is a pattern.
 - [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `VIS-003` — retrieve when the feature crosses into this topic.
-- `VIS-004` — retrieve when the feature crosses into this topic.
+- `DS-002` — retrieve when the feature crosses into this topic.
+- `DS-003` — retrieve when the feature crosses into this topic.
+- `DS-006` — retrieve when the feature crosses into this topic.
 - `CMP-001` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.

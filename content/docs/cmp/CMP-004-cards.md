@@ -5,12 +5,12 @@ domain: components
 group: M03
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: core
-stages: [proposal, critique, implement]
+stages: [audit, proposal, critique, implement]
 tags: [cards, components]
 applies_to: [web, mobile]
-related: [A11Y-003, A11Y-005, INT-004, RSP-005]
+related: [VIS-004, VIS-008, A11Y-005, DS-004]
 sources:
   - name: "Material Design 3"
     url: "https://m3.material.io/"
@@ -18,7 +18,7 @@ sources:
     url: "https://carbondesignsystem.com/"
   - name: "Apple Human Interface Guidelines"
     url: "https://developer.apple.com/design/human-interface-guidelines/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # CMP-004 — Cards
@@ -28,42 +28,48 @@ Cards group a coherent unit of content or action; they are not a default layout 
 
 ## MUST
 - CMP-004.M1: Use a card only when content has a meaningful boundary or independent scan unit.
+- CMP-004.M2: If the whole card is clickable, provide one dominant destination and an accessible name; avoid competing nested actions.
+- CMP-004.M3: Preserve semantic structure (heading, list, etc.) inside the card; do not rely on card chrome alone.
 
 ## SHOULD
-- CMP-004.S1: Make a whole card clickable only with one dominant destination and no competing nested actions.
+- CMP-004.S1: Keep nested actions clearly separated and keyboard-focusable; provide hover/focus affordance.
+- CMP-004.S2: Use consistent spacing and elevation tokens from the design system.
 
 ## AVOID
 - CMP-004.A1: Do not put every paragraph in a card or use grids without content rationale.
+- CMP-004.A2: Do not nest multiple competing click targets in one card.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Simple task | Use least complex semantic control |
-| Custom behavior | Document keyboard/focus model |
-| Mobile constraint | Preserve target size and labels |
+| Coherent unit | Card with heading + summary + action |
+| Multiple actions | Card container + separate action buttons |
+| List of records | Table/list, not card grid |
+| Marketing grid | Only when content relationships justify |
 
 ## STATES
 - Default
 - Hover
 - Focus
-- Selected/active
-- Disabled
+- Selected
 - Loading
+- Empty
 - Error
 - Responsive
 
 ## EXAMPLE
-Project card groups name, status, owner and one Open action.
+Good: Project card groups name, status, owner and one Open action. Bad: every paragraph wrapped in a card in a three-column grid.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Card grids without content rationale create visual noise and scanning cost.
+- Whole-card clicks with nested actions cause accidental navigation.
+- Missing semantics make card content hard to navigate for assistive tech.
 
 ## CHECK
 - [ ] Boundary signals real group?
 - [ ] Click target unambiguous?
 - [ ] Mobile order logical?
+- [ ] Semantics preserved?
 
 ## SOURCE NOTES
 - [Material Design 3](https://m3.material.io/) — authoritative reference; this document paraphrases relevant guidance.
@@ -71,7 +77,7 @@ Project card groups name, status, owner and one Open action.
 - [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `A11Y-003` — retrieve when the feature crosses into this topic.
+- `VIS-004` — retrieve when the feature crosses into this topic.
+- `VIS-008` — retrieve when the feature crosses into this topic.
 - `A11Y-005` — retrieve when the feature crosses into this topic.
-- `INT-004` — retrieve when the feature crosses into this topic.
-- `RSP-005` — retrieve when the feature crosses into this topic.
+- `DS-004` — retrieve when the feature crosses into this topic.

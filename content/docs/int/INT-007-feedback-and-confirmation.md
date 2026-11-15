@@ -5,71 +5,77 @@ domain: interaction
 group: M04
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
-stages: [proposal, critique, implement]
+stages: [audit, proposal, critique, implement]
 tags: [feedback-and-confirmation, interaction]
 applies_to: [web, mobile]
-related: [EVAL-001, A11Y-003, A11Y-006, INT-006]
+related: [INT-001, INT-005, INT-006, CMP-010]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "W3C WCAG 2.2"
-    url: "https://www.w3.org/TR/WCAG22/"
-  - name: "GOV.UK Error Message"
-    url: "https://design-system.service.gov.uk/components/error-message/"
-updated: 2026-11-12
+  - name: "NN/g Confirmation Dialog"
+    url: "https://www.nngroup.com/articles/confirmation-dialog/"
+  - name: "NN/g Visibility of System Status"
+    url: "https://www.nngroup.com/articles/visibility-system-status/"
+  - name: "W3C WCAG 2.2 Understanding Status Messages"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+updated: 2026-11-15
 ---
 
 # INT-007 — Feedback and Confirmation
 
 ## Summary
-Feedback closes the loop so users know whether an action was accepted, completed or rejected.
+Feedback closes the loop so users know whether an action was accepted, processing or rejected; match the message to backend truth.
 
 ## MUST
 - INT-007.M1: Acknowledge state-changing actions and distinguish queued, processing and completed.
+- INT-007.M2: Show success only after backend confirmation; otherwise show processing or queued.
+- INT-007.M3: Make the feedback perceivable (visual plus, where useful, assistive announcement).
 
 ## SHOULD
 - INT-007.S1: Use undo for reversible low-risk actions when safer than confirmation.
+- INT-007.S2: Show feedback within 100 ms and keep it visible long enough to read (≥3 s for toasts).
 
 ## AVOID
 - INT-007.A1: Do not show success before backend confirmation.
+- INT-007.A2: Do not overuse confirmation dialogs for reversible, low-risk actions.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Immediate/reversible | Update and offer undo if useful |
+| Immediate and reversible | Update and offer undo (5–10 s) |
 | Asynchronous | Show honest progress |
 | Irreversible | Explain before commit |
+| High risk | Require explicit confirmation |
 
 ## STATES
 - Idle
-- Triggered
-- Pending
+- Queued
+- Processing
 - Success
 - Failure
-- Cancelled
+- Reverted
 
 ## EXAMPLE
-After archive, show status and Undo only if restoration truly works.
+Good: "After archive, status reads 'Archived' with Undo for 8 s; Undo truly restores." Bad: "Toast says 'Done' before save completes, with no undo."
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Premature success messages hide failures and break trust.
+- Missing undo forces heavy confirmation dialogs for trivial actions.
+- Feedback that disappears too quickly is missed by slow readers and screen readers.
 
 ## CHECK
 - [ ] Feedback matches backend?
 - [ ] Reversibility considered?
 - [ ] Confirmation proportional?
+- [ ] Feedback visible ≥3 s?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
-- [GOV.UK Error Message](https://design-system.service.gov.uk/components/error-message/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g Confirmation Dialog](https://www.nngroup.com/articles/confirmation-dialog/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g Visibility of System Status](https://www.nngroup.com/articles/visibility-system-status/) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WCAG 2.2 Understanding Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `EVAL-001` — retrieve when the feature crosses into this topic.
-- `A11Y-003` — retrieve when the feature crosses into this topic.
-- `A11Y-006` — retrieve when the feature crosses into this topic.
+- `INT-001` — retrieve when the feature crosses into this topic.
+- `INT-005` — retrieve when the feature crosses into this topic.
 - `INT-006` — retrieve when the feature crosses into this topic.
+- `CMP-010` — retrieve when the feature crosses into this topic.

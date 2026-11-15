@@ -5,18 +5,18 @@ domain: ux
 group: M01
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [need_check, research, proposal]
 tags: [design-thinking, ux]
 applies_to: [web, mobile]
 related: [UX-002, UX-004, EVAL-007]
 sources:
-  - name: "Apple Human Interface Guidelines"
-    url: "https://developer.apple.com/design/human-interface-guidelines/"
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-updated: 2026-11-12
+  - name: "Nielsen Norman Group — Design Thinking 101"
+    url: "https://www.nngroup.com/articles/design-thinking/"
+  - name: "Stanford d.school — Design Thinking Bootleg"
+    url: "https://dschool.stanford.edu/tools/design-thinking-bootleg"
+updated: 2026-11-15
 ---
 
 # UX-003 — Design Thinking
@@ -56,9 +56,9 @@ Design thinking is iterative problem-framing and experimentation; its purpose is
 Test a two-step approval model with a paper prototype before polishing the complete workflow.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Workshops that produce no testable output consume time without reducing uncertainty.
+- Idea volume is not validation; concepts must be prototyped and tested.
+- Skipping reframe after invalidating evidence locks the team into the wrong problem.
 
 ## CHECK
 - [ ] Problem evidence-backed?
@@ -66,8 +66,8 @@ Test a two-step approval model with a paper prototype before polishing the compl
 - [ ] Prototype tests a named assumption?
 
 ## SOURCE NOTES
-- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
+- [Nielsen Norman Group — Design Thinking 101](https://www.nngroup.com/articles/design-thinking/) — authoritative reference; this document paraphrases relevant guidance.
+- [Stanford d.school — Design Thinking Bootleg](https://dschool.stanford.edu/tools/design-thinking-bootleg) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
 - `UX-002` — retrieve when the feature crosses into this topic.

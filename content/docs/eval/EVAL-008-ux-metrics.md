@@ -5,24 +5,18 @@ domain: evaluation
 group: M10
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, critique]
 tags: [ux-metrics, evaluation]
 applies_to: [web, mobile]
-related: [UX-005, A11Y-001, VIS-001, INT-001]
+related: [EVAL-006, SAAS-003, UX-005, EVAL-007]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Cognitive Load"
-    url: "https://www.nngroup.com/articles/minimize-cognitive-load/"
-  - name: "NN/g Fitts's Law"
-    url: "https://www.nngroup.com/articles/fitts-law/"
-  - name: "NN/g Hick's Law"
-    url: "https://www.nngroup.com/articles/hick-law/"
   - name: "NN/g UX Metrics"
     url: "https://www.nngroup.com/articles/ux-metrics/"
-updated: 2026-11-12
+  - name: "Google HEART Framework"
+    url: "https://research.google/pubs/pub36299/"
+updated: 2026-11-15
 ---
 
 # EVAL-008 — UX Metrics
@@ -42,24 +36,24 @@ UX metrics quantify task outcomes; select measures tied to user and business goa
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Observed failure | Record evidence and severity |
-| Potential risk | Validate with task test |
-| Metric movement | Inspect definition and guardrails |
+| Metric definition unclear | Pause reporting |
+| Proxy metric only | Label as proxy and add guardrail |
+| Qualitative conflict | Investigate before changing design |
 
 ## STATES
-- Task start
-- Primary task
-- Error/recovery
-- Completion
-- Repeat use
+- Baseline
+- Experiment
+- Segmentation
+- Guardrail review
+- Post-launch
 
 ## EXAMPLE
-Task success = unassisted completions / participants attempting task.
+Good: Task success = unassisted completions / participants attempting task. Bad: "Engagement up 20%" with no definition.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Vanity metrics can mask task failure; pair with outcome metrics.
+- Small samples create noise; state confidence and period.
+- Metric gaming follows incentives; review guardrails regularly.
 
 ## CHECK
 - [ ] Formula/denominator stated?
@@ -67,14 +61,11 @@ Task success = unassisted completions / participants attempting task.
 - [ ] Guardrails and qualitative evidence?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Cognitive Load](https://www.nngroup.com/articles/minimize-cognitive-load/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Fitts's Law](https://www.nngroup.com/articles/fitts-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Hick's Law](https://www.nngroup.com/articles/hick-law/) — authoritative reference; this document paraphrases relevant guidance.
 - [NN/g UX Metrics](https://www.nngroup.com/articles/ux-metrics/) — authoritative reference; this document paraphrases relevant guidance.
+- [Google HEART Framework](https://research.google/pubs/pub36299/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
+- `EVAL-006` — retrieve when the feature crosses into this topic.
+- `SAAS-003` — retrieve when the feature crosses into this topic.
 - `UX-005` — retrieve when the feature crosses into this topic.
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `VIS-001` — retrieve when the feature crosses into this topic.
-- `INT-001` — retrieve when the feature crosses into this topic.
+- `EVAL-007` — retrieve when the feature crosses into this topic.

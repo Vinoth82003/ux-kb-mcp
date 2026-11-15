@@ -5,71 +5,79 @@ domain: content_writing
 group: M07
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [proposal, critique, implement]
 tags: [ux-writing, content-writing]
 applies_to: [web, mobile]
-related: [A11Y-007, A11Y-005, INT-006, CMP-002]
+related: [CW-002, CW-003, CW-004, CW-005, A11Y-007, CMP-002]
 sources:
-  - name: "NN/g Writing for the Web"
+  - name: "NN/g How Users Read on the Web"
     url: "https://www.nngroup.com/articles/how-users-read-on-the-web/"
-  - name: "NN/g Form Design"
-    url: "https://www.nngroup.com/articles/web-form-design/"
-  - name: "GOV.UK Error Message"
-    url: "https://design-system.service.gov.uk/components/error-message/"
-updated: 2026-11-12
+  - name: "GOV.UK Content Design"
+    url: "https://www.gov.uk/guidance/content-design"
+  - name: "Microsoft Writing Style Guide"
+    url: "https://learn.microsoft.com/en-us/style-guide/welcome/"
+updated: 2026-11-15
 ---
 
 # CW-001 — UX Writing
 
 ## Summary
-UX writing helps users understand tasks, decisions and recovery through concise language.
+UX writing helps users understand tasks, decisions and recovery through concise, consistent language.
 
 ## MUST
-- CW-001.M1: Use user goals and outcomes rather than internal system names.
+- CW-001.M1: Name the user's task or outcome in the user's vocabulary; avoid internal system names.
+- CW-001.M2: Use one canonical term per concept across labels, messages, docs and support.
 
 ## SHOULD
-- CW-001.S1: Keep terminology consistent for the same object/action.
+- CW-001.S1: Lead with the action or outcome; put qualifying detail after.
+- CW-001.S2: Use sentence case and active voice; keep sentences under ~20 words.
 
 ## AVOID
-- CW-001.A1: Avoid promotional filler and cleverness that hides meaning.
+- CW-001.A1: Avoid promotional filler, cleverness, jargon and unexplained abbreviations.
+- CW-001.A2: Avoid ambiguous pronouns and generic link text such as "click here" or "learn more".
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Before action | Explain requirement/consequence |
-| During entry | Keep guidance adjacent |
-| After error | Explain fix and preserve work |
+| Task naming | Use verb + object, e.g. "Download invoice" |
+| Repeated concept | Choose one canonical term and reuse it |
+| Technical term | Define on first use in user language |
+| Tone | Match the user's state, not brand voice |
 
 ## STATES
 - Default
-- Required/optional
-- Validation
-- Success
+- Scanning
+- Decision point
+- Error/recovery
 - Empty
 - Localized
 
 ## EXAMPLE
-Download invoice is clearer than Get it.
+Good: "Download invoice (PDF, 240 KB)". Bad: "Get it".
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Jargon passes review but blocks task completion.
+- Inconsistent terms make search and help fail.
+- Clever copy hides the action behind wordplay.
+- Overlong copy breaks scanning and localization.
 
 ## CHECK
 - [ ] Task named?
 - [ ] Terminology consistent?
 - [ ] Audience language appropriate?
+- [ ] Links descriptive?
 
 ## SOURCE NOTES
-- [NN/g Writing for the Web](https://www.nngroup.com/articles/how-users-read-on-the-web/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Form Design](https://www.nngroup.com/articles/web-form-design/) — authoritative reference; this document paraphrases relevant guidance.
-- [GOV.UK Error Message](https://design-system.service.gov.uk/components/error-message/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g How Users Read on the Web](https://www.nngroup.com/articles/how-users-read-on-the-web/) — authoritative reference; this document paraphrases relevant guidance.
+- [GOV.UK Content Design](https://www.gov.uk/guidance/content-design) — authoritative reference; this document paraphrases relevant guidance.
+- [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
+- `CW-002` — retrieve when the feature crosses into this topic.
+- `CW-003` — retrieve when the feature crosses into this topic.
+- `CW-004` — retrieve when the feature crosses into this topic.
+- `CW-005` — retrieve when the feature crosses into this topic.
 - `A11Y-007` — retrieve when the feature crosses into this topic.
-- `A11Y-005` — retrieve when the feature crosses into this topic.
-- `INT-006` — retrieve when the feature crosses into this topic.
 - `CMP-002` — retrieve when the feature crosses into this topic.

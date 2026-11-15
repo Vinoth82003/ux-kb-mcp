@@ -5,12 +5,12 @@ domain: components
 group: M03
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: core
-stages: [proposal, critique, implement]
+stages: [audit, proposal, critique, implement]
 tags: [buttons, components]
 applies_to: [web, mobile]
-related: [A11Y-003, A11Y-005, INT-004, RSP-005]
+related: [A11Y-002, A11Y-003, A11Y-005, EVAL-003]
 sources:
   - name: "Apple HIG Buttons"
     url: "https://developer.apple.com/design/human-interface-guidelines/buttons"
@@ -18,52 +18,60 @@ sources:
     url: "https://www.w3.org/TR/WCAG22/"
   - name: "GOV.UK Design System Components"
     url: "https://design-system.service.gov.uk/components/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # CMP-001 — Buttons
 
 ## Summary
-A button triggers an action; label and hierarchy must predict its consequence.
+A button triggers an action; its label and visual hierarchy must predict its consequence and distinguish it from navigation.
 
 ## MUST
-- CMP-001.M1: Use verb + object labels such as “Save changes”; keep prominent actions to one or two per view.
+- CMP-001.M1: Use a verb + object label such as “Save changes”; keep prominent actions to one or two per view.
+- CMP-001.M2: Use native `<button>` for actions and `<a>` only for navigation.
+- CMP-001.M3: Give icon-only buttons an accessible name (visible text or aria-label).
+- CMP-001.M4: Provide a visible focus indicator and keyboard activation via Enter/Space.
 
 ## SHOULD
-- CMP-001.S1: Use a lower-emphasis style for secondary actions and explicit consequence for destructive actions.
+- CMP-001.S1: Use a lower-emphasis style for secondary actions and require explicit consequence or confirmation for destructive actions.
+- CMP-001.S2: Meet target size: at least 24×24 CSS px (WCAG 2.5.8) and aim for 44–48 px for primary controls.
 
 ## AVOID
-- CMP-001.A1: Never leave icon-only controls unnamed or use generic “OK” when the outcome can be named.
+- CMP-001.A1: Do not use generic “OK”/“Submit” when the outcome can be named; never leave icon-only controls unnamed.
+- CMP-001.A2: Do not use buttons for navigation or links for actions.
 
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Simple task | Use least complex semantic control |
-| Custom behavior | Document keyboard/focus model |
-| Mobile constraint | Preserve target size and labels |
+| Primary action | Single high-emphasis button per view |
+| Secondary action | Lower-emphasis (outline/ghost) button |
+| Destructive action | Explicit verb plus confirmation or undo |
+| Icon-only control | Accessible name plus tooltip |
 
 ## STATES
 - Default
 - Hover
-- Focus
-- Selected/active
+- Focus visible
+- Active/pressed
 - Disabled
 - Loading
 - Error
 - Responsive
 
 ## EXAMPLE
-[Cancel] [Save changes] is clearer than [OK] [Submit].
+Good: “[Cancel] [Save changes]” with Save as the single primary action. Bad: “[OK] [Submit]” or an icon-only trash button with no accessible name.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Generic labels hide the consequence until after activation.
+- Icon-only controls are unnamed for screen-reader users.
+- Undersized or clustered targets cause misactivation on touch.
 
 ## CHECK
-- [ ] Outcome clear?
+- [ ] Label names the outcome?
 - [ ] Primary hierarchy singular?
-- [ ] Focus/loading states designed?
+- [ ] Native element used?
+- [ ] Accessible name present?
+- [ ] Focus visible?
 - [ ] Target size checked?
 
 ## SOURCE NOTES
@@ -72,7 +80,7 @@ A button triggers an action; label and hierarchy must predict its consequence.
 - [GOV.UK Design System Components](https://design-system.service.gov.uk/components/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
+- `A11Y-002` — retrieve when the feature crosses into this topic.
 - `A11Y-003` — retrieve when the feature crosses into this topic.
 - `A11Y-005` — retrieve when the feature crosses into this topic.
-- `INT-004` — retrieve when the feature crosses into this topic.
-- `RSP-005` — retrieve when the feature crosses into this topic.
+- `EVAL-003` — retrieve when the feature crosses into this topic.

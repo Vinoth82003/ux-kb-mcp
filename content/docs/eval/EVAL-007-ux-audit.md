@@ -5,24 +5,18 @@ domain: evaluation
 group: M10
 type: principle
 status: reviewed
-rev: 1
+rev: 2
 priority: core
 stages: [audit, critique]
 tags: [ux-audit, evaluation]
 applies_to: [web, mobile]
-related: [UX-005, A11Y-001, VIS-001, INT-001]
+related: [EVAL-001, EVAL-008, A11Y-001, UX-005]
 sources:
-  - name: "Nielsen Norman Group 10 Usability Heuristics"
-    url: "https://www.nngroup.com/articles/ten-usability-heuristics/"
-  - name: "NN/g Cognitive Load"
-    url: "https://www.nngroup.com/articles/minimize-cognitive-load/"
-  - name: "NN/g Fitts's Law"
-    url: "https://www.nngroup.com/articles/fitts-law/"
-  - name: "NN/g Hick's Law"
-    url: "https://www.nngroup.com/articles/hick-law/"
-  - name: "NN/g UX Metrics"
-    url: "https://www.nngroup.com/articles/ux-metrics/"
-updated: 2026-11-12
+  - name: "NN/g How to Conduct a Heuristic Evaluation"
+    url: "https://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/"
+  - name: "W3C WCAG 2.2"
+    url: "https://www.w3.org/TR/WCAG22/"
+updated: 2026-11-15
 ---
 
 # EVAL-007 — UX Audit
@@ -42,24 +36,24 @@ A UX audit combines heuristic inspection, accessibility, analytics and user evid
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Observed failure | Record evidence and severity |
-| Potential risk | Validate with task test |
-| Metric movement | Inspect definition and guardrails |
+| Observed blocker | Block release |
+| Inferred risk | Add task test |
+| Untested hypothesis | Label as assumption |
 
 ## STATES
-- Task start
-- Primary task
-- Error/recovery
-- Completion
-- Repeat use
+- Scope definition
+- Heuristic inspection
+- Accessibility check
+- Analytics review
+- Prioritization
 
 ## EXAMPLE
-Audit sign-up through first value, not only the form.
+Good: Audit sign-up through first value, not only the form. Bad: Score homepage 8/10 with no scope or evidence.
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Audits that skip error/permission states miss critical failures; include them.
+- Severity inflation reduces trust; calibrate with impact and reach.
+- Mixing observation with inference hides uncertainty; label each.
 
 ## CHECK
 - [ ] Scope/journeys explicit?
@@ -67,14 +61,11 @@ Audit sign-up through first value, not only the form.
 - [ ] Priority includes impact/reach?
 
 ## SOURCE NOTES
-- [Nielsen Norman Group 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Cognitive Load](https://www.nngroup.com/articles/minimize-cognitive-load/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Fitts's Law](https://www.nngroup.com/articles/fitts-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g Hick's Law](https://www.nngroup.com/articles/hick-law/) — authoritative reference; this document paraphrases relevant guidance.
-- [NN/g UX Metrics](https://www.nngroup.com/articles/ux-metrics/) — authoritative reference; this document paraphrases relevant guidance.
+- [NN/g How to Conduct a Heuristic Evaluation](https://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/) — authoritative reference; this document paraphrases relevant guidance.
+- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `UX-005` — retrieve when the feature crosses into this topic.
+- `EVAL-001` — retrieve when the feature crosses into this topic.
+- `EVAL-008` — retrieve when the feature crosses into this topic.
 - `A11Y-001` — retrieve when the feature crosses into this topic.
-- `VIS-001` — retrieve when the feature crosses into this topic.
-- `INT-001` — retrieve when the feature crosses into this topic.
+- `UX-005` — retrieve when the feature crosses into this topic.

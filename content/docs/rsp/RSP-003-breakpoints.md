@@ -5,26 +5,26 @@ domain: responsive
 group: M05
 type: pattern
 status: reviewed
-rev: 1
+rev: 2
 priority: standard
 stages: [proposal, critique, implement]
 tags: [breakpoints, responsive]
 applies_to: [web, mobile]
-related: [A11Y-001, A11Y-003, VIS-004, CMP-006]
+related: [RSP-001, RSP-004, VIS-004, A11Y-001]
 sources:
   - name: "W3C WCAG 2.2"
     url: "https://www.w3.org/TR/WCAG22/"
+  - name: "MDN Media queries"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries"
   - name: "Apple HIG Layout"
     url: "https://developer.apple.com/design/human-interface-guidelines/layout"
-  - name: "Apple Human Interface Guidelines"
-    url: "https://developer.apple.com/design/human-interface-guidelines/"
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # RSP-003 — Breakpoints
 
 ## Summary
-Breakpoints are layout transitions chosen from component constraints and content behavior.
+Breakpoints are layout transitions chosen from component constraints and content behavior, not device widths.
 
 ## MUST
 - RSP-003.M1: Document each breakpoint token and the layout change it triggers.
@@ -38,24 +38,27 @@ Breakpoints are layout transitions chosen from component constraints and content
 ## DECIDE
 | Situation | Decision |
 |---|---|
-| Layout fits | Keep fluid |
-| Content collides | Add breakpoint |
-| Interaction changes | Test adaptive pattern |
+| Content collides | Add breakpoint at failure point |
+| Layout fits | Keep fluid; no breakpoint |
+| Long localized labels | Re-test boundaries |
+| Zoom/reflow | Verify at 320 CSS px |
 
 ## STATES
-- Narrow
-- Wide
-- Zoom/reflow
+- Below breakpoint
+- At breakpoint
+- Above breakpoint
+- Zoomed
+- Localized content
 - Orientation
-- Touch/keyboard
 
 ## EXAMPLE
-At a project-specific width, filters move to a drawer to preserve table width.
+Good: "At 640 CSS px filters move to a drawer to preserve table width." Bad: "Breakpoints at 375/768/1024 because those are popular phones."
 
 ## FAILURE MODES
-- A polished screen can still fail the task; validate against the defined user outcome.
-- A heuristic is not a WCAG success criterion unless explicitly identified as one.
-- If project context conflicts with this guidance, record the conflict and obtain an explicit decision.
+- Device-width breakpoints fail on in-between sizes.
+- Unjustified breakpoints fragment CSS and testing.
+- Long labels overflow just below a breakpoint.
+- Zoom reveals missed boundary behavior.
 
 ## CHECK
 - [ ] Every breakpoint justified?
@@ -64,11 +67,11 @@ At a project-specific width, filters move to a drawer to preserve table width.
 
 ## SOURCE NOTES
 - [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) — authoritative reference; this document paraphrases relevant guidance.
+- [MDN Media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) — authoritative reference; this document paraphrases relevant guidance.
 - [Apple HIG Layout](https://developer.apple.com/design/human-interface-guidelines/layout) — authoritative reference; this document paraphrases relevant guidance.
-- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — authoritative reference; this document paraphrases relevant guidance.
 
 ## RELATED DOCUMENTS
-- `A11Y-001` — retrieve when the feature crosses into this topic.
-- `A11Y-003` — retrieve when the feature crosses into this topic.
+- `RSP-001` — retrieve when the feature crosses into this topic.
+- `RSP-004` — retrieve when the feature crosses into this topic.
 - `VIS-004` — retrieve when the feature crosses into this topic.
-- `CMP-006` — retrieve when the feature crosses into this topic.
+- `A11Y-001` — retrieve when the feature crosses into this topic.
