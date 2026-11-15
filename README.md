@@ -231,7 +231,7 @@ Surfaces:
 
 - `/` — public landing page
 - `/api/healthz` — health and KB version
-- `/api/mcp` — Streamable HTTP MCP (Bearer API key, rate limited in Postgres)
+- `/api/mcp` — Streamable HTTP MCP (Bearer API key or OAuth access token, rate limited in Postgres)
 - `/signin` — GitHub OAuth; any GitHub user can sign in, allowlisted logins become admins
 - `/dashboard` — your keys, usage, and releases (requires sign-in)
 - `/dashboard/users`, `/dashboard/gaps` — admin only
@@ -251,6 +251,32 @@ HTTPS is provided by Vercel in production (HSTS + security headers configured in
    claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \
      --header "Authorization: Bearer <your-key>"
    ```
+
+### OAuth for MCP connectors
+
+Connectors that cannot send a static header (Claude.ai, ChatGPT, and other MCP
+clients) can authorize through OAuth 2.1 instead. The endpoint advertises
+RFC 9728 protected-resource metadata in its `401` challenge, so a client
+discovers everything from `https://<host>/api/mcp` alone:
+
+| Endpoint | Purpose |
+|---|---|
+| `/.well-known/oauth-protected-resource` | Resource metadata (RFC 9728) |
+| `/.well-known/oauth-authorization-server` | Authorization-server metadata (RFC 8414) |
+| `/oauth/register` | Dynamic client registration (RFC 7591, IP limited) |
+| `/oauth/authorize` | GitHub sign-in + consent screen |
+| `/oauth/token` | `authorization_code` and `refresh_token` grants |
+| `/oauth/revoke` | Token revocation (RFC 7009) |
+
+Authorization requires PKCE (`S256`), then an explicit **Allow** from the
+signed-in user. Access tokens last one hour; refresh tokens rotate on every use.
+Each client/user pair is backed by one hidden `OAuth · <client>` key, so
+sessions, usage history, and per-key quotas stay coherent. Redirect URIs must be
+HTTPS, or loopback HTTP for native clients. Rejecting everything else keeps an
+open registration endpoint from becoming an open redirect.
+
+Issuer URLs are derived from `AUTH_URL`, then the request's forwarded host, then
+`NEXTAUTH_URL`. Set `AUTH_URL` in production if you serve more than one domain.
 
 Quotas are applied per key:
 

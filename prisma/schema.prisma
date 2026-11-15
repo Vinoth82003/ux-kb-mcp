@@ -96,8 +96,11 @@ model User {
   createdAt   DateTime  @default(now())
   lastLoginAt DateTime?
 
-  apiKeys   ApiKey[]
-  auditLogs AuditLog[]
+  apiKeys    ApiKey[]
+  auditLogs  AuditLog[]
+  oauthCodes OAuthAuthorizationCode[]
+  oauthGrants OAuthGrant[]
+  oauthTokens OAuthAccessToken[]
 
   @@index([role])
 }
@@ -122,6 +125,7 @@ model ApiKey {
 
   sessions Session[]
   usage    UsageLog[]
+  oauthGrant OAuthGrant?
 
   @@index([ownerId, revokedAt])
 }
@@ -205,4 +209,92 @@ model RateLimitWindow {
   count       Int      @default(0)
   @@id([keyId, kind, windowStart])
   @@index([windowStart])
+}
+
+// --- MCP OAuth 2.1 ---------------------------------------------------------
+//
+// The MCP endpoint accepts two credential types: long-lived API keys
+// ("uxkb_") and short-lived OAuth access tokens ("uxko_"). OAuth clients are
+// registered dynamically (RFC 7591); each client/user pair is backed by a
+// single hidden API key so sessions, usage, and rate limits keep working.
+
+model OAuthClient {
+  id                      String   @id @default(cuid())
+  clientId                String   @unique
+  clientSecretHash        String?
+  name                    String
+  redirectUris            String[]
+  grantTypes              String[] @default(["authorization_code", "refresh_token"])
+  responseTypes           String[] @default(["code"])
+  scopes                  String[] @default(["mcp:read"])
+  tokenEndpointAuthMethod String   @default("none") // none | client_secret_post | client_secret_basic
+  createdByIp             String?
+  createdAt               DateTime @default(now())
+  lastUsedAt              DateTime?
+
+  codes  OAuthAuthorizationCode[]
+  grants OAuthGrant[]
+  tokens OAuthAccessToken[]
+
+  @@index([createdByIp, createdAt])
+}
+
+model OAuthAuthorizationCode {
+  id                  String   @id @default(cuid())
+  codeHash            String   @unique
+  clientId            String
+  client              OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  redirectUri         String
+  scopes              String[]
+  codeChallenge       String
+  codeChallengeMethod String   @default("S256")
+  resource            String?
+  expiresAt           DateTime
+  usedAt              DateTime?
+  createdAt           DateTime @default(now())
+
+  @@index([expiresAt])
+  @@index([userId])
+}
+
+model OAuthGrant {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiKeyId  String   @unique
+  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  scopes    String[] @default(["mcp:read"])
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+
+  tokens OAuthAccessToken[]
+
+  @@unique([clientId, userId])
+  @@index([userId])
+}
+
+model OAuthAccessToken {
+  id               String   @id @default(cuid())
+  accessTokenHash  String   @unique
+  refreshTokenHash String   @unique
+  grantId          String
+  grant            OAuthGrant @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  clientId         String
+  client           OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopes           String[]
+  expiresAt        DateTime
+  refreshExpiresAt DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime @default(now())
+  lastUsedAt       DateTime?
+
+  @@index([grantId, createdAt])
+  @@index([expiresAt])
+  @@index([userId])
 }

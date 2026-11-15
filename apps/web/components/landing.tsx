@@ -21,6 +21,63 @@ claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \\
 type Tab = "stdio" | "desktop" | "http";
 type ThemeMode = "system" | "light" | "dark";
 type ComparisonView = "both" | "before" | "after";
+type RevealVariant = "up" | "left" | "scale" | "rotate" | "fade" | "hero-mascot";
+
+type MascotProps = {
+  src: string;
+  alt?: string;
+  width: number;
+  height: number;
+  className?: string;
+  reveal?: RevealVariant;
+  idle?: "float" | "wave" | "nudge";
+  celebrating?: boolean;
+  loading?: "eager" | "lazy";
+  children?: React.ReactNode;
+};
+
+/**
+ * One mascot slot. The outer span owns scroll-reveal transforms; the inner img
+ * owns continuous/gesture animation, so the two never fight over `transform`.
+ */
+function Mascot({
+  src,
+  alt = "",
+  width,
+  height,
+  className = "",
+  reveal = "fade",
+  idle,
+  celebrating = false,
+  loading = "lazy",
+  children,
+}: MascotProps) {
+  const classes = [
+    "mascot-reveal",
+    "reveal-mascot",
+    `rv-${reveal}`,
+    className,
+    celebrating ? "is-celebrating" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <span className={classes}>
+      <img
+        className={`section-mascot${idle ? ` idle-${idle}` : ""}`}
+        src={src}
+        alt={alt}
+        aria-hidden={alt ? undefined : "true"}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding="async"
+      />
+      {children}
+    </span>
+  );
+}
 
 export default function Landing() {
   const [tab, setTab] = useState<Tab>("stdio");
@@ -172,7 +229,7 @@ export default function Landing() {
       <main id="main">
         <section className="hero" id="top">
           <div className="container hero-inner">
-            <div>
+            <div className="reveal-section rv-up">
               <p className="eyebrow">Cloud MCP knowledge base · v1.0.0-rc.1</p>
               <h1>
                 UX knowledge your AI agent can <span className="accent">cite</span>.
@@ -210,15 +267,15 @@ export default function Landing() {
                 </li>
               </ul>
             </div>
-            <aside className="citation-card" aria-label="Example citation verification">
-              <img
-                className="section-mascot mascot-hero"
+            <aside className="citation-card reveal-section rv-up" aria-label="Example citation verification">
+              <Mascot
+                className="mascot-hero"
                 src="/mascot/pose-02-confident-expert.svg"
                 alt="UX-KB Guide mascot, confident expert pose"
                 width={280}
                 height={256}
+                reveal="hero-mascot"
                 loading="eager"
-                decoding="async"
               />
               <div className="card-head">
                 <p className="card-title">verify_citations</p>
@@ -246,23 +303,22 @@ export default function Landing() {
 
         <section className="problem">
           <div className="container problem-grid">
-            <div>
+            <div className="reveal-section rv-up">
               <h2>The problem</h2>
               <p className="problem-lead">
                 Generic AI UI looks like a template because the model is guessing — with no source,
                 no fetch history, and no way to check.
               </p>
-              <img
-                className="section-mascot mascot-problem"
+              <Mascot
+                className="mascot-problem"
                 src="/mascot/pose-03-observer.svg"
                 alt="UX-KB Guide mascot, observer pose"
                 width={180}
                 height={165}
-                loading="lazy"
-                decoding="async"
+                reveal="rotate"
               />
             </div>
-            <ul className="problem-list">
+            <ul className="problem-list reveal-section rv-up">
               <li>
                 <strong>Invented rules</strong>
                 <span>Models hallucinate UX guidance, spacing, and accessibility advice with no source.</span>
@@ -282,43 +338,42 @@ export default function Landing() {
         <section className="how" id="how">
           <div className="container">
             <div className="section-header section-header-right">
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-up">
                 <h2>How it works</h2>
                 <p className="section-lede">Four steps, one session, every claim traceable.</p>
               </div>
-              <img
-                className="section-mascot mascot-how"
+              <Mascot
+                className="mascot-how"
                 src="/mascot/pose-04-instructor.svg"
                 alt="UX-KB Guide mascot, instructor pose"
                 width={180}
                 height={165}
-                loading="lazy"
-                decoding="async"
+                idle="nudge"
               />
             </div>
             <ol className="steps">
-              <li>
+              <li className="reveal-section rv-up">
                 <span className="step-num">01</span>
                 <h3>Start a session</h3>
                 <p>
                   Call <code>start_session</code> with the feature. The server returns a session ID, the KB version, and feature-routed doc IDs.
                 </p>
               </li>
-              <li>
+              <li className="reveal-section rv-up" style={{ "--reveal-delay": "100ms" } as React.CSSProperties}>
                 <span className="step-num">02</span>
                 <h3>Load a stage pack</h3>
                 <p>
                   Call <code>get_stage_pack</code> before each stage. Core rules plus stage docs, within a token budget.
                 </p>
               </li>
-              <li>
+              <li className="reveal-section rv-up" style={{ "--reveal-delay": "200ms" } as React.CSSProperties}>
                 <span className="step-num">03</span>
                 <h3>Fetch what you need</h3>
                 <p>
                   Use <code>search_kb</code> and <code>get_doc</code> for extra topics. Only fetched IDs can be cited.
                 </p>
               </li>
-              <li>
+              <li className="reveal-section rv-up" style={{ "--reveal-delay": "300ms" } as React.CSSProperties}>
                 <span className="step-num">04</span>
                 <h3>Verify citations</h3>
                 <p>
@@ -332,16 +387,15 @@ export default function Landing() {
         <section className="inside">
           <div className="container">
             <div className="section-header section-header-left">
-              <img
-                className="section-mascot mascot-inside"
+              <Mascot
+                className="mascot-inside"
                 src="/mascot/pose-05-knowledge-keeper.svg"
                 alt="UX-KB Guide mascot, knowledge keeper pose"
                 width={180}
                 height={165}
-                loading="lazy"
-                decoding="async"
+                reveal="left"
               />
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-up">
                 <h2>What&apos;s inside</h2>
                 <p className="section-lede">
                   A comprehensive, structured knowledge base covering design tokens, accessibility, and SaaS patterns.
@@ -349,27 +403,27 @@ export default function Landing() {
               </div>
             </div>
             <div className="stat-grid">
-              <div className="stat">
+              <div className="stat reveal-section rv-up">
                 <strong>73</strong>
                 <span>topic docs</span>
               </div>
-              <div className="stat">
+              <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "60ms" } as React.CSSProperties}>
                 <strong>6</strong>
                 <span>stage packs</span>
               </div>
-              <div className="stat">
+              <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "120ms" } as React.CSSProperties}>
                 <strong>10</strong>
                 <span>feature routes</span>
               </div>
-              <div className="stat">
+              <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "180ms" } as React.CSSProperties}>
                 <strong>7</strong>
                 <span>MCP tools</span>
               </div>
-              <div className="stat">
+              <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "240ms" } as React.CSSProperties}>
                 <strong>3</strong>
                 <span>resources</span>
               </div>
-              <div className="stat">
+              <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "300ms" } as React.CSSProperties}>
                 <strong>35</strong>
                 <span>unit tests</span>
               </div>
@@ -384,23 +438,21 @@ export default function Landing() {
         <section className="tools" id="tools">
           <div className="container">
             <div className="section-header section-header-right">
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-fade">
                 <h2>Tool reference</h2>
                 <p className="section-lede">
                   Seven tools, three resources. Search returns metadata; retrieve the full doc before relying on a rule.
                 </p>
               </div>
-              <img
-                className="section-mascot mascot-tools"
+              <Mascot
+                className="mascot-tools"
                 src="/mascot/pose-06-technical-specialist.svg"
                 alt="UX-KB Guide mascot, technical specialist pose"
                 width={140}
                 height={128}
-                loading="lazy"
-                decoding="async"
               />
             </div>
-            <div className="table-scroll">
+            <div className="table-scroll reveal-section rv-fade">
             <table className="tools-table">
               <thead>
                 <tr>
@@ -457,23 +509,24 @@ export default function Landing() {
         <section className="connect" id="connect">
           <div className="container">
             <div className="section-header section-header-left">
-              <img
-                className="section-mascot mascot-connect"
+              <Mascot
+                className="mascot-connect"
                 src="/mascot/pose-07-integration-assistant.svg"
                 alt="UX-KB Guide mascot, integration assistant pose"
                 width={180}
                 height={165}
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="section-header-copy">
+                celebrating={copied !== null && copied !== "fail"}
+              >
+                <span className="connect-pulse" aria-hidden="true" />
+              </Mascot>
+              <div className="section-header-copy reveal-section rv-up">
                 <h2>Connect an agent</h2>
                 <p className="section-lede">
                   Hook into Claude Code, Cursor, Claude Desktop, or custom HTTP clients in minutes.
                 </p>
               </div>
             </div>
-            <div className="tabs" role="tablist" aria-label="Connection methods">
+            <div className="tabs reveal-section rv-up" role="tablist" aria-label="Connection methods">
               <button
                 className={`tab ${tab === "stdio" ? "is-active" : ""}`}
                 role="tab"
@@ -500,6 +553,7 @@ export default function Landing() {
               </button>
             </div>
 
+            <div className="connect-panels reveal-section rv-fade">
             <div className={`panel ${tab === "stdio" ? "is-active" : ""}`} hidden={tab !== "stdio"}>
               <pre>
                 <code>{CODE_STDIO}</code>
@@ -556,6 +610,7 @@ export default function Landing() {
                 )}
               </button>
             </div>
+            </div>
 
             <p className="connect-note">
               stdio needs no API key — it provisions an internal <code>stdio-local</code> key.
@@ -568,20 +623,19 @@ export default function Landing() {
         <section className="why">
           <div className="container">
             <div className="section-header section-header-right">
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-up">
                 <h2>Why it is different</h2>
                 <p className="section-lede">
                   Every citation is tied to real session history — preventing hallucinated guidelines.
                 </p>
               </div>
-              <img
-                className="section-mascot mascot-why"
+              <Mascot
+                className="mascot-why"
                 src="/mascot/pose-08-guardian.svg"
                 alt="UX-KB Guide mascot, guardian pose"
                 width={180}
                 height={165}
-                loading="lazy"
-                decoding="async"
+                reveal="scale"
               />
             </div>
             <div className="why-grid">
@@ -616,23 +670,21 @@ export default function Landing() {
         <section className="arch">
           <div className="container">
             <div className="section-header section-header-left">
-              <img
-                className="section-mascot mascot-arch"
+              <Mascot
+                className="mascot-arch"
                 src="/mascot/pose-09-engineer.svg"
                 alt="UX-KB Guide mascot, engineer pose"
                 width={160}
                 height={146}
-                loading="lazy"
-                decoding="async"
               />
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-fade">
                 <h2>Architecture</h2>
                 <p className="section-lede">
                   Core owns the logic; MCP, REST, and admin are thin wrappers over the same services.
                 </p>
               </div>
             </div>
-            <pre className="arch-diagram">
+            <pre className="arch-diagram reveal-section rv-fade">
               <code>{`Agent  ->  MCP Server (stdio / HTTP)
             ->  Core Services
                 ->  Content Repository  ->  Markdown content/
@@ -648,23 +700,28 @@ export default function Landing() {
         <section className="testing" id="testing">
           <div className="container">
             <div className="section-header section-header-right">
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-fade">
                 <h2>Testing</h2>
                 <p className="section-lede">
                   Validated against 73 docs with 0 errors, full typecheck coverage, and end-to-end smoke tests.
                 </p>
               </div>
-              <img
-                className="section-mascot mascot-testing"
+              <Mascot
+                className="mascot-testing"
                 src="/mascot/pose-10-quality-inspector.svg"
                 alt="UX-KB Guide mascot, quality inspector pose"
                 width={160}
                 height={146}
-                loading="lazy"
-                decoding="async"
-              />
+              >
+                <span className="verify-check" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" role="presentation" focusable="false">
+                    <circle cx="24" cy="24" r="21" />
+                    <path className="verify-check-path" d="M13 25.5 21 33.5 36 16.5" />
+                  </svg>
+                </span>
+              </Mascot>
             </div>
-            <pre className="testing-pre">
+            <pre className="testing-pre reveal-section rv-fade">
               <code>{`pnpm lint:kb:strict   # 0 errors, 0 warnings across 73 docs
 pnpm typecheck        # tsc, both packages
 pnpm test             # 35 core unit tests
@@ -683,16 +740,7 @@ pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
         <section className="showcase" id="showcase">
           <div className="container">
             <div className="section-header section-header-left">
-              <img
-                className="section-mascot mascot-showcase"
-                src="/mascot/pose-11-helpful-companion.svg"
-                alt="UX-KB Guide mascot, helpful companion pose"
-                width={170}
-                height={155}
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-up">
                 <p className="eyebrow">Design Evolution</p>
                 <h2>Website Redesign: Before &amp; After</h2>
                 <p className="section-lede">
@@ -789,18 +837,17 @@ pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
         <section className="faq">
           <div className="container">
             <div className="section-header section-header-right">
-              <div className="section-header-copy">
+              <div className="section-header-copy reveal-section rv-up">
                 <h2>Frequently Asked Questions</h2>
                 <p className="section-lede">Quick answers about integration, licensing, and design systems.</p>
               </div>
-              <img
-                className="section-mascot mascot-faq"
-                src="/mascot/pose-12-friendly-companion.svg"
-                alt="UX-KB Guide mascot, friendly companion pose"
+              <Mascot
+                className="mascot-faq"
+                src="/mascot/pose-11-helpful-companion.svg"
+                alt="UX-KB Guide mascot, helpful companion pose"
                 width={150}
                 height={137}
-                loading="lazy"
-                decoding="async"
+                idle="float"
               />
             </div>
             <details>
@@ -829,7 +876,14 @@ pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
       <footer className="site-footer">
         <div className="container footer-inner">
           <div className="footer-brand-row">
-            <img className="footer-mascot" src="/mascot/pose-01-brand-mark.svg" alt="" loading="lazy" decoding="async" aria-hidden="true" width={40} height={40} />
+            <Mascot
+              className="footer-mascot-slot"
+              src="/mascot/pose-12-friendly-companion.svg"
+              alt=""
+              width={72}
+              height={66}
+              idle="wave"
+            />
             <div>
               <p className="footer-brand">UX-KB</p>
               <p className="footer-note">Content release candidate 1.0.0-rc.1 · 73 topic docs · MIT license</p>

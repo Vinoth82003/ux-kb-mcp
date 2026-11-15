@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import ScrollReveal from "@/components/scroll-reveal";
 import "./globals.css";
 
 const inter = Inter({
@@ -44,6 +45,11 @@ export const metadata: Metadata = {
 
 const themeInit = `(function(){try{var m=localStorage.getItem('theme-mode')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();`;
 
+// Arms scroll-reveal hidden states before first paint. If the client controller
+// never mounts (JS error, disabled JS), the armed class is dropped so every
+// section stays visible.
+const revealInit = `(function(){try{if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.documentElement.classList.add('reveal-armed');window.__uxkbRevealTimer=window.setTimeout(function(){document.documentElement.classList.remove('reveal-armed');},6000);}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -53,8 +59,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script dangerouslySetInnerHTML={{ __html: revealInit }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <ScrollReveal />
+        {children}
+      </body>
     </html>
   );
 }
