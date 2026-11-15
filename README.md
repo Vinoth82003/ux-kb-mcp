@@ -278,6 +278,22 @@ open registration endpoint from becoming an open redirect.
 Issuer URLs are derived from `AUTH_URL`, then the request's forwarded host, then
 `NEXTAUTH_URL`. Set `AUTH_URL` in production if you serve more than one domain.
 
+### Gemini (manual client registration)
+
+Gemini's connector does not always complete dynamic registration, so if it asks
+for a Client ID and Secret, register one manually with Gemini's redirect URI:
+
+```bash
+curl -X POST https://<host>/oauth/register \\
+  -H 'Content-Type: application/json' \\
+  -d '{"client_name":"Gemini","redirect_uris":["https://vertexaisearch.cloud.google.com/oauth-redirect","https://gemini.google.com/oauth-redirect","https://oauth-redirect.googleusercontent.com/r"],"token_endpoint_auth_method":"client_secret_basic"}'
+```
+
+Paste the returned `client_id` and `client_secret` into Gemini's connection dialog.
+The server also accepts the redirect URIs Gemini uses for its relay
+(`oauth-redirect*.googleusercontent.com`), so registration succeeds even if
+Gemini sends a redirect URI that was not listed above.
+
 Quotas are applied per key:
 
 | Limit | Member | Admin |

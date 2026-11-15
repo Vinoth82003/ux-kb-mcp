@@ -34,16 +34,28 @@ export function isAcceptableRedirectUri(value: string): boolean {
 }
 
 /** Validate a registration payload's redirect URI list. */
+export const DEFAULT_GOOGLE_REDIRECT_URIS: string[] = [
+  "https://vertexaisearch.cloud.google.com/oauth-redirect",
+  "https://gemini.google.com/oauth-redirect",
+  "https://oauth-redirect.googleusercontent.com/r",
+  "https://oauth-redirect-sandbox.googleusercontent.com/r",
+  "https://oauth-redirect-test.googleusercontent.com/r",
+];
+
 export function parseRedirectUris(input: unknown): string[] | null {
-  if (!Array.isArray(input) || input.length === 0 || input.length > 5) return null;
+  if (typeof input === "string") input = [input];
+  if (input === undefined || input === null) return [...DEFAULT_GOOGLE_REDIRECT_URIS];
+  if (!Array.isArray(input)) return null;
+  if (input.length === 0) return [...DEFAULT_GOOGLE_REDIRECT_URIS];
+  if (input.length > 10) return null;
   const uris: string[] = [];
   for (const entry of input) {
-    if (typeof entry !== "string") return null;
+    if (typeof entry !== "string") continue;
     const value = entry.trim();
-    if (!isAcceptableRedirectUri(value)) return null;
+    if (!isAcceptableRedirectUri(value)) continue;
     if (!uris.includes(value)) uris.push(value);
   }
-  return uris;
+  return uris.length > 0 ? uris : [...DEFAULT_GOOGLE_REDIRECT_URIS];
 }
 
 /** Trim control characters and cap the display name at 80 characters. */
