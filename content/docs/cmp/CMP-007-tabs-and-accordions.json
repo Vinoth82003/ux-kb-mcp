@@ -1,0 +1,166 @@
+{
+  "id": "CMP-007",
+  "title": "Tabs and Accordions",
+  "rev": 2,
+  "etag": "sha256:4ed85d6defd297e007ecab923222ac29ac99b61ca1e5505a58b178df2075b854",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "tabs-and-accordions",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Tabs switch between peer views; accordions reveal optional content within a page.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-007.M1",
+        "text": "Use tabs for peer sections sharing context; accordions for secondary optional details."
+      },
+      {
+        "id": "CMP-007.M2",
+        "text": "Implement the APG keyboard model: Tab to the tablist, Arrow keys between tabs, Enter/Space to activate, Home/End."
+      },
+      {
+        "id": "CMP-007.M3",
+        "text": "Expose state with role=\"tab\", aria-selected, aria-controls and role=\"tabpanel\" with aria-labelledby; accordions use aria-expanded/aria-controls."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-007.S1",
+        "text": "Keep tab labels short and parallel; avoid tabs for primary site navigation."
+      },
+      {
+        "id": "CMP-007.S2",
+        "text": "Preserve scroll position and focus when switching tabs where appropriate."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-007.A1",
+        "text": "Do not use tabs as primary site navigation or hide essential instructions in collapsed panels."
+      },
+      {
+        "id": "CMP-007.A2",
+        "text": "Do not implement tabs without keyboard support or with positive tabindex."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Peer views, same context",
+        "decision": "Tabs with APG keyboard model"
+      },
+      {
+        "situation": "Secondary details",
+        "decision": "Accordion with aria-expanded"
+      },
+      {
+        "situation": "Many tabs",
+        "decision": "Consider navigation or segmented control"
+      },
+      {
+        "situation": "Deep linking needed",
+        "decision": "Sync tab to URL hash"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Selected/active",
+      "Expanded/collapsed",
+      "Disabled",
+      "Loading",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "Profile/Security/Notifications tabs with arrow-key navigation; FAQ in an accordion",
+      "bad": "tabs used as site nav; collapsed panel hiding required instructions"
+    },
+    "FAILURE_MODES": [
+      "Missing keyboard support blocks tab navigation.",
+      "Hidden essential content in accordions causes task failure.",
+      "State not exposed to assistive tech (aria-selected/expanded)."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-007.c1",
+      "text": "Peer relationship clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-007.c2",
+      "text": "Keyboard pattern implemented (APG)?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-007.c3",
+      "text": "State exposed to AT?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-007.c4",
+      "text": "Essential content visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C ARIA Authoring Practices Guide",
+      "url": "https://www.w3.org/WAI/ARIA/apg/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 676,
+    "rules": 167,
+    "checks": 33
+  }
+}

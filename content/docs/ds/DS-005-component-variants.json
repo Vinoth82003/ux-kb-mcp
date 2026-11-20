@@ -1,0 +1,143 @@
+{
+  "id": "DS-005",
+  "title": "Component Variants",
+  "rev": 2,
+  "etag": "sha256:52d0ff7634aca3317e2e932dca3758203e06729ce66aceee0496e551964ebbe6",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "component-variants",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Variants express meaningful intent, hierarchy or state while keeping a predictable API.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-005.M1",
+        "text": "Create variants for semantic roles such as primary, secondary, danger or quiet."
+      },
+      {
+        "id": "DS-005.M2",
+        "text": "Keep variant intent separate from state styling (hover, focus, disabled)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-005.S1",
+        "text": "Constrain invalid variant/state combinations in the API."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-005.A1",
+        "text": "Do not create variants solely for arbitrary color, radius or page layout."
+      },
+      {
+        "id": "DS-005.A2",
+        "text": "Do not encode layout concerns (full-width) as variants."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Semantic role differs",
+        "decision": "New variant"
+      },
+      {
+        "situation": "Visual tweak only",
+        "decision": "Use token/prop, not variant"
+      },
+      {
+        "situation": "State styling",
+        "decision": "State layer, not variant"
+      },
+      {
+        "situation": "Layout concern",
+        "decision": "Layout prop or composition"
+      }
+    ],
+    "STATES": [
+      "Variant",
+      "State",
+      "Default",
+      "Disabled",
+      "Invalid combination"
+    ],
+    "EXAMPLE": {
+      "good": "\"Danger is a variant; hover is a state; full-width is a layout prop.\"",
+      "bad": "\"A 'blue-large-rounded' variant.\""
+    },
+    "FAILURE_MODES": [
+      "Variant sprawl from cosmetic preferences bloats APIs.",
+      "Mixing state into variants makes theming and testing harder.",
+      "Uncontrolled combinations produce inaccessible or broken UI."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-005.c1",
+      "text": "Use case named?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-005.c2",
+      "text": "State separate from variant?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-005.c3",
+      "text": "Invalid combos controlled?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Material Design 3",
+      "url": "https://m3.material.io/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Radix UI",
+      "url": "https://www.radix-ui.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 490,
+    "rules": 105,
+    "checks": 23
+  }
+}

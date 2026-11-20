@@ -1,0 +1,130 @@
+{
+  "id": "UX-004",
+  "title": "Double Diamond",
+  "rev": 2,
+  "etag": "sha256:273b37766509c920417005affd70ea60e689f887f96ab70ee3c6770903f8a66e",
+  "status": "reviewed",
+  "domain": "ux",
+  "tags": [
+    "double-diamond",
+    "ux"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Double Diamond separates discovering the right problem from developing the right response, with divergence and evidence-based convergence.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "UX-004.M1",
+        "text": "Keep problem discovery separate from solution selection."
+      },
+      {
+        "id": "UX-004.M2",
+        "text": "Record evidence and criteria at each convergence point."
+      },
+      {
+        "id": "UX-004.M3",
+        "text": "Reopen discovery if testing invalidates the problem statement."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "UX-004.S1",
+        "text": "Use research synthesis, defined problem, tested concepts and validated direction as transition artifacts."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "UX-004.A1",
+        "text": "Treat phases as a rigid waterfall."
+      },
+      {
+        "id": "UX-004.A2",
+        "text": "Use the diagram instead of research or testing."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Problem space uncertain",
+        "decision": "Discover broadly"
+      },
+      {
+        "situation": "Problem clear, solution unclear",
+        "decision": "Develop alternatives"
+      },
+      {
+        "situation": "Evidence conflicts",
+        "decision": "Return to discovery"
+      }
+    ],
+    "STATES": [
+      "Discover",
+      "Define",
+      "Develop",
+      "Deliver",
+      "Feedback loop"
+    ],
+    "FAILURE_MODES": [
+      "Treating the four phases as a rigid waterfall prevents returning to discovery.",
+      "Using the diagram as a substitute for research or testing skips evidence.",
+      "Converging without recorded criteria makes the chosen direction indefensible."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "UX-004.c1",
+      "text": "Problem and solution spaces distinct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-004.c2",
+      "text": "Convergence criteria recorded?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-004.c3",
+      "text": "Feedback loops allowed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Design Council — The Double Diamond",
+      "url": "https://www.designcouncil.org.uk/resources/the-double-diamond/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group — Design Thinking 101",
+      "url": "https://www.nngroup.com/articles/design-thinking/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 468,
+    "rules": 131,
+    "checks": 28
+  }
+}

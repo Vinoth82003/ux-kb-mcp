@@ -1,0 +1,164 @@
+{
+  "id": "VIS-010",
+  "title": "Imagery and Illustration",
+  "rev": 2,
+  "etag": "sha256:f12838348adc5f320a18c2a55f3ce32603eb1bdb27b97eb6f9f922f58989955f",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "imagery-and-illustration",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Imagery should add task information, context or brand meaning; decorative images carry no information.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-010.M1",
+        "text": "Use representative imagery that matches the actual product/variant; provide equivalent alt text for informative images."
+      },
+      {
+        "id": "VIS-010.M2",
+        "text": "Use empty alt (alt=\"\") for purely decorative images."
+      },
+      {
+        "id": "VIS-010.M3",
+        "text": "Serve responsive images (srcset/sizes) in modern formats (WebP/AVIF) with explicit dimensions to prevent layout shift."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-010.S1",
+        "text": "Lazy-load below-the-fold images; prioritize LCP image."
+      },
+      {
+        "id": "VIS-010.S2",
+        "text": "Preserve meaning when cropping; use object-fit and defined aspect ratios."
+      },
+      {
+        "id": "VIS-010.S3",
+        "text": "Provide captions or context for complex informative images."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-010.A1",
+        "text": "Stock imagery as fake evidence or filler."
+      },
+      {
+        "id": "VIS-010.A2",
+        "text": "Images that misrepresent the product or obscure text."
+      },
+      {
+        "id": "VIS-010.A3",
+        "text": "Unbounded image sizes causing CLS or slow loads."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Product image",
+        "decision": "Show exact purchasable variant"
+      },
+      {
+        "situation": "Decorative",
+        "decision": "Empty alt; aria-hidden if needed"
+      },
+      {
+        "situation": "Hero image",
+        "decision": "Optimize for LCP; provide fallback"
+      },
+      {
+        "situation": "Illustration",
+        "decision": "Support task or brand, not filler"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Loading",
+      "Error/missing",
+      "Responsive",
+      "Dark mode (if applicable)",
+      "Reduced motion"
+    ],
+    "EXAMPLE": {
+      "good": "\"Product image shows exact color/size; alt describes variant.\"",
+      "bad": "\"Generic stock photo with 'Our team' caption.\""
+    },
+    "FAILURE_MODES": [
+      "Misleading imagery erodes trust and causes returns.",
+      "Missing or wrong alt text blocks screen reader users.",
+      "Unoptimized images hurt performance and CLS.",
+      "Decorative images announced as content create noise."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-010.c1",
+      "text": "Image supports task?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-010.c2",
+      "text": "Alt equivalent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-010.c3",
+      "text": "Crop preserves meaning?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-010.c4",
+      "text": "Responsive and optimized?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2 Non-text Content",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN Responsive Images",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group Images as Information",
+      "url": "https://www.nngroup.com/articles/images-as-information/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 639,
+    "rules": 154,
+    "checks": 28
+  }
+}

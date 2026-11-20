@@ -1,0 +1,135 @@
+{
+  "id": "UX-003",
+  "title": "Design Thinking",
+  "rev": 2,
+  "etag": "sha256:fead3093fa7cd6658ccbd09bef2769b6dbe9b85f89f1445a727013e3468ed3c2",
+  "status": "reviewed",
+  "domain": "ux",
+  "tags": [
+    "design-thinking",
+    "ux"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Design thinking is iterative problem-framing and experimentation; its purpose is reducing uncertainty, not completing a ceremonial sequence.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "UX-003.M1",
+        "text": "Frame the problem as a user outcome."
+      },
+      {
+        "id": "UX-003.M2",
+        "text": "Generate materially different concepts before selection."
+      },
+      {
+        "id": "UX-003.M3",
+        "text": "Prototype the riskiest assumption at the lowest useful fidelity."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "UX-003.S1",
+        "text": "Reframe when evidence invalidates the problem statement."
+      },
+      {
+        "id": "UX-003.S2",
+        "text": "Define in advance what experiment result changes the design."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "UX-003.A1",
+        "text": "Run workshops without testable outputs."
+      },
+      {
+        "id": "UX-003.A2",
+        "text": "Equate idea volume with validated innovation."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Problem uncertain",
+        "decision": "Research and reframe"
+      },
+      {
+        "situation": "Solution uncertain",
+        "decision": "Prototype alternatives"
+      },
+      {
+        "situation": "Feasibility uncertain",
+        "decision": "Run technical spike"
+      }
+    ],
+    "STATES": [
+      "Empathize",
+      "Define",
+      "Ideate",
+      "Prototype",
+      "Test",
+      "Reframe"
+    ],
+    "FAILURE_MODES": [
+      "Workshops that produce no testable output consume time without reducing uncertainty.",
+      "Idea volume is not validation; concepts must be prototyped and tested.",
+      "Skipping reframe after invalidating evidence locks the team into the wrong problem."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "UX-003.c1",
+      "text": "Problem evidence-backed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-003.c2",
+      "text": "Distinct concepts compared?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-003.c3",
+      "text": "Prototype tests a named assumption?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group — Design Thinking 101",
+      "url": "https://www.nngroup.com/articles/design-thinking/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Stanford d.school — Design Thinking Bootleg",
+      "url": "https://dschool.stanford.edu/tools/design-thinking-bootleg",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 472,
+    "rules": 126,
+    "checks": 27
+  }
+}

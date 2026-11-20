@@ -1,0 +1,155 @@
+{
+  "id": "A11Y-001",
+  "title": "WCAG 2.2",
+  "rev": 2,
+  "etag": "sha256:613db0633ea0809edfedd01c04e41cf99418f7e3800d4edec6d940e64fedea54",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "wcag-2-2",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "WCAG 2.2 defines testable A/AA/AAA criteria; use Level AA as the project baseline and validate new 2.2 additions manually, not by scan alone.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-001.M1",
+        "text": "State the conformance target (WCAG 2.2 Level AA) and scope for each feature before audit."
+      },
+      {
+        "id": "A11Y-001.M2",
+        "text": "Assess new 2.2 AA criteria: 2.4.11 Focus Not Obscured (Minimum), 2.5.7 Dragging Movements, 2.5.8 Target Size (Minimum), 3.2.6 Consistent Help, 3.3.7 Redundant Entry, 3.3.8 Accessible Authentication (Minimum)."
+      },
+      {
+        "id": "A11Y-001.M3",
+        "text": "Include keyboard, screen reader, zoom/reflow and high-contrast checks alongside automated scans."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-001.S1",
+        "text": "Document exceptions and any AAA criteria considered but not required."
+      },
+      {
+        "id": "A11Y-001.S2",
+        "text": "Re-test after UI changes affecting focus, input, help or authentication."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-001.A1",
+        "text": "Do not claim conformance from an automated scan alone."
+      },
+      {
+        "id": "A11Y-001.A2",
+        "text": "Do not label AAA as AA or treat advisory techniques as requirements."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Conformance target unclear",
+        "decision": "Define AA scope with team before design"
+      },
+      {
+        "situation": "New 2.2 criterion not applicable",
+        "decision": "Document rationale and exception"
+      },
+      {
+        "situation": "Automated scan passes",
+        "decision": "Continue manual keyboard/AT review"
+      }
+    ],
+    "STATES": [
+      "Conformance scope",
+      "Automated scan",
+      "Keyboard review",
+      "Assistive tech review",
+      "Reflow/zoom",
+      "Exception recorded"
+    ],
+    "EXAMPLE": {
+      "good": "\"Audit notes SC 2.5.8 target size 24x24 CSS px and documents a justified exception.\"",
+      "bad": "\"Lighthouse 100 means WCAG compliant.\""
+    },
+    "FAILURE_MODES": [
+      "Automated tools catch only a subset; manual checks find focus obscurity and auth barriers.",
+      "Treating AAA as AA inflates conformance claims.",
+      "New 2.2 criteria are often missed in legacy checklists."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-001.c1",
+      "text": "Conformance target stated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-001.c2",
+      "text": "New 2.2 AA criteria checked?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-001.c3",
+      "text": "Manual keyboard/AT included?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-001.c4",
+      "text": "Exceptions documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Quick Reference",
+      "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C Understanding Focus Appearance",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 653,
+    "rules": 192,
+    "checks": 33
+  }
+}

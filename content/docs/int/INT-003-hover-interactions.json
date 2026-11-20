@@ -1,0 +1,159 @@
+{
+  "id": "INT-003",
+  "title": "Hover Interactions",
+  "rev": 2,
+  "etag": "sha256:001276d3495fd0d2ed3ed15fa32ada500a5be7c565a3a76d174a959f18cf070a",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "hover-interactions",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Hover is a pointer enhancement that previews or reveals; it must never be the only way to reach an action or content.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-003.M1",
+        "text": "Provide equivalent focus, click and touch behavior for every hover-revealed action."
+      },
+      {
+        "id": "INT-003.M2",
+        "text": "Keep hover content dismissible and available long enough to reach and read (WCAG 1.4.13)."
+      },
+      {
+        "id": "INT-003.M3",
+        "text": "Do not move or obscure existing content when hover content appears."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-003.S1",
+        "text": "Show affordance feedback (color, cursor) within 100 ms on hover."
+      },
+      {
+        "id": "INT-003.S2",
+        "text": "Delay hiding hover content by 300–500 ms after the pointer leaves to avoid accidental dismissal."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-003.A1",
+        "text": "Do not reveal essential controls only on hover."
+      },
+      {
+        "id": "INT-003.A2",
+        "text": "Do not trigger navigation or destructive actions on hover alone."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Hover reveals preview",
+        "decision": "Also expose on focus and click"
+      },
+      {
+        "situation": "Touch device",
+        "decision": "Use tap or long-press alternative"
+      },
+      {
+        "situation": "Content on hover",
+        "decision": "Dismissible, hoverable, persistent"
+      },
+      {
+        "situation": "Affordance feedback",
+        "decision": "≤100 ms color/cursor change"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Revealed",
+      "Dismissed",
+      "Touch fallback"
+    ],
+    "EXAMPLE": {
+      "good": "\"Row menu appears on hover and focus, stays open while pointer is over it, and is reachable by tap.\"",
+      "bad": "\"Delete action appears only on hover with no keyboard or touch path.\""
+    },
+    "FAILURE_MODES": [
+      "Hover-only controls are unreachable for keyboard and touch users.",
+      "Hover content that disappears immediately causes repeated re-triggering.",
+      "Hover-triggered navigation causes accidental page changes."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-003.c1",
+      "text": "Keyboard equivalent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-003.c2",
+      "text": "Touch equivalent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-003.c3",
+      "text": "Content dismissible and hoverable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-003.c4",
+      "text": "Affordance feedback ≤100 ms?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Timing Guidelines for Exposing Hidden Content",
+      "url": "https://www.nngroup.com/articles/timing-exposing-content/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Content on Hover or Focus",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Tooltip Guidelines",
+      "url": "https://www.nngroup.com/articles/tooltip-guidelines/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 639,
+    "rules": 148,
+    "checks": 32
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "id": "CMP-008",
+  "title": "Tooltips",
+  "rev": 2,
+  "etag": "sha256:059767a236812f1a701a9b88c7845eb8b63f7f6c4cfeab96c4cff775f18d989a",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "tooltips",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Tooltips add brief context; they must not carry essential instructions.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-008.M1",
+        "text": "Expose the tooltip on hover and keyboard focus; keep it dismissible (Esc) and available while pointer/focus remains (WCAG 1.4.13)."
+      },
+      {
+        "id": "CMP-008.M2",
+        "text": "Do not obscure the trigger; position so content stays visible on hover/focus (WCAG 1.4.13)."
+      },
+      {
+        "id": "CMP-008.M3",
+        "text": "Provide an accessible name for the trigger independent of the tooltip."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-008.S1",
+        "text": "Use for short clarifications only (a sentence or less)."
+      },
+      {
+        "id": "CMP-008.S2",
+        "text": "Delay show slightly to avoid flicker; persist while hovered or focused."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-008.A1",
+        "text": "Do not replace labels or put long help in hover-only content."
+      },
+      {
+        "id": "CMP-008.A2",
+        "text": "Do not show tooltips on touch-only targets without an alternative."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Short clarification",
+        "decision": "Tooltip on hover + focus"
+      },
+      {
+        "situation": "Essential info",
+        "decision": "Inline text/help, not tooltip"
+      },
+      {
+        "situation": "Touch device",
+        "decision": "Tap-to-reveal or inline"
+      },
+      {
+        "situation": "Long help",
+        "decision": "Help link/dialog"
+      }
+    ],
+    "STATES": [
+      "Hidden",
+      "Showing",
+      "Visible",
+      "Dismissed",
+      "Hover",
+      "Focus",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "Tooltip supplements an accessible “Export CSV” button name; dismissible with Esc",
+      "bad": "a field label exists only as a tooltip"
+    },
+    "FAILURE_MODES": [
+      "Hover-only content is unreachable for keyboard and touch users.",
+      "Tooltips covering triggers cause flicker and loss of access (WCAG 1.4.13).",
+      "Essential instructions hidden in tooltips cause task failure."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-008.c1",
+      "text": "Focus equivalent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-008.c2",
+      "text": "Dismissible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-008.c3",
+      "text": "Hoverable/persistent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-008.c4",
+      "text": "Essential info elsewhere?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Content on Hover or Focus",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 593,
+    "rules": 141,
+    "checks": 26
+  }
+}

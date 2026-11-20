@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-003",
+  "title": "Analytics UX",
+  "rev": 2,
+  "etag": "sha256:7e1c97217d22a9b865cab96e986b46563fe48f1fdb0d647813052686f11f6bc5",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "analytics-ux",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Analytics interfaces make metric definitions, filters, attribution and uncertainty inspectable.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-003.M1",
+        "text": "Expose formulas/windows for non-obvious metrics."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-003.S1",
+        "text": "Distinguish zero, missing, delayed and unavailable data."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-003.A1",
+        "text": "Do not imply causation from correlation or hide denominator changes."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Metric ambiguous",
+        "decision": "Expose formula and window"
+      },
+      {
+        "situation": "Zero vs missing",
+        "decision": "Label explicitly"
+      },
+      {
+        "situation": "Filter change",
+        "decision": "Update cohort and denominator"
+      }
+    ],
+    "STATES": [
+      "First use",
+      "Populated",
+      "Filtered empty",
+      "Missing data",
+      "Stale",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "12% conversion states 120 of 1,000 eligible visitors",
+      "bad": "12% conversion with no denominator or cohort"
+    },
+    "FAILURE_MODES": [
+      "Correlation presented as causation misleads; label uncertainty.",
+      "Missing data shown as zero distorts decisions; distinguish.",
+      "Hidden denominator changes invalidate trends; expose cohort."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-003.c1",
+      "text": "Formula discoverable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-003.c2",
+      "text": "Filters/cohort visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-003.c3",
+      "text": "Missing not shown as zero?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Dashboard Design",
+      "url": "https://www.nngroup.com/articles/dashboard-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g UX Metrics",
+      "url": "https://www.nngroup.com/articles/ux-metrics/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-008",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 419,
+    "rules": 77,
+    "checks": 23
+  }
+}

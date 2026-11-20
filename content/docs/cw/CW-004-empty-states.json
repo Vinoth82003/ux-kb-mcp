@@ -1,0 +1,151 @@
+{
+  "id": "CW-004",
+  "title": "Empty States",
+  "rev": 2,
+  "etag": "sha256:ff1cc492ee5ec599a097d4e04e0be6114c2f83285bf3545f85972a644f1f3cf3",
+  "status": "reviewed",
+  "domain": "content_writing",
+  "tags": [
+    "empty-states",
+    "content-writing"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Empty states distinguish first use, filtered no-results, no records, no permission and unavailable data; this doc owns general empty-state copy, while dashboard-specific empty states live in SAAS-008.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CW-004.M1",
+        "text": "Explain the actual reason and offer the action that resolves it."
+      },
+      {
+        "id": "CW-004.M2",
+        "text": "Distinguish \"no data yet\", \"no matches\" and \"unavailable\" in copy."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CW-004.S1",
+        "text": "Use demo data only when clearly labeled and isolated."
+      },
+      {
+        "id": "CW-004.S2",
+        "text": "Keep empty-state copy under ~2 lines plus one primary action."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CW-004.A1",
+        "text": "Do not show fake zeros or imply records exist."
+      },
+      {
+        "id": "CW-004.A2",
+        "text": "Do not reuse the same copy for every empty cause."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "First use",
+        "decision": "Explain value and provide a create action"
+      },
+      {
+        "situation": "Filtered empty",
+        "decision": "Show active filters and a clear-filters action"
+      },
+      {
+        "situation": "No permission",
+        "decision": "Explain access and the request path"
+      },
+      {
+        "situation": "Unavailable",
+        "decision": "State cause and offer retry or support"
+      }
+    ],
+    "STATES": [
+      "First use",
+      "Filtered empty",
+      "No records",
+      "No permission",
+      "Unavailable",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "\"No invoices match these filters\" with \"Clear filters\"",
+      "bad": "Blank list with no reason or action"
+    },
+    "FAILURE_MODES": [
+      "Blank screens read as broken or loading.",
+      "Fake zeros mislead decisions and reporting.",
+      "Generic copy hides the fix the user needs.",
+      "Demo data mixed with production corrupts metrics."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CW-004.c1",
+      "text": "Reason accurate?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-004.c2",
+      "text": "Action matches reason?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-004.c3",
+      "text": "Demo data labeled?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-004.c4",
+      "text": "Cause-specific copy?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Empty State Interface Design",
+      "url": "https://www.nngroup.com/articles/empty-state-interface-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design Empty States",
+      "url": "https://m2.material.io/design/communication/empty-states.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 536,
+    "rules": 130,
+    "checks": 26
+  }
+}

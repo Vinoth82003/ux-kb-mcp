@@ -1,0 +1,121 @@
+{
+  "id": "EVAL-004",
+  "title": "Hick-Hyman Law",
+  "rev": 2,
+  "etag": "sha256:5a4b0a523b9e44d6b7cf0e2ba760f70941fd1e5e569979654940dd3074edf879",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "hick-hyman-law",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Choice time tends to increase with number and uncertainty of choices; reduce unnecessary decision complexity.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-004.M1",
+        "text": "Group choices by user goal and reveal secondary options progressively."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-004.S1",
+        "text": "Keep comparable options visible when comparison matters."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-004.A1",
+        "text": "Do not hide essential choices or assume fewer options always better."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Many low-value options",
+        "decision": "Group/search/filter"
+      },
+      {
+        "situation": "Comparison task",
+        "decision": "Keep options visible"
+      },
+      {
+        "situation": "Expert workflow",
+        "decision": "Allow shortcuts and saved defaults"
+      }
+    ],
+    "STATES": [
+      "First choice",
+      "Comparison",
+      "Filtering",
+      "Confirmation",
+      "Repeat use"
+    ],
+    "EXAMPLE": {
+      "good": "Plan choice uses comparison table; 300 integrations use search",
+      "bad": "300 integrations in one dropdown"
+    },
+    "FAILURE_MODES": [
+      "Fewer options can remove needed control; validate against task goals.",
+      "Grouping by vendor instead of user goal increases scanning; test findability.",
+      "Search hides options without good metadata; ensure keywords and empty states."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-004.c1",
+      "text": "Choices map to goals?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-004.c2",
+      "text": "Search/grouping fit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-004.c3",
+      "text": "Alternatives discoverable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Hick's Law",
+      "url": "https://www.nngroup.com/articles/hick-law/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CMP-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 400,
+    "rules": 86,
+    "checks": 22
+  }
+}

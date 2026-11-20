@@ -1,0 +1,143 @@
+{
+  "id": "DS-006",
+  "title": "Design System Documentation",
+  "rev": 2,
+  "etag": "sha256:7daa0fe4792ffddab44aad42fafe723ed30aab4bb985305cc39267b6d5fb39ad",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "design-system-documentation",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Documentation enables correct selection, composition, implementation and contribution.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-006.M1",
+        "text": "Document purpose, use/non-use, anatomy, variants, states, accessibility and examples."
+      },
+      {
+        "id": "DS-006.M2",
+        "text": "Include keyboard interaction, focus behavior and screen-reader expectations."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-006.S1",
+        "text": "Include known limitations, version and migration guidance."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-006.A1",
+        "text": "Do not publish screenshots without behavior and implementation guidance."
+      },
+      {
+        "id": "DS-006.A2",
+        "text": "Do not document a component without its non-use cases."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Stable component",
+        "decision": "Full docs required"
+      },
+      {
+        "situation": "Experimental",
+        "decision": "Mark beta and limit claims"
+      },
+      {
+        "situation": "Breaking change",
+        "decision": "Migration note in docs and changelog"
+      },
+      {
+        "situation": "Deprecated",
+        "decision": "Keep docs with removal date"
+      }
+    ],
+    "STATES": [
+      "Draft",
+      "Reviewed",
+      "Published",
+      "Deprecated",
+      "Removed"
+    ],
+    "EXAMPLE": {
+      "good": "\"Modal docs include focus entry, Escape and restoration—not just appearance.\"",
+      "bad": "\"A screenshot gallery with no API or behavior.\""
+    },
+    "FAILURE_MODES": [
+      "Screenshot-only docs cause implementation drift.",
+      "Missing non-use guidance leads to misuse.",
+      "Undocumented breaking changes break consumers."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-006.c1",
+      "text": "Usage and non-use guidance?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-006.c2",
+      "text": "States and keyboard documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-006.c3",
+      "text": "Version and migration clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Storybook",
+      "url": "https://storybook.js.org/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Diátaxis",
+      "url": "https://diataxis.fr/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "DS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 492,
+    "rules": 114,
+    "checks": 27
+  }
+}

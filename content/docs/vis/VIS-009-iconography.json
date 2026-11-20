@@ -1,0 +1,171 @@
+{
+  "id": "VIS-009",
+  "title": "Iconography",
+  "rev": 2,
+  "etag": "sha256:3adfedc9b848039cbf1f50848853aba7720dc6551b44e8067abd8d7f55a8f370",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "iconography",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Icons are a compact visual language; ambiguity and missing accessible names cause failures.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-009.M1",
+        "text": "Use one coherent icon family with consistent size, stroke and corner radius."
+      },
+      {
+        "id": "VIS-009.M2",
+        "text": "Provide an accessible name (aria-label/aria-labelledby or visually hidden text) for every icon-only control."
+      },
+      {
+        "id": "VIS-009.M3",
+        "text": "Use icons at standard sizes (16, 20, 24px) and align to text baseline; keep touch targets >=44x44px (see RSP-005)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-009.S1",
+        "text": "Pair unfamiliar or high-impact actions with visible text."
+      },
+      {
+        "id": "VIS-009.S2",
+        "text": "Use filled variants for selected/active states and outline for default when the family supports it."
+      },
+      {
+        "id": "VIS-009.S3",
+        "text": "Test icon meaning with target users for non-universal metaphors."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-009.A1",
+        "text": "Emoji as product icons or obscure, invented metaphors."
+      },
+      {
+        "id": "VIS-009.A2",
+        "text": "Icon-only controls for destructive or irreversible actions."
+      },
+      {
+        "id": "VIS-009.A3",
+        "text": "Mixing multiple icon families or stroke weights."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Common action",
+        "decision": "Icon + label on first use; icon-only after learning"
+      },
+      {
+        "situation": "Destructive action",
+        "decision": "Always text label, never icon-only"
+      },
+      {
+        "situation": "Dense toolbar",
+        "decision": "20/24px icons, 44px targets, tooltips"
+      },
+      {
+        "situation": "Status",
+        "decision": "Icon + color + text redundancy"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Selected/active",
+      "Disabled",
+      "Loading"
+    ],
+    "EXAMPLE": {
+      "good": "\"'Archive project' with archive icon + text, or icon-only with aria-label 'Archive project'.\"",
+      "bad": "\"Unlabeled box icon with no tooltip or accessible name.\""
+    },
+    "FAILURE_MODES": [
+      "Ambiguous icons cause misinterpretation and errors.",
+      "Missing accessible names block screen reader users.",
+      "Mixed families reduce perceived quality and consistency.",
+      "Small touch targets cause mis-taps on mobile."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-009.c1",
+      "text": "Meaning unambiguous?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-009.c2",
+      "text": "Family consistent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-009.c3",
+      "text": "Accessible name present?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-009.c4",
+      "text": "Touch target sufficient?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group Icon Usability",
+      "url": "https://www.nngroup.com/articles/icon-usability/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Non-text Content",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Icons",
+      "url": "https://m3.material.io/styles/icons/overview",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 676,
+    "rules": 151,
+    "checks": 29
+  }
+}

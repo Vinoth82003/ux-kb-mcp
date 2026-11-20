@@ -1,0 +1,151 @@
+{
+  "id": "DS-001",
+  "title": "Design System Architecture",
+  "rev": 2,
+  "etag": "sha256:978133c31ca36d0ea5087c70fa04246712a192ae75d981fcef8bf8ef06cccc09",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "design-system-architecture",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "A design system connects principles, tokens, components, patterns, documentation and governance into one evolvable product.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-001.M1",
+        "text": "Separate foundations (tokens), components and task-level patterns into distinct layers with documented boundaries."
+      },
+      {
+        "id": "DS-001.M2",
+        "text": "Define ownership, contribution, review, release and deprecation paths before publishing components."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-001.S1",
+        "text": "Version the system with semver and publish migration notes for breaking changes."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-001.A1",
+        "text": "Do not treat a component catalogue without usage guidance as a complete system."
+      },
+      {
+        "id": "DS-001.A2",
+        "text": "Do not let application teams fork components without a contribution path."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Repeated decision across 2+ products",
+        "decision": "Promote to token/component"
+      },
+      {
+        "situation": "Unique workflow or one-off",
+        "decision": "Keep as pattern/page-level solution"
+      },
+      {
+        "situation": "Breaking API or visual change",
+        "decision": "Major version + migration note"
+      },
+      {
+        "situation": "Deprecated component",
+        "decision": "Keep for one release cycle with warning"
+      }
+    ],
+    "STATES": [
+      "Foundations",
+      "Components",
+      "Patterns",
+      "Documentation",
+      "Governance",
+      "Deprecated"
+    ],
+    "EXAMPLE": {
+      "good": "\"Date picker is a component; invoice creation flow is a pattern composing it.\"",
+      "bad": "\"A Figma component library with no code, docs or owner called a design system.\""
+    },
+    "FAILURE_MODES": [
+      "A polished screen can still fail the task; validate against the defined user outcome.",
+      "Systems without ownership decay into inconsistent forks.",
+      "Treating a catalogue as complete skips usage and accessibility guidance."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-001.c1",
+      "text": "Layers and owners clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-001.c2",
+      "text": "Contribution and review path exists?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-001.c3",
+      "text": "Pattern distinct from component?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-001.c4",
+      "text": "Versioning and deprecation documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3",
+      "url": "https://m3.material.io/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 611,
+    "rules": 148,
+    "checks": 40
+  }
+}

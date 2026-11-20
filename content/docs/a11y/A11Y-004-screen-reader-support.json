@@ -1,0 +1,155 @@
+{
+  "id": "A11Y-004",
+  "title": "Screen Reader Support",
+  "rev": 2,
+  "etag": "sha256:50a1f6d3d28c8185f6376b7982f98c8d3576043875537fe4e864ceb92a5e5437",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "screen-reader-support",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Screen-reader usability depends on names, roles, values, structure, order and timely announcements.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-004.M1",
+        "text": "Expose semantic headings, landmarks, labels, table headers and control states."
+      },
+      {
+        "id": "A11Y-004.M2",
+        "text": "SC 4.1.2: name, role and value programmatically determinable and updated."
+      },
+      {
+        "id": "A11Y-004.M3",
+        "text": "Announce dynamic status or result changes without unnecessary focus movement."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-004.S1",
+        "text": "Use live regions for async status; keep messages concise."
+      },
+      {
+        "id": "A11Y-004.S2",
+        "text": "Test with at least one screen reader and keyboard only."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-004.A1",
+        "text": "Do not use ARIA to recreate native semantics unnecessarily."
+      },
+      {
+        "id": "A11Y-004.A2",
+        "text": "Do not announce every change or move focus on status updates."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Native semantics sufficient",
+        "decision": "Do not add ARIA"
+      },
+      {
+        "situation": "Dynamic content changes",
+        "decision": "Announce via live region"
+      },
+      {
+        "situation": "Complex widget",
+        "decision": "Use APG pattern and test"
+      }
+    ],
+    "STATES": [
+      "Initial load",
+      "Navigation",
+      "Form interaction",
+      "Async update",
+      "Error announcement",
+      "Modal/dialog"
+    ],
+    "EXAMPLE": {
+      "good": "\"After filtering, announce '12 results' via polite live region.\"",
+      "bad": "\"Silent filter update with focus unchanged.\""
+    },
+    "FAILURE_MODES": [
+      "Missing labels make controls announced as \"button\".",
+      "Dynamic updates are not announced.",
+      "Overuse of ARIA overrides native semantics."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-004.c1",
+      "text": "Reading order correct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-004.c2",
+      "text": "Name/role/value?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-004.c3",
+      "text": "Dynamic status announced?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-004.c4",
+      "text": "Tested with screen reader?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C Understanding Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WAI-ARIA 1.2",
+      "url": "https://www.w3.org/TR/wai-aria-1.2/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-010",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 551,
+    "rules": 140,
+    "checks": 29
+  }
+}

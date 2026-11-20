@@ -1,0 +1,142 @@
+{
+  "id": "DS-004",
+  "title": "Design Consistency",
+  "rev": 2,
+  "etag": "sha256:af33881d4d48a393ef56be0933534a69956c8d9870092698dff60ede0f665ce5",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "design-consistency",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Consistency reduces relearning when same patterns mean and behave the same.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-004.M1",
+        "text": "Use same label, treatment and interaction for same action unless justified."
+      },
+      {
+        "id": "DS-004.M2",
+        "text": "Audit divergent behavior across repeated flows, not only pixels."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-004.S1",
+        "text": "Document approved exceptions with rationale and owner."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-004.A1",
+        "text": "Do not standardize a pattern proven wrong for a task."
+      },
+      {
+        "id": "DS-004.A2",
+        "text": "Do not enforce visual sameness that harms task performance."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Same action, different label",
+        "decision": "Align to one term"
+      },
+      {
+        "situation": "Justified exception",
+        "decision": "Document rationale and scope"
+      },
+      {
+        "situation": "Pattern proven wrong",
+        "decision": "Redesign before standardizing"
+      },
+      {
+        "situation": "Cross-platform difference",
+        "decision": "Keep interaction parity, allow platform conventions"
+      }
+    ],
+    "STATES": [
+      "Aligned",
+      "Exception recorded",
+      "Divergent",
+      "Under review"
+    ],
+    "EXAMPLE": {
+      "good": "\"Destructive actions share danger semantics and confirmation language across screens.\"",
+      "bad": "\"Delete is 'Remove' on one page and 'Trash' on another with different confirmations.\""
+    },
+    "FAILURE_MODES": [
+      "Inconsistent labels force relearning and errors.",
+      "Pixel-only audits miss behavioral divergence.",
+      "Premature standardization locks in bad patterns."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-004.c1",
+      "text": "Same action same meaning?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-004.c2",
+      "text": "Exceptions justified and documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-004.c3",
+      "text": "Cross-screen and cross-platform checked?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group 10 Usability Heuristics",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "DS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 543,
+    "rules": 107,
+    "checks": 31
+  }
+}

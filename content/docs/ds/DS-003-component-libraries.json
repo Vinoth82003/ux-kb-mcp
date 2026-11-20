@@ -1,0 +1,151 @@
+{
+  "id": "DS-003",
+  "title": "Component Libraries",
+  "rev": 2,
+  "etag": "sha256:580c4d9484426a3188761369a90974ef655e0888c71e2cc4f56b5db8ec9a31fc",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "component-libraries",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "A component library provides reusable, tested behavior; reuse matters only when it fits the task.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-003.M1",
+        "text": "Document API, anatomy, variants, states and accessibility behavior for each component."
+      },
+      {
+        "id": "DS-003.M2",
+        "text": "Provide usage and non-usage guidance plus keyboard and screen-reader behavior."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-003.S1",
+        "text": "Test components in realistic content, responsive contexts and with assistive tech."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-003.A1",
+        "text": "Do not create variants for one-off preferences or force unrelated patterns together."
+      },
+      {
+        "id": "DS-003.A2",
+        "text": "Do not ship a component without tests for loading, error and empty states."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Repeated UI need across teams",
+        "decision": "Add to library with owner"
+      },
+      {
+        "situation": "One-off or experimental",
+        "decision": "Keep local with documented rationale"
+      },
+      {
+        "situation": "Breaking component change",
+        "decision": "Major version + migration guide"
+      },
+      {
+        "situation": "Deprecated component",
+        "decision": "Keep for one release with warning"
+      }
+    ],
+    "STATES": [
+      "Stable",
+      "Beta",
+      "Deprecated",
+      "Removed",
+      "Documented",
+      "Tested"
+    ],
+    "EXAMPLE": {
+      "good": "\"Button owns focus, loading and disabled behavior; page owns composition.\"",
+      "bad": "\"A styled div passed off as a button with no keyboard support.\""
+    },
+    "FAILURE_MODES": [
+      "Undocumented APIs lead to misuse and inconsistent behavior.",
+      "Components tested only in isolation fail with real content.",
+      "Variant sprawl recreates one-offs inside the library."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-003.c1",
+      "text": "Behavior documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-003.c2",
+      "text": "Variants semantic?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-003.c3",
+      "text": "Consumer context tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-003.c4",
+      "text": "Accessibility behavior specified?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Storybook",
+      "url": "https://storybook.js.org/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Radix UI",
+      "url": "https://www.radix-ui.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "DS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 542,
+    "rules": 119,
+    "checks": 31
+  }
+}

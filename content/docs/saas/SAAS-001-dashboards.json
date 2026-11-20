@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-001",
+  "title": "Dashboards",
+  "rev": 2,
+  "etag": "sha256:4800eb86996410cbd1fa31d5d3f3f0ef72b242b041c010a5bfdb546256bfcfb1",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "dashboards",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Dashboards support monitoring and decisions by prioritizing questions and actions.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-001.M1",
+        "text": "Define audience, decisions and review cadence before selecting KPIs."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-001.S1",
+        "text": "Show metric definition, time period, comparison baseline and freshness."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-001.A1",
+        "text": "Do not fill dashboards with vanity metrics or decorative charts."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "No data yet",
+        "decision": "Show setup path or labeled demo data"
+      },
+      {
+        "situation": "Metric conflict",
+        "decision": "Prioritize decision/action over vanity totals"
+      },
+      {
+        "situation": "Stale data",
+        "decision": "Show freshness timestamp and refresh action"
+      }
+    ],
+    "STATES": [
+      "First use",
+      "Populated",
+      "Filtered empty",
+      "No permission",
+      "Stale/loading",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "Overdue invoices card shows count, aging buckets and a Review action",
+      "bad": "Total users tile with no definition, period or next action"
+    },
+    "FAILURE_MODES": [
+      "Vanity metrics displace decisions; validate each KPI against a user question.",
+      "Stale data presented as current misleads; always show freshness.",
+      "Dense charts without actions leave users stuck; provide next step."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-001.c1",
+      "text": "Each metric answers question?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-001.c2",
+      "text": "Period/freshness visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-001.c3",
+      "text": "Next action clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Dashboard Design",
+      "url": "https://www.nngroup.com/articles/dashboard-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Tableau Dashboard Design",
+      "url": "https://www.tableau.com/learn/articles/dashboard-design",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-008",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 456,
+    "rules": 79,
+    "checks": 23
+  }
+}

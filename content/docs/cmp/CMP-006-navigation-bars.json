@@ -1,0 +1,173 @@
+{
+  "id": "CMP-006",
+  "title": "Navigation Bars",
+  "rev": 2,
+  "etag": "sha256:d3bb9d3064b35f4299517821766004e12e886170b0918fca1de78c4fa5afc53d",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "navigation-bars",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Navigation expresses information architecture and current location.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-006.M1",
+        "text": "Use user vocabulary and group destinations by task."
+      },
+      {
+        "id": "CMP-006.M2",
+        "text": "Use a `<nav>` landmark with an accessible name and provide a skip link to main content (SC 2.4.1)."
+      },
+      {
+        "id": "CMP-006.M3",
+        "text": "Indicate current location with `aria-current=\"page\"` (or equivalent) in addition to color."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-006.S1",
+        "text": "Indicate current location beyond color alone (weight, underline or icon)."
+      },
+      {
+        "id": "CMP-006.S2",
+        "text": "Keep primary nav concise; move secondary destinations to menus or footer."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-006.A1",
+        "text": "Do not overload primary navigation or use ambiguous labels."
+      },
+      {
+        "id": "CMP-006.A2",
+        "text": "Do not rely on color alone for current location."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Top-level destinations",
+        "decision": "Primary nav landmark"
+      },
+      {
+        "situation": "Current page",
+        "decision": "aria-current + visual marker"
+      },
+      {
+        "situation": "Skip to content",
+        "decision": "Skip link before nav"
+      },
+      {
+        "situation": "Mobile",
+        "decision": "Collapsible menu with focus management"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Current",
+      "Collapsed (mobile)",
+      "Sticky",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "`<nav aria-label=\"Primary\">` with “Overview, Transactions, Reports, Settings”; current item has `aria-current=\"page\"` and an underline",
+      "bad": "all report links in the top nav with color-only current state"
+    },
+    "FAILURE_MODES": [
+      "Missing landmark/skip link forces keyboard users through repeated nav.",
+      "Color-only current location is invisible to some users.",
+      "Overloaded nav increases decision time (Hick)."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-006.c1",
+      "text": "Labels recognizable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-006.c2",
+      "text": "Landmark + skip link present?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-006.c3",
+      "text": "aria-current used?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-006.c4",
+      "text": "Current location perceivable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-006.c5",
+      "text": "Keyboard/mobile usable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group 10 Usability Heuristics",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Bypass Blocks",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 654,
+    "rules": 142,
+    "checks": 39
+  }
+}

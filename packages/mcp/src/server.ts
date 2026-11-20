@@ -1,19 +1,29 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import {
+  diffSince,
   DOMAINS,
+  gateStatus,
+  getChecklistDetailed,
+  getDocContent,
+  getDocs,
+  reportCheck,
+  reportFalsePositive,
   reportGap,
   requireSession,
   STAGES,
+  startGate,
   startSession,
+  topFailures,
   verifyCitations,
   type Doc,
   type Kb,
 } from "@ux-kb/core";
+import { assertStagePackAllowed, sessionMode, sessionPolicy, signEtag, VERIFY_CITATIONS_DEPRECATION } from "@ux-kb/core";
 import type { ApiKeyRecord, KbStore } from "@ux-kb/core/store";
 
 const SERVER_NAME = "ux-kb";
-const SERVER_VERSION = "0.2.0";
+const SERVER_VERSION = "2.0.0";
 
 export interface BuildOptions {
   kb: Kb;
@@ -119,22 +129,54 @@ export function buildServer(options: BuildOptions): McpServer {
           .min(1)
           .max(2000)
           .describe("What is being designed, in one or two sentences"),
+        mode: z.enum(["quick", "audit", "full"]).optional().describe("Workflow mode"),
+        screen: z.string().optional().describe("Screen name"),
+        tokenBudget: z.number().int().optional().describe("Token budget"),
+        idempotencyKey: z.string().optional().describe("Idempotency key"),
       },
     },
-    tracked("start_session", async ({ feature }: { feature: string }) => {
-      const { session, suggestedIds } = await startSession(store, kb.repo, {
-        apiKeyId: apiKey.id,
-        kbVersion: version,
-        feature,
-      });
-      return [
-        `sessionId: ${session.id}`,
-        `kbVersion: ${version}`,
-        `suggestedDocIds: ${suggestedIds.length > 0 ? suggestedIds.join(", ") : "(none)"}`,
-        "",
-        "Next: call get_stage_pack with this sessionId before the current stage.",
-      ].join("\n");
-    }),
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const result = await startSession(store, kb.repo, {
+          apiKeyId: apiKey.id,
+          kbVersion: version,
+          feature: args.feature,
+          mode: args.mode,
+          screen: args.screen,
+          tokenBudget: args.tokenBudget,
+          idempotencyKey: args.idempotencyKey,
+        });
+        const session = result.session;
+        const mode = result.mode;
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: {
+            estimated: 50,
+            budget: session.tokenBudget ?? 30000,
+            truncated: false,
+            budgetRemaining: session.tokenBudget ?? 30000,
+          },
+          policy: sessionPolicy(session, version),
+          data: {
+            sessionId: session.id,
+            mode,
+            routing: {
+              featureTags: result.featureTags,
+              suggestedDocIds: result.suggestedIds,
+              components: result.components,
+            },
+            nextSteps: result.nextSteps,
+          },
+        };
+        await logUsage("start_session", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("start_session", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
   );
 
   server.registerTool(
@@ -146,18 +188,88 @@ export function buildServer(options: BuildOptions): McpServer {
       inputSchema: {
         sessionId: z.string().max(64).describe("ID returned by start_session"),
         stage: z.enum(STAGES).describe("Workflow stage"),
+        depth: z.enum(["checklist", "rules", "full"]).optional().describe("Content depth"),
+        maxTokens: z.number().int().min(100).optional().describe("Token budget for this response"),
+        page: z.number().int().min(1).optional().describe("Page number"),
       },
     },
-    tracked(
-      "get_stage_pack",
-      async ({ sessionId, stage }: { sessionId: string; stage: string }) => {
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const { sessionId, stage } = args;
         const session = await requireSession(store, sessionId, apiKey.id);
-        const pack = kb.pack(stage, session.feature);
-        const ids = [...pack.baseDocs, ...pack.routedDocs].map((doc) => doc.frontMatter.id);
-        await store.addFetched(session.id, ids);
-        return kb.renderPack(pack);
-      },
-    ),
+        const mode = sessionMode(session);
+        assertStagePackAllowed(mode, stage);
+        const depth = args.depth ?? "rules";
+        const maxTokens = args.maxTokens ?? 4000;
+        const pack = kb.pack(stage, session.feature, {
+          depth,
+          maxTokens,
+          page: args.page,
+          deliveredIds: session.fetched,
+        });
+        const changedBase = pack.baseDocs;
+        const changedRouted = pack.routedDocs;
+        const allIds = pack.allIds ?? [];
+        await store.addFetched(session.id, allIds);
+
+        const depthSections =
+          depth === "checklist" ? ["CHECK"] : depth === "rules" ? ["SUMMARY", "MUST", "CHECK"] : ["SUMMARY", "MUST", "SHOULD", "AVOID", "DECIDE", "STATES", "EXAMPLE", "FAILURE_MODES", "CHECK", "SOURCES", "RELATED"];
+
+        const renderDocForPack = (doc: Doc) => {
+          const content = getDocContent(kb.repo, doc.frontMatter.id, {
+            sections: depthSections,
+            includeSources: depth === "full",
+            maxTokens: Number.POSITIVE_INFINITY,
+          });
+          return content.markdown ?? doc.body;
+        };
+
+        const baseDocs = changedBase.map((doc) => ({
+          id: doc.frontMatter.id,
+          etag: doc.etag,
+          rev: doc.frontMatter.rev,
+          markdown: renderDocForPack(doc),
+        }));
+        const routedDocs = changedRouted.map((doc) => ({
+          id: doc.frontMatter.id,
+          etag: doc.etag,
+          rev: doc.frontMatter.rev,
+          markdown: renderDocForPack(doc),
+        }));
+
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: {
+            estimated: pack.tokenEstimate,
+            budget: maxTokens,
+            truncated: pack.overBudget,
+            budgetRemaining: session.tokenBudget ?? 30000,
+          },
+          policy: sessionPolicy(session, version),
+          data: {
+            stage: pack.stage,
+            depth: pack.depth,
+            maxTokens: pack.maxTokens,
+            page: pack.page,
+            totalPages: pack.totalPages,
+            deferredIds: pack.deferredIds ?? [],
+            unchangedIds: pack.unchangedIds ?? [],
+            coreRules: pack.coreRules,
+            antiSlop: pack.antiSlop,
+            baseDocs,
+            routedDocs,
+            routedIds: pack.routedIds,
+          },
+        };
+        await logUsage("get_stage_pack", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("get_stage_pack", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
   );
 
   server.registerTool(
@@ -169,14 +281,223 @@ export function buildServer(options: BuildOptions): McpServer {
       inputSchema: {
         sessionId: z.string().max(64).describe("ID returned by start_session"),
         id: z.string().max(64).describe("Document ID such as CMP-001"),
+        sections: z
+          .array(z.string())
+          .optional()
+          .describe("Sections to include, e.g. ['MUST','CHECK']"),
+        includeSources: z.boolean().optional().describe("Include SOURCES and RELATED"),
+        ifNoneMatch: z.string().optional().describe("ETag from a previous fetch"),
+        maxTokens: z.number().int().min(100).optional().describe("Token budget for this response"),
       },
     },
-    tracked("get_doc", async ({ sessionId, id }: { sessionId: string; id: string }) => {
-      const session = await requireSession(store, sessionId, apiKey.id);
-      const doc = kb.requireDoc(id);
-      await store.addFetched(session.id, [doc.frontMatter.id]);
-      return renderDoc(doc);
-    }),
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const { sessionId, id } = args;
+        const session = await requireSession(store, sessionId, apiKey.id);
+        const content = getDocContent(kb.repo, id, {
+          sections: args.sections,
+          includeSources: args.includeSources,
+          ifNoneMatch: args.ifNoneMatch,
+          maxTokens: args.maxTokens,
+        });
+        if (!content.notModified) {
+          await store.addFetched(session.id, [content.id]);
+        }
+        const budget = args.maxTokens ?? session.tokenBudget ?? 4000;
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: {
+            estimated: content.estimatedTokens,
+            budget,
+            truncated: content.truncated,
+            budgetRemaining: session.tokenBudget ?? 30000,
+          },
+          policy: sessionPolicy(session, version),
+          data: {
+            id: content.id,
+            etag: content.etag,
+            signature: signEtag(content.etag),
+            rev: content.rev,
+            notModified: content.notModified,
+            markdown: content.markdown,
+            sections: content.sections,
+            deferred: content.deferred,
+          },
+        };
+        await logUsage("get_doc", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("get_doc", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "get_docs",
+    {
+      title: "Get multiple UX-KB documents",
+      description: "Batch fetch documents with a shared token budget.",
+      inputSchema: {
+        sessionId: z.string().max(64).describe("ID returned by start_session"),
+        ids: z.array(z.string().max(64)).min(1).max(50).describe("Document IDs"),
+        sections: z.array(z.string()).optional().describe("Sections to include"),
+        includeSources: z.boolean().optional().describe("Include SOURCES and RELATED"),
+        maxTokens: z.number().int().min(100).optional().describe("Shared token budget"),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const { sessionId } = args;
+        const session = await requireSession(store, sessionId, apiKey.id);
+        const result = getDocs(kb.repo, args.ids, {
+          sections: args.sections,
+          includeSources: args.includeSources,
+          maxTokens: args.maxTokens,
+        });
+        await store.addFetched(session.id, args.ids);
+        const budget = args.maxTokens ?? 2500;
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: {
+            estimated: result.estimatedTokens,
+            budget,
+            truncated: result.truncated,
+            budgetRemaining: session.tokenBudget ?? 30000,
+          },
+          policy: sessionPolicy(session, version),
+          data: {
+            docs: result.docs.map((d: any) => ({
+              ...d,
+              signature: d.etag ? signEtag(d.etag) : undefined,
+            })),
+            deferred: result.deferred,
+          },
+        };
+        await logUsage("get_docs", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("get_docs", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "start_gate",
+    {
+      title: "Start a screen gate",
+      description: "Create the Screen Gate checklist for a screen.",
+      inputSchema: {
+        sessionId: z.string().max(64),
+        screen: z.string().min(1),
+        components: z.array(z.string()).default([]),
+        screenType: z.enum(["list", "detail", "form", "dashboard", "settings", "auth", "empty-state", "other"]).default("other"),
+        extraStates: z.array(z.string()).default([]),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const session = await requireSession(store, args.sessionId, apiKey.id);
+        const result = await startGate(store, kb.repo, session, {
+          sessionId: args.sessionId,
+          screen: args.screen,
+          components: args.components ?? [],
+          screenType: args.screenType ?? "other",
+          extraStates: args.extraStates ?? [],
+        });
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: { estimated: 200, budget: 1200, truncated: false, budgetRemaining: session.tokenBudget ?? 30000 },
+          policy: sessionPolicy(session, version),
+          data: result,
+        };
+        await logUsage("start_gate", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("start_gate", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "report_check",
+    {
+      title: "Report check results",
+      description: "Record pass/fail/na/waive per gate item with evidence.",
+      inputSchema: {
+        sessionId: z.string().max(64),
+        gateId: z.string().max(64),
+        results: z.array(
+          z.object({
+            itemId: z.string(),
+            result: z.enum(["pass", "fail", "na", "waive"]),
+            evidence: z.array(z.object({ type: z.enum(["test", "file", "screenshot", "command_output", "url", "manual"]), ref: z.string().min(3).max(500) })).max(5).optional(),
+            note: z.string().max(300).optional(),
+            naReason: z.string().max(300).optional(),
+            waiver: z.object({ by: z.literal("user"), reason: z.string().min(15), ticket: z.string().optional() }).optional(),
+          }),
+        ).min(1).max(50),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const session = await requireSession(store, args.sessionId, apiKey.id);
+        const result = await reportCheck(store, args.gateId, session.id, args.results);
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: { estimated: 120, budget: 400, truncated: false, budgetRemaining: session.tokenBudget ?? 30000 },
+          policy: sessionPolicy(session, version),
+          data: result,
+        };
+        await logUsage("report_check", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("report_check", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "gate_status",
+    {
+      title: "Gate status",
+      description: "Authoritative done signal and recovery view.",
+      inputSchema: {
+        sessionId: z.string().max(64),
+        gateId: z.string().max(64),
+        view: z.enum(["summary", "open", "full"]).default("summary"),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const session = await requireSession(store, args.sessionId, apiKey.id);
+        const result = await gateStatus(store, args.gateId, session.id, args.view ?? "summary");
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: { estimated: args.view === "summary" ? 150 : 400, budget: 400, truncated: false, budgetRemaining: session.tokenBudget ?? 30000 },
+          policy: sessionPolicy(session, version),
+          data: result,
+        };
+        await logUsage("gate_status", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("gate_status", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
   );
 
   server.registerTool(
@@ -223,12 +544,122 @@ export function buildServer(options: BuildOptions): McpServer {
           .min(1)
           .max(50)
           .describe("Document IDs, e.g. ['CMP-001']"),
+        depth: z.enum(["checks", "checks+verify"]).optional().describe("Include verify hints"),
       },
     },
-    tracked("get_checklist", async ({ ids }: { ids: string[] }) => {
-      const items = kb.checklist(ids);
+    tracked("get_checklist", async ({ ids, depth }: { ids: string[]; depth?: "checks" | "checks+verify" }) => {
+      const items = getChecklistDetailed(kb.repo, ids, depth ?? "checks");
       return JSON.stringify({ count: items.length, items }, null, 2);
     }),
+  );
+
+  server.registerTool(
+    "report_false_positive",
+    {
+      title: "Report a false positive",
+      description: "Flag a noisy or wrong check item. Counts toward the item's noise score.",
+      inputSchema: {
+        itemId: z.string().min(1).max(64),
+        reason: z.string().min(5).max(500),
+        context: z.string().max(2000).optional(),
+        sessionId: z.string().max(64).optional(),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const result = await reportFalsePositive(store, {
+          itemId: args.itemId,
+          reason: args.reason,
+          context: args.context,
+          sessionId: args.sessionId,
+        });
+        const body = {
+          kbVersion: version,
+          sessionId: args.sessionId ?? null,
+          tokens: { estimated: 60, budget: 400, truncated: false, budgetRemaining: 30000 },
+          policy: {},
+          data: result,
+        };
+        await logUsage("report_false_positive", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("report_false_positive", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "top_failures",
+    {
+      title: "Top failing checks",
+      description: "Most frequently failed item IDs with fail rate, aggregated anonymously.",
+      inputSchema: {
+        domain: z.string().optional(),
+        limit: z.number().int().min(1).max(50).optional(),
+        window: z.enum(["7d", "30d", "90d"]).optional(),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const session = args.sessionId ? await requireSession(store, args.sessionId, apiKey.id) : null;
+        const result = await topFailures(store, kb.repo, {
+          domain: args.domain,
+          limit: args.limit,
+          window: args.window,
+        });
+        const body = {
+          kbVersion: version,
+          sessionId: session?.id ?? null,
+          tokens: { estimated: 120, budget: 800, truncated: false, budgetRemaining: session?.tokenBudget ?? 30000 },
+          policy: session ? sessionPolicy(session, version) : {},
+          data: { items: result },
+        };
+        await logUsage("top_failures", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("top_failures", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "diff_since",
+    {
+      title: "Diff since a KB version",
+      description: "Return docs and checklist items that changed since the given KB version.",
+      inputSchema: {
+        sessionId: z.string().max(64),
+        sinceVersion: z.string().min(1).max(64),
+        ids: z.array(z.string().max(64)).min(1).max(50),
+      },
+    },
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const session = await requireSession(store, args.sessionId, apiKey.id);
+        const result = diffSince(kb.repo, {
+          sessionId: args.sessionId,
+          sinceVersion: args.sinceVersion,
+          ids: args.ids,
+        });
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: { estimated: 200, budget: 1200, truncated: false, budgetRemaining: session.tokenBudget ?? 30000 },
+          policy: sessionPolicy(session, version),
+          data: result,
+        };
+        await logUsage("diff_since", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("diff_since", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
   );
 
   server.registerTool(
@@ -246,14 +677,28 @@ export function buildServer(options: BuildOptions): McpServer {
           .describe("Doc IDs cited in the proposal"),
       },
     },
-    tracked(
-      "verify_citations",
-      async ({ sessionId, citedIds }: { sessionId: string; citedIds: string[] }) => {
+    async (args: any) => {
+      const startedAt = Date.now();
+      try {
+        const { sessionId, citedIds } = args;
         const session = await requireSession(store, sessionId, apiKey.id);
         const report = await verifyCitations(store, kb.repo, session, citedIds);
-        return JSON.stringify(report, null, 2);
-      },
-    ),
+        const policy = sessionPolicy(session, version);
+        policy.deprecations = [VERIFY_CITATIONS_DEPRECATION];
+        const body = {
+          kbVersion: version,
+          sessionId: session.id,
+          tokens: { estimated: 120, budget: 400, truncated: false, budgetRemaining: session.tokenBudget ?? 30000 },
+          policy,
+          data: report,
+        };
+        await logUsage("verify_citations", args, startedAt, true);
+        return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }] };
+      } catch (error) {
+        await logUsage("verify_citations", args, startedAt, false);
+        return { content: [{ type: "text" as const, text: `Error: ${error instanceof Error ? error.message : String(error)}` }], isError: true };
+      }
+    },
   );
 
   server.registerTool(

@@ -35,6 +35,14 @@ export class Kb {
     return getDoc(this.repo, id);
   }
 
+  versionedDocs(): import("./schemas/document").VersionedDoc[] {
+    return this.repo.versionedDocs();
+  }
+
+  versionedDoc(id: string): import("./schemas/document").VersionedDoc | undefined {
+    return this.repo.versionedDoc(id);
+  }
+
   requireDoc(id: string): Doc {
     return requireDoc(this.repo, id);
   }
@@ -43,8 +51,8 @@ export class Kb {
     return searchDocs(this.repo, query, options);
   }
 
-  pack(stage: string, feature?: string): PackResult {
-    return getStagePack(this.repo, stage, feature);
+  pack(stage: string, feature?: string, options?: import("./services/packs.service").GetStagePackOptions): PackResult {
+    return getStagePack(this.repo, stage, feature, options);
   }
 
   renderPack(pack: PackResult): string {

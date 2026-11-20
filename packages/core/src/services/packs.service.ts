@@ -6,6 +6,15 @@ import { estimateTokens } from "../content/tokens";
 import { KbError } from "../errors";
 import { requireDoc } from "./docs.service";
 
+export type PackDepth = "checklist" | "rules" | "full";
+
+export interface GetStagePackOptions {
+  depth?: PackDepth;
+  maxTokens?: number;
+  page?: number;
+  deliveredIds?: string[];
+}
+
 /** Case-insensitive keyword routing. A route fires when any match term appears in the feature text. */
 export function routeFeature(repo: ContentRepository, feature: string): string[] {
   const text = feature.toLowerCase();
@@ -19,10 +28,30 @@ export function routeFeature(repo: ContentRepository, feature: string): string[]
   return [...new Set(added)];
 }
 
+function depthSections(depth: PackDepth): string[] {
+  if (depth === "checklist") return ["CHECK"];
+  if (depth === "rules") return ["SUMMARY", "MUST", "CHECK"];
+  return ["SUMMARY", "MUST", "SHOULD", "AVOID", "DECIDE", "STATES", "EXAMPLE", "FAILURE_MODES", "CHECK", "SOURCES", "RELATED"];
+}
+
+function renderDocForDepth(doc: Doc, depth: PackDepth): string {
+  // Use legacy sections record; build a small markdown slice.
+  const legacy = doc.sections ?? {};
+  const pick = (key: string) => legacy[key] ?? "";
+  if (depth === "checklist") {
+    return pick("check");
+  }
+  if (depth === "rules") {
+    return [pick("summary"), pick("must"), pick("check")].filter(Boolean).join("\n\n");
+  }
+  return doc.body ?? "";
+}
+
 export function getStagePack(
   repo: ContentRepository,
   stage: string,
   feature?: string,
+  options: GetStagePackOptions = {},
 ): PackResult {
   if (!isStage(stage)) {
     throw new KbError(
@@ -39,21 +68,63 @@ export function getStagePack(
     );
   }
 
-  const baseIds = new Set(pack.always);
-  const baseDocs = [...baseIds].map((id) => requireDoc(repo, id));
-  const routedIds = (feature ? routeFeature(repo, feature) : []).filter(
-    (id) => !baseIds.has(id),
-  );
-  const routedDocs = routedIds.map((id) => requireDoc(repo, id));
+  const depth: PackDepth = options.depth ?? "rules";
+  const maxTokens = options.maxTokens ?? pack.budget_tokens;
+  const page = Math.max(1, options.page ?? 1);
+  const delivered = new Set(options.deliveredIds ?? []);
 
-  const docs: Doc[] = [...baseDocs, ...routedDocs];
-  const coreRules = pack.include_core_md ? repo.core() : undefined;
-  const antiSlop = pack.include_core_md ? repo.antiSlop() : undefined;
+  const baseIds = [...pack.always];
+  const routedIdsRaw = feature ? routeFeature(repo, feature) : [];
+  const routedIds = routedIdsRaw.filter((id) => !baseIds.includes(id));
+
+  const allIds = [...baseIds, ...routedIds];
+  const baseIdSet = new Set(baseIds);
+
+  // per-doc cost
+  const items = allIds.map((id) => {
+    const doc = requireDoc(repo, id);
+    const unchanged = delivered.has(id);
+    const cost = unchanged ? 20 : estimateTokens(renderDocForDepth(doc, depth));
+    return { id, doc, unchanged, cost, routed: !baseIdSet.has(id) };
+  });
+
+  const includeCore = pack.include_core_md;
+  const coreRules = includeCore && (depth === "rules" || depth === "full") ? repo.core() : undefined;
+  const antiSlop = includeCore && (depth === "rules" || depth === "full") ? repo.antiSlop() : undefined;
+  const coreCost = (coreRules ? estimateTokens(coreRules) : 0) + (antiSlop ? estimateTokens(antiSlop) : 0);
+
+  // paginate
+  const pages: (typeof items)[] = [[]];
+  let currentCost = coreCost;
+  for (const item of items) {
+    if (pages[pages.length - 1].length > 0 && currentCost + item.cost > maxTokens) {
+      pages.push([]);
+      currentCost = coreCost;
+    }
+    pages[pages.length - 1].push(item);
+    currentCost += item.cost;
+  }
+  const totalPages = Math.max(1, pages.length);
+  const safePage = Math.min(page, totalPages);
+  const selected = pages[safePage - 1] ?? [];
+
+  const selectedIds = new Set(selected.map((i) => i.id));
+  const deferredIds = allIds.filter((id) => !selectedIds.has(id));
+
+  const selectedBaseDocs: Doc[] = [];
+  const selectedRoutedDocs: Doc[] = [];
+  const unchangedIds: string[] = [];
+  for (const item of selected) {
+    if (item.unchanged) {
+      unchangedIds.push(item.id);
+      continue;
+    }
+    if (item.routed) selectedRoutedDocs.push(item.doc);
+    else selectedBaseDocs.push(item.doc);
+  }
 
   const tokenEstimate =
-    (coreRules ? estimateTokens(coreRules) : 0) +
-    (antiSlop ? estimateTokens(antiSlop) : 0) +
-    docs.reduce((total, doc) => total + doc.tokenEstimate, 0);
+    coreCost + selected.reduce((t, i) => t + i.cost, 0);
 
   return {
     stage,
@@ -62,11 +133,19 @@ export function getStagePack(
     includeCore: pack.include_core_md,
     coreRules,
     antiSlop,
-    baseDocs,
-    routedDocs,
-    routedIds,
+    baseDocs: selectedBaseDocs,
+    routedDocs: selectedRoutedDocs,
+    routedIds: routedIds.filter((id) => selectedIds.has(id)),
     tokenEstimate,
-    overBudget: tokenEstimate > pack.budget_tokens,
+    overBudget: tokenEstimate > maxTokens,
+    depth,
+    maxTokens,
+    page: safePage,
+    totalPages,
+    deferredIds,
+    unchangedIds,
+    allIds,
+    baseIds,
   };
 }
 

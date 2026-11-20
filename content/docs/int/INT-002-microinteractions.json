@@ -1,0 +1,159 @@
+{
+  "id": "INT-002",
+  "title": "Microinteractions",
+  "rev": 2,
+  "etag": "sha256:5495c2c3c886f6a41e8b1ea65a6ca32969a6753fddb874496843ede250739e1e",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "microinteractions",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Microinteractions give immediate, single-purpose feedback around one trigger, rule and response; motion is a communication tool, not decoration.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-002.M1",
+        "text": "Animate only when motion clarifies cause, state change or spatial continuity."
+      },
+      {
+        "id": "INT-002.M2",
+        "text": "Provide an equivalent non-motion cue (color, text, icon) for every animated state change."
+      },
+      {
+        "id": "INT-002.M3",
+        "text": "Respect prefers-reduced-motion by removing or replacing non-essential motion."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-002.S1",
+        "text": "Keep routine feedback animations to 100–200 ms; reserve 200–300 ms for spatial transitions."
+      },
+      {
+        "id": "INT-002.S2",
+        "text": "Avoid delaying task completion; animation must not block input or navigation."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-002.A1",
+        "text": "Do not animate every hover, loading event or number by default."
+      },
+      {
+        "id": "INT-002.A2",
+        "text": "Do not use motion as the only signal of success, error or state change."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Triggered feedback",
+        "decision": "Animate state change ≤200 ms"
+      },
+      {
+        "situation": "Reduced motion requested",
+        "decision": "Remove motion, keep static cue"
+      },
+      {
+        "situation": "Spatial transition",
+        "decision": "Use 200–300 ms directional motion"
+      },
+      {
+        "situation": "Decorative delight",
+        "decision": "Omit unless it serves comprehension"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Triggered",
+      "Animating",
+      "Success",
+      "Failure",
+      "Reduced motion"
+    ],
+    "EXAMPLE": {
+      "good": "\"Bookmark icon fills and 'Saved' appears in 120 ms; with reduced motion, only 'Saved' appears.\"",
+      "bad": "\"Heart pulses for 1.2 s on every tap and blocks repeated taps.\""
+    },
+    "FAILURE_MODES": [
+      "Decorative motion competes with task content and slows completion.",
+      "Missing reduced-motion handling excludes vestibular-sensitive users.",
+      "Motion-only feedback is invisible to screen-reader and reduced-motion users."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-002.c1",
+      "text": "Motion communicates state?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-002.c2",
+      "text": "Reduced motion respected?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-002.c3",
+      "text": "Non-motion feedback exists?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-002.c4",
+      "text": "Duration ≤300 ms for routine feedback?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Microinteractions in User Experience",
+      "url": "https://www.nngroup.com/articles/microinteractions/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g The Role of Animation and Motion in UX",
+      "url": "https://www.nngroup.com/articles/animation-purpose-ux/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 665,
+    "rules": 160,
+    "checks": 36
+  }
+}

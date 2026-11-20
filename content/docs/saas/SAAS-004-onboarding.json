@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-004",
+  "title": "Onboarding",
+  "rev": 2,
+  "etag": "sha256:cb8c8aef541a486ba49694be4133e85265ae296c7e547ad2b5986ed84febaed2",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "onboarding",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Onboarding helps users reach first meaningful value while learning only what is needed next.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-004.M1",
+        "text": "Define activation as user outcome, not tutorial completion."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-004.S1",
+        "text": "Ask only for information needed now; defer optional configuration."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-004.A1",
+        "text": "Do not force tours before users can act."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "User can act immediately",
+        "decision": "Skip tour"
+      },
+      {
+        "situation": "Optional info",
+        "decision": "Defer"
+      },
+      {
+        "situation": "Activation unclear",
+        "decision": "Define outcome metric"
+      }
+    ],
+    "STATES": [
+      "First run",
+      "In progress",
+      "Activated",
+      "Skipped",
+      "Error",
+      "Returning"
+    ],
+    "EXAMPLE": {
+      "good": "Import one project and show a useful result before asking for every preference",
+      "bad": "8-step tour before any action"
+    },
+    "FAILURE_MODES": [
+      "Tours block action; let users act first.",
+      "Activation defined as completion inflates success; define outcome.",
+      "Excessive upfront data increases drop-off; defer optional."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-004.c1",
+      "text": "Activation outcome defined?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-004.c2",
+      "text": "Required setup minimal?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-004.c3",
+      "text": "Skip/defer safe?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Onboarding",
+      "url": "https://www.nngroup.com/articles/onboarding/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple HIG Onboarding",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/onboarding",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-008",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 411,
+    "rules": 78,
+    "checks": 22
+  }
+}

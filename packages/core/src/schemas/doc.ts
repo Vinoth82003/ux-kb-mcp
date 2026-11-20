@@ -84,6 +84,8 @@ export const docFrontMatterSchema = z.object({
 
 export type DocFrontMatter = z.infer<typeof docFrontMatterSchema>;
 
+import type { VersionedDoc } from "./document";
+
 /** A parsed topic document. `sections` is keyed by lowercased heading text. */
 export interface Doc {
   frontMatter: DocFrontMatter;
@@ -97,6 +99,21 @@ export interface Doc {
   tokenEstimate: number;
   /** Absolute path on disk (empty for DB-sourced docs). */
   path: string;
+
+  // v2 (optional, populated for versioned JSON docs)
+  id?: string;
+  title?: string;
+  rev?: number;
+  etag?: string;
+  status?: string;
+  tags?: string[];
+  appliesTo?: string[];
+  structuredSections?: VersionedDoc["sections"];
+  checks?: VersionedDoc["checks"];
+  sources?: VersionedDoc["sources"];
+  related?: VersionedDoc["related"];
+  tokenCost?: VersionedDoc["tokenCost"];
+  versioned?: VersionedDoc;
 }
 
 export interface RuleRef {

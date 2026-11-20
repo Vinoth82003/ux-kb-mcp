@@ -1,0 +1,170 @@
+{
+  "id": "A11Y-007",
+  "title": "Cognitive Accessibility",
+  "rev": 2,
+  "etag": "sha256:d8aae13791431a65be4c51fc59242bf6b26957f9aad2c683bccc0b58536a842a",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "cognitive-accessibility",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Cognitive accessibility reduces memory, language, attention and decision burden while preserving control.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-007.M1",
+        "text": "Keep instructions at point of need and preserve data through errors and interruption."
+      },
+      {
+        "id": "A11Y-007.M2",
+        "text": "SC 3.3.7: do not require re-entering information already provided."
+      },
+      {
+        "id": "A11Y-007.M3",
+        "text": "SC 3.3.8: avoid cognitive function tests for authentication unless an alternative is provided."
+      },
+      {
+        "id": "A11Y-007.M4",
+        "text": "Allow review and correction before final submission."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-007.S1",
+        "text": "Break complex tasks into meaningful steps with progress and review."
+      },
+      {
+        "id": "A11Y-007.S2",
+        "text": "Use plain language and define abbreviations."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-007.A1",
+        "text": "Do not rely on unexplained abbreviations, time pressure or memory-only instructions."
+      },
+      {
+        "id": "A11Y-007.A2",
+        "text": "Do not use unadjustable time limits on critical tasks."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Multi-step task",
+        "decision": "Provide progress, save/resume and review"
+      },
+      {
+        "situation": "Authentication",
+        "decision": "Allow password managers or passkeys; avoid puzzles"
+      },
+      {
+        "situation": "Time limit",
+        "decision": "Allow extension or adjustment where required"
+      },
+      {
+        "situation": "Complex form",
+        "decision": "Preserve input and allow correction"
+      }
+    ],
+    "STATES": [
+      "Entry",
+      "In progress",
+      "Interrupted",
+      "Review",
+      "Error",
+      "Recovery"
+    ],
+    "EXAMPLE": {
+      "good": "\"Password requirements visible before entry; failed submission retains values.\"",
+      "bad": "\"Clear form on validation error.\""
+    },
+    "FAILURE_MODES": [
+      "Validation clears user input.",
+      "Memory-only instructions cause errors.",
+      "Time limits block task completion."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-007.c1",
+      "text": "Instructions adjacent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-007.c2",
+      "text": "Review/correction possible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-007.c3",
+      "text": "Plain language?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-007.c4",
+      "text": "Time limits adjustable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-007.c5",
+      "text": "Redundant entry avoided?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C Making Content Usable for People with Cognitive and Learning Disabilities",
+      "url": "https://www.w3.org/TR/coga-usable/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group Minimize Cognitive Load",
+      "url": "https://www.nngroup.com/articles/minimize-cognitive-load/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 611,
+    "rules": 171,
+    "checks": 37
+  }
+}

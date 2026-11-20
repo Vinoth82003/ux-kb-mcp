@@ -1,0 +1,147 @@
+{
+  "id": "SAAS-005",
+  "title": "Authentication UX",
+  "rev": 2,
+  "etag": "sha256:a2d014cd0a9ed0acae0883d648b54c49a97c7237b857d834ffbb003590d8e2fe",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "authentication-ux",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Authentication protects accounts while reducing avoidable failure and supporting recovery.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-005.M1",
+        "text": "Allow password paste, managers and autofill; use correct autocomplete semantics."
+      },
+      {
+        "id": "SAAS-005.M2",
+        "text": "Support accessible authentication (WCAG 2.2 SC 3.3.8): do not require cognitive function tests unless an accessible alternative or mechanism is provided."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-005.S1",
+        "text": "Explain errors without exposing account existence where enumeration risk matters."
+      },
+      {
+        "id": "SAAS-005.S2",
+        "text": "Follow NIST password guidance: minimum 8 characters, allow at least 64, permit all printable characters, screen against breached lists, avoid composition rules."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-005.A1",
+        "text": "Do not block paste, impose arbitrary composition rules or make CAPTCHA the only accessible path."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Password entry",
+        "decision": "Allow paste/manager/autofill"
+      },
+      {
+        "situation": "Error message",
+        "decision": "Generic to avoid enumeration"
+      },
+      {
+        "situation": "MFA unavailable",
+        "decision": "Provide accessible alternative"
+      }
+    ],
+    "STATES": [
+      "Signed out",
+      "Submitting",
+      "Authenticated",
+      "Locked",
+      "Recovery",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "Password field allows paste and autocomplete=\"current-password\"",
+      "bad": "Paste disabled with composition rules"
+    },
+    "FAILURE_MODES": [
+      "Blocking paste breaks password managers; allow paste/autofill.",
+      "Account enumeration via errors; use generic messages.",
+      "CAPTCHA-only path excludes users; provide alternative."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-005.c1",
+      "text": "Paste/autofill works?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-005.c2",
+      "text": "Recovery complete?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-005.c3",
+      "text": "Enumeration risk considered?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-005.c4",
+      "text": "MFA alternatives?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NIST SP 800-63B Digital Identity Guidelines",
+      "url": "https://pages.nist.gov/800-63-3/sp800-63b.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Form Design",
+      "url": "https://www.nngroup.com/articles/web-form-design/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 568,
+    "rules": 133,
+    "checks": 28
+  }
+}

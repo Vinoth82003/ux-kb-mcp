@@ -1,0 +1,159 @@
+{
+  "id": "INT-004",
+  "title": "Focus Management",
+  "rev": 2,
+  "etag": "sha256:d83764f6d9bf142f8d2d2cc7490241378543f83f5d097a836dedec20206bf3e3",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "focus-management",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Focus marks the current keyboard point; it must stay visible, logically ordered and stable through dynamic changes.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-004.M1",
+        "text": "Keep DOM order aligned with visual and task order; avoid positive tabindex."
+      },
+      {
+        "id": "INT-004.M2",
+        "text": "Provide a visible focus indicator with at least 2 px outline (or equivalent) and ≥3:1 contrast."
+      },
+      {
+        "id": "INT-004.M3",
+        "text": "Move focus deliberately after route changes, dialog open/close and dynamic validation, and restore it on close."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-004.S1",
+        "text": "Preserve focus on the nearest meaningful element when content is removed or reordered."
+      },
+      {
+        "id": "INT-004.S2",
+        "text": "Avoid focus jumps caused by layout shift or auto-scrolling."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-004.A1",
+        "text": "Do not remove outlines without a perceivable replacement."
+      },
+      {
+        "id": "INT-004.A2",
+        "text": "Do not trap focus except inside an open modal, and always provide an escape."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Route change",
+        "decision": "Move focus to main heading or landmark"
+      },
+      {
+        "situation": "Dialog open",
+        "decision": "Trap focus inside; restore trigger on close"
+      },
+      {
+        "situation": "Content removed",
+        "decision": "Focus next sibling or stable container"
+      },
+      {
+        "situation": "Dynamic validation",
+        "decision": "Focus summary or first invalid field"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Focus visible",
+      "Focus obscured risk",
+      "Modal open",
+      "Dynamic update",
+      "Focus restored"
+    ],
+    "EXAMPLE": {
+      "good": "\"After deleting a row, focus moves to the next row action; after closing a dialog, focus returns to the trigger.\"",
+      "bad": "\"Focus stays on a removed element or jumps to the page top.\""
+    },
+    "FAILURE_MODES": [
+      "Invisible or obscured focus breaks keyboard navigation.",
+      "Focus not restored after modal close disorients users.",
+      "Layout shift can move focus off-screen or behind sticky headers."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-004.c1",
+      "text": "Focus visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-004.c2",
+      "text": "Order logical?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-004.c3",
+      "text": "Dynamic changes preserve focus?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-004.c4",
+      "text": "Not obscured by sticky/overlay?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Focus Appearance",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Keyboard Accessibility",
+      "url": "https://www.nngroup.com/articles/keyboard-accessibility/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 636,
+    "rules": 155,
+    "checks": 30
+  }
+}

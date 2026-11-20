@@ -1,0 +1,121 @@
+{
+  "id": "EVAL-002",
+  "title": "Cognitive Load",
+  "rev": 2,
+  "etag": "sha256:966eb842a9020715f8a0ce151f53bb3dd76151614860b7b7c67f1c6b79ad27bb",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "cognitive-load",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Cognitive load is the mental effort needed to understand, compare and act; review minimizes avoidable working-memory, decision and interpretation burden.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-002.M1",
+        "text": "Externalize information users must compare or remember (e.g., keep selected plan and billing cadence visible during checkout)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-002.S1",
+        "text": "Group options and reveal complexity progressively without hiding essentials."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-002.A1",
+        "text": "Do not claim a universal maximum number of options."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Comparison across steps",
+        "decision": "Keep key values visible"
+      },
+      {
+        "situation": "Dense form",
+        "decision": "Chunk and label groups"
+      },
+      {
+        "situation": "Expert shortcut",
+        "decision": "Progressive disclosure with escape hatch"
+      }
+    ],
+    "STATES": [
+      "First encounter",
+      "Comparison",
+      "Data entry",
+      "Error/recovery",
+      "Repeat use"
+    ],
+    "EXAMPLE": {
+      "good": "Checkout shows selected plan, price and renewal date on every step",
+      "bad": "User must remember plan details from a previous page"
+    },
+    "FAILURE_MODES": [
+      "Reducing visible options can increase load if labels become vague; test comprehension.",
+      "Progressive disclosure that hides required fields causes rework; keep essentials visible.",
+      "Memory aids such as tooltips add reading load; prefer inline clarity."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-002.c1",
+      "text": "Recall minimized?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-002.c2",
+      "text": "Comparison supported?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-002.c3",
+      "text": "Terms understandable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Minimize Cognitive Load",
+      "url": "https://www.nngroup.com/articles/minimize-cognitive-load/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 446,
+    "rules": 109,
+    "checks": 20
+  }
+}

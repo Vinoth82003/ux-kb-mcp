@@ -1,0 +1,155 @@
+{
+  "id": "A11Y-006",
+  "title": "ARIA",
+  "rev": 2,
+  "etag": "sha256:39c29fc631a9a9860e10483fc145bbf3218fa27b04839c51b2ce86488124d7a3",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "aria",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "ARIA fills semantic gaps when native HTML cannot express a custom widget; incorrect ARIA harms access.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-006.M1",
+        "text": "Prefer native HTML and keep role, name and state synchronized with visible behavior."
+      },
+      {
+        "id": "A11Y-006.M2",
+        "text": "Use ARIA only to add missing semantics, not to override native elements."
+      },
+      {
+        "id": "A11Y-006.M3",
+        "text": "SC 4.1.2: update states (expanded, selected, checked, disabled) with the UI."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-006.S1",
+        "text": "Follow the APG keyboard pattern for every custom widget."
+      },
+      {
+        "id": "A11Y-006.S2",
+        "text": "Test name, role and state with assistive technology."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-006.A1",
+        "text": "Do not conflict with native semantics or override visible labels without reason."
+      },
+      {
+        "id": "A11Y-006.A2",
+        "text": "Do not add redundant ARIA to native elements."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Native element fits",
+        "decision": "Do not use ARIA"
+      },
+      {
+        "situation": "Custom widget",
+        "decision": "Use APG pattern and keyboard model"
+      },
+      {
+        "situation": "State changes",
+        "decision": "Update ARIA and visible UI together"
+      }
+    ],
+    "STATES": [
+      "Collapsed",
+      "Expanded",
+      "Selected",
+      "Checked",
+      "Disabled",
+      "Invalid"
+    ],
+    "EXAMPLE": {
+      "good": "\"Disclosure button updates aria-expanded and controls its panel.\"",
+      "bad": "\"aria-hidden on visible focusable content.\""
+    },
+    "FAILURE_MODES": [
+      "ARIA drift: state not updated with UI.",
+      "Overriding native semantics breaks AT expectations.",
+      "Using role without keyboard support."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-006.c1",
+      "text": "Native HTML considered?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-006.c2",
+      "text": "Role/name/state correct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-006.c3",
+      "text": "Keyboard model complete?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-006.c4",
+      "text": "APG followed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WAI-ARIA 1.2",
+      "url": "https://www.w3.org/TR/wai-aria-1.2/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C ARIA Authoring Practices Guide",
+      "url": "https://www.w3.org/WAI/ARIA/apg/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 530,
+    "rules": 136,
+    "checks": 28
+  }
+}

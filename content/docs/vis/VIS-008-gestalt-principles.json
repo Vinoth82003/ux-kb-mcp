@@ -1,0 +1,167 @@
+{
+  "id": "VIS-008",
+  "title": "Gestalt Principles",
+  "rev": 2,
+  "etag": "sha256:cf0dfc29802a8c88333a1b73b2712341ef393a9b4bf00512adf5054ece0c21e4",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "gestalt-principles",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Gestalt principles describe how people perceive grouping and relationships; VIS-008 owns the definitions, EVAL-005 applies them.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-008.M1",
+        "text": "Use proximity to group labels and controls; similarity for same-function elements."
+      },
+      {
+        "id": "VIS-008.M2",
+        "text": "Define and apply: proximity, similarity, continuity, closure, figure-ground, common region, common fate."
+      },
+      {
+        "id": "VIS-008.M3",
+        "text": "Use a boundary (card, divider, background) when proximity alone is ambiguous."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-008.S1",
+        "text": "Keep within-group gap clearly smaller than between-group gap (e.g., <=8px inside, >=24px between)."
+      },
+      {
+        "id": "VIS-008.S2",
+        "text": "Style elements with the same behavior identically; differentiate distinct roles."
+      },
+      {
+        "id": "VIS-008.S3",
+        "text": "Verify perceived groups against semantic relationships and task flow."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-008.A1",
+        "text": "Styling different behaviors identically."
+      },
+      {
+        "id": "VIS-008.A2",
+        "text": "Grouping unrelated controls because they share a card."
+      },
+      {
+        "id": "VIS-008.A3",
+        "text": "Relying on proximity when responsive reflow breaks it."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Ambiguous grouping",
+        "decision": "Add boundary or spacing (VIS-004)"
+      },
+      {
+        "situation": "Dense form",
+        "decision": "Group by task, not layout convenience"
+      },
+      {
+        "situation": "Responsive reflow",
+        "decision": "Preserve perceived relationships"
+      },
+      {
+        "situation": "Similar roles",
+        "decision": "Match styling exactly"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Dense content",
+      "Responsive",
+      "Interactive states",
+      "Error states"
+    ],
+    "EXAMPLE": {
+      "good": "\"Field label, input and error form one perceived group; submit separate.\"",
+      "bad": "\"Card groups submit button with unrelated settings.\""
+    },
+    "FAILURE_MODES": [
+      "Visual grouping can imply false hierarchy; verify with task scanning.",
+      "Consistent styling across different behaviors causes misclicks.",
+      "Responsive reflow can break grouping; re-check at narrow widths.",
+      "Proximity without boundaries becomes ambiguous in dense layouts."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-008.c1",
+      "text": "Perceived groups match semantics?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-008.c2",
+      "text": "Similar styling means similar behavior?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-008.c3",
+      "text": "Reflow preserves grouping?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-008.c4",
+      "text": "Boundaries used when needed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group Proximity",
+      "url": "https://www.nngroup.com/articles/gestalt-proximity",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Interaction Design Foundation Gestalt Principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN CSS Layout",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "EVAL-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 689,
+    "rules": 164,
+    "checks": 39
+  }
+}

@@ -57,9 +57,9 @@ try {
   const tools = await client.listTools();
   const toolNames = tools.tools.map((tool) => tool.name).sort();
   check(
-    "seven tools registered",
+    "tools registered",
     toolNames.join(",") ===
-      "get_checklist,get_doc,get_stage_pack,report_gap,search_kb,start_session,verify_citations",
+      "diff_since,gate_status,get_checklist,get_doc,get_docs,get_stage_pack,report_check,report_false_positive,report_gap,search_kb,start_gate,start_session,top_failures,verify_citations",
     toolNames.join(","),
   );
 
@@ -68,7 +68,8 @@ try {
     arguments: { feature: "pricing page with plans and cancellation" },
   });
   const startedText = textOf(started);
-  const sessionId = /sessionId:\s*(\S+)/.exec(startedText)?.[1];
+  const startedJson = parseJson<{ data?: { sessionId?: string } }>(startedText);
+  const sessionId = startedJson?.data?.sessionId;
   check("start_session returns a session", Boolean(sessionId) && startedText.includes("kbVersion"));
   if (!sessionId) throw new Error("Cannot continue without a sessionId");
 
@@ -120,14 +121,12 @@ try {
     arguments: { sessionId, citedIds: ["CMP-001", "SAAS-002"] },
   });
   const citationReport = parseJson<{
-    unfetched: string[];
-    unknown: string[];
-    compliant: boolean;
+    data?: { unfetched: string[]; unknown: string[]; compliant: boolean };
   }>(textOf(citations));
   check(
     "verify_citations catches an unfetched citation",
-    citationReport?.unfetched.includes("SAAS-002") === true &&
-      citationReport?.compliant === false,
+    citationReport?.data?.unfetched.includes("SAAS-002") === true &&
+      citationReport?.data?.compliant === false,
   );
 
   const gap = await client.callTool({

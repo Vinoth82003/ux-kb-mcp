@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-002",
+  "title": "Data Visualization",
+  "rev": 2,
+  "etag": "sha256:c85132b02356483973704d1bf84f4540c2504e26ed4b039a99d8958c2ea65123",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "data-visualization",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Charts make comparison, trend, distribution or relationship easier than raw values.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-002.M1",
+        "text": "Choose chart by analytical task; include units, labels and meaningful baseline."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-002.S1",
+        "text": "Provide accessible summary or data alternative and non-color distinction."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-002.A1",
+        "text": "Avoid 3D effects and truncated axes that exaggerate differences."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Chart type unclear",
+        "decision": "Match chart to analytical task"
+      },
+      {
+        "situation": "Axis baseline risk",
+        "decision": "Start at zero or justify truncation"
+      },
+      {
+        "situation": "Color-only encoding",
+        "decision": "Add labels or patterns"
+      }
+    ],
+    "STATES": [
+      "Loading",
+      "Populated",
+      "Empty series",
+      "Filtered empty",
+      "Error",
+      "Accessible alternative"
+    ],
+    "EXAMPLE": {
+      "good": "Revenue line chart states date range, currency and axis scale with table alternative",
+      "bad": "3D pie chart with truncated axis and color-only legend"
+    },
+    "FAILURE_MODES": [
+      "Truncated axes exaggerate differences; start at zero or justify.",
+      "Color-only encoding excludes color-blind users; add labels/patterns.",
+      "Missing text alternative blocks screen reader users; provide summary/table."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-002.c1",
+      "text": "Chart fits question?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-002.c2",
+      "text": "Units/baseline clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-002.c3",
+      "text": "Text alternative and non-color encoding?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Apple HIG Charts",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/charts",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-009",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 457,
+    "rules": 86,
+    "checks": 26
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "id": "EVAL-003",
+  "title": "Fitts's Law",
+  "rev": 2,
+  "etag": "sha256:0f9c5a1c2f19a82eaf64d0cb1ad66c6085df7278ffa3723778cce131625f2bfb",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "fitts-s-law",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Fitts predicts target acquisition time increases with distance and decreases as target size increases; treat as heuristic, not WCAG criterion (see RSP-005 for target sizes).",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-003.M1",
+        "text": "Make frequent/critical controls easy to acquire and near task context."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-003.S1",
+        "text": "Separate adjacent targets and consider pointer/touch precision."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-003.A1",
+        "text": "Do not use Fitts to excuse WCAG target-size failure; meet RSP-005 (at least 24×24 CSS px)."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Frequent action",
+        "decision": "Enlarge and bring near context"
+      },
+      {
+        "situation": "Dense toolbar",
+        "decision": "Increase separation or size"
+      },
+      {
+        "situation": "Touch input",
+        "decision": "Follow RSP-005 sizes"
+      }
+    ],
+    "STATES": [
+      "Pointer",
+      "Touch",
+      "Keyboard",
+      "Dense layout",
+      "Mobile"
+    ],
+    "EXAMPLE": {
+      "good": "Save button 44px hit area adjacent to edited field",
+      "bad": "16px icon with no hit area 300px from field"
+    },
+    "FAILURE_MODES": [
+      "Large targets can crowd layouts and hide hierarchy; balance size with grouping.",
+      "Distance savings vanish if target is visually ambiguous; keep labels clear.",
+      "Fitts ignores cognitive choice; pair with Hick (EVAL-004) for menus."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-003.c1",
+      "text": "Critical targets easy?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-003.c2",
+      "text": "Adjacent targets separated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-003.c3",
+      "text": "WCAG checked independently?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Fitts's Law",
+      "url": "https://www.nngroup.com/articles/fitts-law/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "RSP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 449,
+    "rules": 104,
+    "checks": 24
+  }
+}

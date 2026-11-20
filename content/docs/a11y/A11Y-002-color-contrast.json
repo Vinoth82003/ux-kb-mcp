@@ -1,0 +1,163 @@
+{
+  "id": "A11Y-002",
+  "title": "Color Contrast",
+  "rev": 2,
+  "etag": "sha256:b11f8b4d491036836dcdbcd541a665825e0be2134bceebef3c80a0770950a469",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "color-contrast",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Text and non-text contrast thresholds differ by size and role; measure rendered combinations including states, dark mode and image backgrounds.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-002.M1",
+        "text": "SC 1.4.3 AA: 4.5:1 normal text; 3:1 large text (>=24px regular or ~18.66px bold)."
+      },
+      {
+        "id": "A11Y-002.M2",
+        "text": "SC 1.4.11 AA: 3:1 for essential UI component boundaries and meaningful graphics."
+      },
+      {
+        "id": "A11Y-002.M3",
+        "text": "SC 1.4.1: do not use color as the only means to convey information; add text, icon or shape redundancy."
+      },
+      {
+        "id": "A11Y-002.M4",
+        "text": "Measure contrast on actual rendered backgrounds, including images, gradients and overlays."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-002.S1",
+        "text": "Test hover, focus, disabled, placeholder, error and dark-mode states."
+      },
+      {
+        "id": "A11Y-002.S2",
+        "text": "Prefer at least 4.5:1 for large text where feasible; avoid low-contrast placeholders for essential info."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-002.A1",
+        "text": "Do not apply the 3:1 large-text threshold to normal 16px text."
+      },
+      {
+        "id": "A11Y-002.A2",
+        "text": "Do not rely on subtle borders or pale text as the only control boundary."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Text on image/gradient",
+        "decision": "Add scrim or solid backing to meet threshold"
+      },
+      {
+        "situation": "Dark mode",
+        "decision": "Re-measure; do not invert and assume pass"
+      },
+      {
+        "situation": "Decorative graphic",
+        "decision": "No contrast requirement if not meaningful"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Disabled",
+      "Placeholder",
+      "Error",
+      "Dark mode",
+      "On image/gradient"
+    ],
+    "EXAMPLE": {
+      "good": "\"Body text on hero image reaches 4.5:1 after a 40% scrim.\"",
+      "bad": "\"White text over photo assumed readable.\""
+    },
+    "FAILURE_MODES": [
+      "Contrast passes in design tool but fails over real image content.",
+      "Dark-mode palettes often drop below threshold.",
+      "Color-only status indicators fail for color-blind users."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-002.c1",
+      "text": "Normal text >=4.5:1?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-002.c2",
+      "text": "Large text >=3:1?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-002.c3",
+      "text": "UI graphics >=3:1?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-002.c4",
+      "text": "Color not sole cue?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-002.c5",
+      "text": "States/dark mode/image backgrounds measured?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C Understanding Contrast Minimum",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C Understanding Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 632,
+    "rules": 194,
+    "checks": 38
+  }
+}

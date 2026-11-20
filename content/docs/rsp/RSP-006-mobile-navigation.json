@@ -1,0 +1,152 @@
+{
+  "id": "RSP-006",
+  "title": "Mobile Navigation",
+  "rev": 2,
+  "etag": "sha256:e6fe04c746af2e03c5f3097c0c8226ee51f87e18a7a514b14341cf348d9eb06b",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "mobile-navigation",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Mobile navigation must expose location, destinations and backtracking without consuming the task area; use bottom nav for 3–5 high-frequency destinations only.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-006.M1",
+        "text": "Keep current location visible and provide consistent access to top-level destinations."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-006.S1",
+        "text": "Use bottom nav for 3–5 high-frequency destinations only."
+      },
+      {
+        "id": "RSP-006.S2",
+        "text": "Prefer labeled icons and persistent placement for primary destinations."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-006.A1",
+        "text": "Do not hide sections behind unlabeled icons or rely on browser Back alone."
+      },
+      {
+        "id": "RSP-006.A2",
+        "text": "Do not exceed 5 bottom-nav destinations; overflow into a menu."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "3–5 top destinations",
+        "decision": "Bottom nav with labels"
+      },
+      {
+        "situation": "More than 5 destinations",
+        "decision": "Hamburger/menu or hub"
+      },
+      {
+        "situation": "Task-oriented flow",
+        "decision": "Hub/homepage navigation"
+      },
+      {
+        "situation": "Deep page",
+        "decision": "Provide visible Back and location"
+      }
+    ],
+    "STATES": [
+      "Default location",
+      "Scrolled",
+      "Active destination",
+      "Menu open",
+      "Back available",
+      "Error/offline"
+    ],
+    "EXAMPLE": {
+      "good": "\"Four labeled destinations (Home, Search, Saved, Profile) in bottom nav; current tab marked.\"",
+      "bad": "\"Six unlabeled icons in bottom nav plus browser Back only.\""
+    },
+    "FAILURE_MODES": [
+      "Unlabeled icons reduce discoverability and recognition.",
+      "More than 5 destinations shrink targets and hide options.",
+      "Hidden navigation makes wayfinding and backtracking fail.",
+      "Relying on browser Back loses input and context."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-006.c1",
+      "text": "Current section clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-006.c2",
+      "text": "Labels understandable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-006.c3",
+      "text": "Back preserves input?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-006.c4",
+      "text": "Destination count 3–5?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Basic Patterns for Mobile Navigation",
+      "url": "https://www.nngroup.com/articles/mobile-navigation-patterns/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple HIG Tab Bars",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/tab-bars",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design Navigation Bar",
+      "url": "https://m3.material.io/components/navigation-bar/overview",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CMP-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 594,
+    "rules": 110,
+    "checks": 29
+  }
+}

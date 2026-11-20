@@ -1,0 +1,161 @@
+{
+  "id": "CMP-009",
+  "title": "Tables and Data Grids",
+  "rev": 2,
+  "etag": "sha256:a77bf44bfe85b6bdb29cb90bfd4e3b2774c3abb7e5d1f8ee02a0dd9bb713e1b1",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "tables-and-data-grids",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Tables enable precise record comparison; grids add editing and keyboard complexity.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-009.M1",
+        "text": "Use semantic headers (`<th scope>`) and an accessible table name/caption; associate row and column headers."
+      },
+      {
+        "id": "CMP-009.M2",
+        "text": "Provide keyboard operability for sortable headers (button + aria-sort) and focusable interactive cells."
+      },
+      {
+        "id": "CMP-009.M3",
+        "text": "Handle empty, loading and overflow states; do not trap horizontal scroll."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-009.S1",
+        "text": "Align numeric values; expose sorting state and units; use tabular figures."
+      },
+      {
+        "id": "CMP-009.S2",
+        "text": "Prefer a real table for comparison data; paginate or virtualize large sets."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-009.A1",
+        "text": "Do not turn comparison data into cards when cross-row scanning matters."
+      },
+      {
+        "id": "CMP-009.A2",
+        "text": "Do not use layout tables for data or div-soup for tabular data."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Read-only comparison",
+        "decision": "Semantic table with caption"
+      },
+      {
+        "situation": "Sortable column",
+        "decision": "Button header + aria-sort"
+      },
+      {
+        "situation": "Large dataset",
+        "decision": "Pagination/virtualization + caption"
+      },
+      {
+        "situation": "Mobile",
+        "decision": "Horizontal scroll container or careful card fallback"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Sorted",
+      "Loading",
+      "Empty",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "Invoice table: Invoice, Due date, Amount, Status; amount right-aligned; sortable Amount header announces sort",
+      "bad": "card grid for invoice comparison"
+    },
+    "FAILURE_MODES": [
+      "Div-based tables lose header association and assistive-tech navigation.",
+      "Unannounced sort state confuses screen-reader users.",
+      "Horizontal overflow without a scroll affordance hides data on mobile."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-009.c1",
+      "text": "Headers associated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-009.c2",
+      "text": "Sort state announced?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-009.c3",
+      "text": "Empty/loading/overflow handled?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-009.c4",
+      "text": "Keyboard operable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Data Tables",
+      "url": "https://www.nngroup.com/articles/data-tables/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 600,
+    "rules": 149,
+    "checks": 29
+  }
+}

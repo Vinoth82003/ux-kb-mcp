@@ -1,0 +1,126 @@
+{
+  "id": "EVAL-001",
+  "title": "Nielsen's Usability Heuristics",
+  "rev": 2,
+  "etag": "sha256:6695314ff944bccecc17130eda17ae8f6653128296f1e17fe141ef5a735864a0",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "nielsen-s-usability-heuristics",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Use Nielsen's ten heuristics as an inspection framework; every finding names the violated heuristic and user consequence.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-001.M1",
+        "text": "Inspect all ten heuristics: visibility of system status; match between system and real world; user control and freedom; consistency and standards; error prevention; recognition rather than recall; flexibility and efficiency of use; aesthetic and minimalist design; help users recognize, diagnose, and recover from errors; help and documentation."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-001.S1",
+        "text": "Record screen/step, evidence, user/task impact, severity and recommendation."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-001.A1",
+        "text": "Do not mark failure merely because a preferred pattern is absent."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Heuristic violated on critical task",
+        "decision": "Block or fix before release"
+      },
+      {
+        "situation": "Heuristic risk unverified",
+        "decision": "Validate with task test"
+      },
+      {
+        "situation": "Cosmetic inconsistency",
+        "decision": "Record proportionately"
+      }
+    ],
+    "STATES": [
+      "Task start",
+      "Primary task",
+      "Error/recovery",
+      "Completion",
+      "Repeat use"
+    ],
+    "EXAMPLE": {
+      "good": "\"No save confirmation\" cites visibility of system status and notes lost trust",
+      "bad": "\"I dislike the blue\" with no heuristic or consequence"
+    },
+    "FAILURE_MODES": [
+      "Teams often conflate \"consistency\" with visual sameness; record the specific user confusion.",
+      "Missing help documentation may be acceptable for expert tools; validate with task tests.",
+      "Heuristic findings without severity or evidence become opinion; require both."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-001.c1",
+      "text": "All 10 considered?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-001.c2",
+      "text": "Findings evidence-backed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-001.c3",
+      "text": "Severity justified?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group 10 Usability Heuristics",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g How to Conduct a Heuristic Evaluation",
+      "url": "https://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-003",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 564,
+    "rules": 161,
+    "checks": 21
+  }
+}

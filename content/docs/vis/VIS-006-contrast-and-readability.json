@@ -1,0 +1,171 @@
+{
+  "id": "VIS-006",
+  "title": "Contrast and Readability",
+  "rev": 2,
+  "etag": "sha256:6498c94f3e3683a66722d04f7b9ba6bac1346464ac7386c72d136897bc7db117",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "contrast-and-readability",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Visual contrast is about color relationships and pairing; measurable thresholds are owned by A11Y-002.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-006.M1",
+        "text": "Pair foreground and background by lightness difference, not hue alone; verify on real rendered backgrounds."
+      },
+      {
+        "id": "VIS-006.M2",
+        "text": "Provide a scrim or solid backing when text sits on images, gradients or video."
+      },
+      {
+        "id": "VIS-006.M3",
+        "text": "Defer threshold requirements to A11Y-002; this doc covers visual pairing and hierarchy, not numeric pass/fail."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-006.S1",
+        "text": "Test hover, focus, placeholder, disabled, overlay and dark-mode pairings for visual coherence."
+      },
+      {
+        "id": "VIS-006.S2",
+        "text": "Use distinct contrast between primary, secondary and disabled text tiers (e.g., 100/60/38% opacity on a surface)."
+      },
+      {
+        "id": "VIS-006.S3",
+        "text": "Keep borders and dividers visible as structure, not as the only control boundary."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-006.A1",
+        "text": "Pale text for essential information or subtle borders as the only boundary."
+      },
+      {
+        "id": "VIS-006.A2",
+        "text": "Assuming light-mode pairings transfer to dark mode."
+      },
+      {
+        "id": "VIS-006.A3",
+        "text": "Re-stating WCAG thresholds here (see A11Y-002)."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Text on image",
+        "decision": "Add scrim/solid backing; verify pairing"
+      },
+      {
+        "situation": "Dark mode",
+        "decision": "Remap pairs; do not invert"
+      },
+      {
+        "situation": "Disabled state",
+        "decision": "Reduce prominence but keep readable"
+      },
+      {
+        "situation": "Secondary text",
+        "decision": "Use opacity tier, not a new hue"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Disabled",
+      "Placeholder",
+      "Dark mode",
+      "On image/gradient"
+    ],
+    "EXAMPLE": {
+      "good": "\"Body text tier 100% opacity, secondary 60%, disabled 38%; scrim behind hero text.\"",
+      "bad": "\"Light gray body on white plus a faint border as the only input edge.\""
+    },
+    "FAILURE_MODES": [
+      "Visual pairing that looks fine in mockups fails over real image content.",
+      "Dark-mode pairs often lose separation between tiers.",
+      "Disabled text becomes unreadable or indistinguishable from placeholder.",
+      "Borders used as sole boundary disappear in low contrast."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-006.c1",
+      "text": "Foreground/background pairs by lightness?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-006.c2",
+      "text": "Scrim/solid backing on media?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-006.c3",
+      "text": "Text tiers distinct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-006.c4",
+      "text": "Dark-mode pairs reviewed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-006.c5",
+      "text": "Thresholds verified in A11Y-002?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2 Contrast Minimum",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Color",
+      "url": "https://m3.material.io/styles/color/overview",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 702,
+    "rules": 174,
+    "checks": 46
+  }
+}

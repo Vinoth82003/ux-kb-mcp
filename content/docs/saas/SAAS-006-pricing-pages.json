@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-006",
+  "title": "Pricing Pages",
+  "rev": 2,
+  "etag": "sha256:ad9e1a87339b34511ccc2cc5f99affc82009614802c0b950f0bf942003bdcb94",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "pricing-pages",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Pricing pages let buyers compare plans and predict total cost.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-006.M1",
+        "text": "State plan limits, billing cadence and material fees."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-006.S1",
+        "text": "Make differences decision-relevant and clarify renewal."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-006.A1",
+        "text": "Do not hide restrictions in footnotes or use fake urgency."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Plan comparison",
+        "decision": "Highlight decision-relevant diffs"
+      },
+      {
+        "situation": "Annual vs monthly",
+        "decision": "Show both and renewal"
+      },
+      {
+        "situation": "Material fee",
+        "decision": "Disclose before commitment"
+      }
+    ],
+    "STATES": [
+      "Loading",
+      "Compare",
+      "Selected",
+      "Checkout",
+      "Error",
+      "Empty (no plans)"
+    ],
+    "EXAMPLE": {
+      "good": "Plan card shows price, cadence, seats, overage and renewal",
+      "bad": "Price with '*' footnote hiding limits"
+    },
+    "FAILURE_MODES": [
+      "Hidden limits/fees surprise buyers; disclose all cost drivers.",
+      "Fake urgency erodes trust; avoid.",
+      "Unclear renewal leads chargebacks; state renewal and cancellation."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-006.c1",
+      "text": "Total cost drivers visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-006.c2",
+      "text": "Plan differences clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-006.c3",
+      "text": "Claims verified?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Deceptive Patterns (Brignull)",
+      "url": "https://www.deceptive.design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "FTC Dark Patterns Report",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2022/09/ftc-report-shows-rise-sophisticated-dark-patterns-designed-trick-trap-consumers",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 427,
+    "rules": 70,
+    "checks": 22
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "CMP-010",
+  "title": "Notifications and Alerts",
+  "rev": 2,
+  "etag": "sha256:251f87e9b80c2ab88bf5b62f2e20beb50f254fb5c9326d60964de16d72e1d3f0",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "notifications-and-alerts",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Notifications communicate state changes at appropriate urgency and persistence.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-010.M1",
+        "text": "Match urgency to presentation: inline status, page banner or alert dialog; announce asynchronous updates (WCAG 4.1.3)."
+      },
+      {
+        "id": "CMP-010.M2",
+        "text": "Use `role=\"status\"` for non-urgent updates and `role=\"alert\"` (or an alert dialog) for urgent interruptions."
+      },
+      {
+        "id": "CMP-010.M3",
+        "text": "Provide text plus icon/color and an actionable next step; do not rely on color alone."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-010.S1",
+        "text": "Use text plus icon/color and give actionable next steps."
+      },
+      {
+        "id": "CMP-010.S2",
+        "text": "Auto-dismiss only non-critical toasts; keep errors until dismissed."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-010.A1",
+        "text": "Do not stack transient toasts or rely on color alone."
+      },
+      {
+        "id": "CMP-010.A2",
+        "text": "Do not use alert dialogs for minor status updates."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Success/info",
+        "decision": "role=\"status\" live region"
+      },
+      {
+        "situation": "Error/urgent",
+        "decision": "role=\"alert\" or alert dialog"
+      },
+      {
+        "situation": "Blocking failure",
+        "decision": "Modal alert dialog"
+      },
+      {
+        "situation": "Transient toast",
+        "decision": "Single, auto-dismiss, pausable"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Pending",
+      "Success",
+      "Warning",
+      "Error",
+      "Dismissed",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "“Changes saved” status region; payment failure includes a next step and retry",
+      "bad": "“Error 500” toast, color-only, no action"
+    },
+    "FAILURE_MODES": [
+      "Unannounced status changes are invisible to screen-reader users (WCAG 4.1.3).",
+      "Stacked toasts overwhelm and obscure content.",
+      "Color-only or vague messages fail recovery."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-010.c1",
+      "text": "Urgency matches presentation?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-010.c2",
+      "text": "role=status/alert used appropriately?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-010.c3",
+      "text": "Message says what happened?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-010.c4",
+      "text": "AT announcement exists?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-010.c5",
+      "text": "Actionable next step?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Error Message",
+      "url": "https://design-system.service.gov.uk/components/error-message/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Status Messages",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 640,
+    "rules": 169,
+    "checks": 43
+  }
+}

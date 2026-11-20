@@ -1,0 +1,137 @@
+{
+  "id": "RSP-003",
+  "title": "Breakpoints",
+  "rev": 2,
+  "etag": "sha256:824ef63f4c71e2a4aea1e59143dfbaacf3acb4b0a781150df84d2a95855a6b60",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "breakpoints",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Breakpoints are layout transitions chosen from component constraints and content behavior, not device widths.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-003.M1",
+        "text": "Document each breakpoint token and the layout change it triggers."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-003.S1",
+        "text": "Test just below and above every breakpoint with long/localized labels."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-003.A1",
+        "text": "Do not copy device widths without a demonstrated need."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Content collides",
+        "decision": "Add breakpoint at failure point"
+      },
+      {
+        "situation": "Layout fits",
+        "decision": "Keep fluid; no breakpoint"
+      },
+      {
+        "situation": "Long localized labels",
+        "decision": "Re-test boundaries"
+      },
+      {
+        "situation": "Zoom/reflow",
+        "decision": "Verify at 320 CSS px"
+      }
+    ],
+    "STATES": [
+      "Below breakpoint",
+      "At breakpoint",
+      "Above breakpoint",
+      "Zoomed",
+      "Localized content",
+      "Orientation"
+    ],
+    "EXAMPLE": {
+      "good": "\"At 640 CSS px filters move to a drawer to preserve table width.\"",
+      "bad": "\"Breakpoints at 375/768/1024 because those are popular phones.\""
+    },
+    "FAILURE_MODES": [
+      "Device-width breakpoints fail on in-between sizes.",
+      "Unjustified breakpoints fragment CSS and testing.",
+      "Long labels overflow just below a breakpoint.",
+      "Zoom reveals missed boundary behavior."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-003.c1",
+      "text": "Every breakpoint justified?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-003.c2",
+      "text": "Boundary widths tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-003.c3",
+      "text": "Meaning preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN Media queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple HIG Layout",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/layout",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "RSP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 494,
+    "rules": 84,
+    "checks": 22
+  }
+}

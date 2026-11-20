@@ -1,0 +1,156 @@
+{
+  "id": "CW-002",
+  "title": "Microcopy",
+  "rev": 2,
+  "etag": "sha256:65380244deb3367fb8328ab355e0500a23694700d19d3e7a4029efc364fcf3b3",
+  "status": "reviewed",
+  "domain": "content_writing",
+  "tags": [
+    "microcopy",
+    "content-writing"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Microcopy is text attached to a control or decision; it should reduce uncertainty at the point of action.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CW-002.M1",
+        "text": "Place helper text adjacent to the control; distinguish label, hint and placeholder."
+      },
+      {
+        "id": "CW-002.M2",
+        "text": "Link to CMP-002 for input, label and placeholder ownership; do not redefine those rules here."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CW-002.S1",
+        "text": "State constraints, format and consequences before the user commits."
+      },
+      {
+        "id": "CW-002.S2",
+        "text": "Keep helper text under ~12 words; move detail into help or docs."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CW-002.A1",
+        "text": "Do not use a placeholder as the only label or instruction."
+      },
+      {
+        "id": "CW-002.A2",
+        "text": "Do not restate the label verbatim in the hint; add new information."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Label vs hint",
+        "decision": "Label names the field; hint adds rule or example"
+      },
+      {
+        "situation": "Constraint timing",
+        "decision": "Show before entry, not only after failure"
+      },
+      {
+        "situation": "Optional field",
+        "decision": "Mark \"(optional)\" rather than relying on asterisk convention"
+      },
+      {
+        "situation": "Long help",
+        "decision": "Link to docs; keep control text short"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Focused",
+      "Invalid",
+      "Disabled",
+      "Empty",
+      "Localized"
+    ],
+    "EXAMPLE": {
+      "good": "Label \"Work email\"; hint \"Use your company address, not a personal one.\"",
+      "bad": "Placeholder \"Enter email\" with no label"
+    },
+    "FAILURE_MODES": [
+      "Placeholder-only labels disappear once the user starts typing.",
+      "Hints that restate labels waste space and add no value.",
+      "Constraints discovered only after a failed submit.",
+      "Long helper text wraps and obscures the input."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CW-002.c1",
+      "text": "Label and hint distinct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-002.c2",
+      "text": "Constraint before failure?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-002.c3",
+      "text": "No placeholder-only label?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-002.c4",
+      "text": "Hint adds new information?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Microcopy",
+      "url": "https://www.nngroup.com/articles/microcopy/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Form Design",
+      "url": "https://www.nngroup.com/articles/web-form-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Text Input",
+      "url": "https://design-system.service.gov.uk/components/text-input/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 582,
+    "rules": 123,
+    "checks": 33
+  }
+}

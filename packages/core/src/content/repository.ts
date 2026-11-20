@@ -1,6 +1,8 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { basename, join } from "node:path";
 import YAML from "yaml";
+import { convertMarkdownToJson, renderDocMarkdown } from "./convert";
+import type { VersionedDoc } from "../schemas/document";
 import {
   packFileSchema,
   releaseFileSchema,
@@ -10,17 +12,18 @@ import {
   type RouteDefinition,
 } from "../schemas/pack";
 import type { LintIssue } from "../schemas/lint";
-import type { Doc } from "../schemas/doc";
-import { parseDoc } from "./parser";
+import { docFrontMatterSchema, type Doc } from "../schemas/doc";
+import { docSchema } from "../schemas/document";
+import { extractSections, parseDoc } from "./parser";
 import { contentPaths, resolveContentDir } from "./paths";
 
-function walkMarkdown(dir: string): string[] {
+export function walkMarkdown(dir: string): string[] {
   if (!existsSync(dir)) return [];
   const out: string[] = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) out.push(...walkMarkdown(full));
-    else if (entry.isFile() && entry.name.endsWith(".md")) out.push(full);
+    else if (entry.isFile() && (entry.name.endsWith(".md") || entry.name.endsWith(".json"))) out.push(full);
   }
   return out.sort((a, b) => a.localeCompare(b));
 }
@@ -68,14 +71,42 @@ export class ContentRepository {
     return [...this.errors];
   }
 
+  private versionedCache = new Map<string, VersionedDoc>();
+
   docs(): Doc[] {
     return this.cached("docs", () => {
       const docs: Doc[] = [];
       const seen = new Map<string, string>();
 
-      for (const file of walkMarkdown(contentPaths.docs(this.contentDir))) {
+      const files = walkMarkdown(contentPaths.docs(this.contentDir));
+      // Prefer JSON over Markdown for the same basename.
+      const jsonBases = new Set(
+        files.filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")),
+      );
+
+      for (const file of files) {
+        if (file.endsWith(".md") && jsonBases.has(file.replace(/\.md$/, ""))) continue;
+
         try {
-          const doc = parseDoc(readFileSync(file, "utf8"), file);
+          let doc: Doc;
+          let versioned: VersionedDoc | undefined;
+
+          if (file.endsWith(".json")) {
+            const parsed = docSchema.parse(JSON.parse(readFileSync(file, "utf8")));
+            versioned = parsed;
+            this.versionedCache.set(parsed.id, parsed);
+            doc = this.jsonToLegacyDoc(parsed, file);
+          } else {
+            const md = readFileSync(file, "utf8");
+            doc = parseDoc(md, file);
+            try {
+              versioned = convertMarkdownToJson(md, file);
+              this.versionedCache.set(versioned.id, versioned);
+            } catch {
+              versioned = undefined;
+            }
+          }
+
           const id = doc.frontMatter.id;
           const previous = seen.get(id);
           if (previous) {
@@ -85,6 +116,23 @@ export class ContentRepository {
             continue;
           }
           seen.set(id, file);
+
+          if (versioned) {
+            doc.id = versioned.id;
+            doc.title = versioned.title;
+            doc.rev = versioned.rev;
+            doc.etag = versioned.etag;
+            doc.status = versioned.status;
+            doc.tags = versioned.tags;
+            doc.appliesTo = versioned.appliesTo;
+            doc.structuredSections = versioned.sections;
+            doc.checks = versioned.checks;
+            doc.sources = versioned.sources;
+            doc.related = versioned.related;
+            doc.tokenCost = versioned.tokenCost;
+            doc.versioned = versioned;
+          }
+
           docs.push(doc);
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
@@ -102,6 +150,50 @@ export class ContentRepository {
 
       return docs.sort((a, b) => a.frontMatter.id.localeCompare(b.frontMatter.id));
     });
+  }
+
+  private jsonToLegacyDoc(parsed: VersionedDoc, file: string): Doc {
+    const relatedIds = parsed.related.map((r) => r.id);
+    const sources = parsed.sources.map((s) => ({ name: s.title, url: s.url }));
+    const fm = {
+      id: parsed.id,
+      title: parsed.title,
+      domain: parsed.domain,
+      type: "pattern" as const,
+      status: parsed.status,
+      rev: parsed.rev,
+      priority: "standard" as const,
+      stages: ["audit", "proposal", "critique", "implement"] as any,
+      tags: parsed.tags,
+      applies_to: parsed.appliesTo,
+      related: relatedIds,
+      sources,
+      updated: "2026-11-15",
+    };
+    // validate via schema? docFrontMatterSchema requires group optional, priority enum. Use parse.
+    const frontMatter = docFrontMatterSchema.parse(fm);
+    const body = renderDocMarkdown(parsed);
+    const sections = extractSections(body);
+    return {
+      frontMatter,
+      body,
+      sections,
+      summary: parsed.summary,
+      tokenEstimate: parsed.tokenCost.full,
+      path: file,
+    };
+  }
+
+  versionedDocs(): VersionedDoc[] {
+    // ensure loaded
+    this.docs();
+    return [...this.versionedCache.values()];
+  }
+
+  versionedDoc(id: string): VersionedDoc | undefined {
+    const normalized = id.trim().toUpperCase();
+    this.docs();
+    return this.versionedCache.get(normalized);
   }
 
   doc(id: string): Doc | undefined {

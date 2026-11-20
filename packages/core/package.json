@@ -1,6 +1,6 @@
 {
   "name": "@ux-kb/core",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -13,7 +13,7 @@
     "lint:kb": "tsx src/cli/lint.ts",
     "kb:info": "tsx src/cli/info.ts",
     "kb:keys": "tsx src/cli/keys.ts",
-    "test": "tsx --test src/__tests__/core.test.ts src/__tests__/phase3.test.ts src/__tests__/auth-security.test.ts",
+    "test": "tsx --test src/__tests__/core.test.ts src/__tests__/phase3.test.ts src/__tests__/auth-security.test.ts src/__tests__/m4.test.ts src/__tests__/m5.test.ts src/__tests__/m6.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

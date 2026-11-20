@@ -1,0 +1,148 @@
+{
+  "id": "A11Y-005",
+  "title": "Semantic HTML",
+  "rev": 2,
+  "etag": "sha256:4c6d270c27bb8f1d006ea2dee711c876d4f1cd207aecf0847760a828e1eeece9",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "semantic-html",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Semantic HTML supplies reliable browser and assistive technology behavior with less custom code.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-005.M1",
+        "text": "Use native button, anchor, input, select, form, heading, list and table for their actual purpose."
+      },
+      {
+        "id": "A11Y-005.M2",
+        "text": "SC 1.3.1: info and relationships programmatically determinable."
+      },
+      {
+        "id": "A11Y-005.M3",
+        "text": "Preserve native keyboard and focus behavior when styling."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-005.S1",
+        "text": "Keep heading hierarchy logical and use landmarks for page regions."
+      },
+      {
+        "id": "A11Y-005.S2",
+        "text": "Use semantic elements before ARIA."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-005.A1",
+        "text": "Do not use clickable divs as substitutes for native controls."
+      },
+      {
+        "id": "A11Y-005.A2",
+        "text": "Do not choose heading levels for visual size."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Element matches behavior",
+        "decision": "Use native semantic"
+      },
+      {
+        "situation": "No native equivalent",
+        "decision": "Use div with ARIA pattern"
+      },
+      {
+        "situation": "Need link vs button",
+        "decision": "Link navigates, button acts"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Disabled",
+      "Expanded/collapsed",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "\"View invoice is <a>, Download invoice is <button>.\"",
+      "bad": "\"<div onclick> for both.\""
+    },
+    "FAILURE_MODES": [
+      "Div-based controls lose keyboard and AT semantics.",
+      "Skipped heading levels confuse navigation.",
+      "Styling removes native focus."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-005.c1",
+      "text": "Element matches behavior?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-005.c2",
+      "text": "Heading hierarchy logical?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-005.c3",
+      "text": "Native behavior preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN HTML elements reference",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element",
+      "relation": "authoritative"
+    },
+    {
+      "title": "HTML Living Standard",
+      "url": "https://html.spec.whatwg.org/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 516,
+    "rules": 130,
+    "checks": 25
+  }
+}

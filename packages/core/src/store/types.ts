@@ -51,6 +51,8 @@ export interface CreateApiKeyInput {
   ownerId?: string | null;
 }
 
+export type SessionMode = "quick" | "audit" | "full";
+
 export interface SessionRecord {
   id: string;
   apiKeyId: string;
@@ -58,12 +60,24 @@ export interface SessionRecord {
   kbVersion: string;
   fetched: string[];
   startedAt: Date;
+  /** Workflow mode; v1 clients default to "full". */
+  mode?: SessionMode;
+  /** Optional screen name supplied at start_session. */
+  screen?: string;
+  /** Optional per-session token budget (defaults by mode). */
+  tokenBudget?: number;
+  /** Idempotency key supplied at start_session. */
+  idempotencyKey?: string | null;
 }
 
 export interface CreateSessionInput {
   apiKeyId: string;
   feature: string;
   kbVersion: string;
+  mode?: SessionMode;
+  screen?: string;
+  tokenBudget?: number;
+  idempotencyKey?: string | null;
 }
 
 export interface UsageInput {
@@ -145,6 +159,7 @@ export interface KbStore {
   // --- sessions ------------------------------------------------------------
   createSession(input: CreateSessionInput): Promise<SessionRecord>;
   getSession(id: string): Promise<SessionRecord | null>;
+  getSessionByIdempotencyKey(apiKeyId: string, key: string): Promise<SessionRecord | null>;
   addFetched(sessionId: string, ids: string[]): Promise<void>;
 
   // --- usage ---------------------------------------------------------------
@@ -163,4 +178,60 @@ export interface KbStore {
   // --- audit ---------------------------------------------------------------
   audit(input: AuditInput): Promise<AuditRecord>;
   listAudit(limit?: number): Promise<AuditRecord[]>;
+
+  // --- gates ---------------------------------------------------------------
+  createGate(input: CreateGateInput): Promise<GateRecord>;
+  getGate(id: string): Promise<GateRecord | null>;
+  saveGate(gate: GateRecord): Promise<void>;
+  listGates(sessionId?: string): Promise<GateRecord[]>;
+}
+
+export interface GateItem {
+  id: string;
+  scope: "screen" | "component";
+  check: string;
+  severity: "blocker" | "major" | "minor";
+  component?: string;
+  verify?: {
+    type?: string;
+    hint?: string;
+    snippet?: { framework?: string; code?: string };
+    snippets?: { framework?: string; code?: string }[];
+    tools?: string[];
+    manual?: string;
+  };
+  naForbidden?: boolean;
+}
+
+export interface GateResult {
+  itemId: string;
+  result: "pass" | "fail" | "na" | "waive";
+  evidence?: { type: string; ref: string }[];
+  note?: string;
+  naReason?: string;
+  waiver?: { by: "user"; reason: string; ticket?: string };
+  weak: boolean;
+  at: string;
+}
+
+export interface GateRecord {
+  id: string;
+  sessionId: string;
+  screen: string;
+  components: string[];
+  screenType: string;
+  extraStates: string[];
+  gateVersion: number;
+  items: GateItem[];
+  results: Record<string, GateResult>;
+  createdAt: Date;
+}
+
+export interface CreateGateInput {
+  sessionId: string;
+  screen: string;
+  components: string[];
+  screenType: string;
+  extraStates: string[];
+  items: GateItem[];
 }

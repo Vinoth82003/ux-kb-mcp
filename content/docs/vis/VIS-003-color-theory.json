@@ -1,0 +1,168 @@
+{
+  "id": "VIS-003",
+  "title": "Color Theory",
+  "rev": 2,
+  "etag": "sha256:f0c9ef99a0ce78e4fca32f08b56a4a8717ea5a8d146e1b17672bb8b733f2c533",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "color-theory",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Color encodes brand, hierarchy and status; semantic consistency and perception matter more than palette novelty.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-003.M1",
+        "text": "Define semantic color tokens for text, surface, action, border and status (success, warning, error, info)."
+      },
+      {
+        "id": "VIS-003.M2",
+        "text": "Never communicate status or selection through color alone; add text, icon or shape (see A11Y-002)."
+      },
+      {
+        "id": "VIS-003.M3",
+        "text": "Pair colors by lightness difference, not hue alone, so distinctions survive grayscale and color blindness."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-003.S1",
+        "text": "Test light/dark and increased-contrast themes; remap tokens rather than invert."
+      },
+      {
+        "id": "VIS-003.S2",
+        "text": "Use perceptually uniform spaces (e.g., OKLCH/LCH) when deriving tints and shades."
+      },
+      {
+        "id": "VIS-003.S3",
+        "text": "Limit chromatic accents to meaningful roles; keep neutrals for structure."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-003.A1",
+        "text": "Color-only status indicators or selection states."
+      },
+      {
+        "id": "VIS-003.A2",
+        "text": "Low lightness difference between adjacent semantic colors (e.g., two blues differing only in hue)."
+      },
+      {
+        "id": "VIS-003.A3",
+        "text": "Assuming dark mode passes by inverting light-mode values."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Status color",
+        "decision": "Pair with icon/text; ensure grayscale distinction"
+      },
+      {
+        "situation": "Dark mode",
+        "decision": "Remap semantic tokens; re-measure (A11Y-002)"
+      },
+      {
+        "situation": "Chart series",
+        "decision": "Use color + pattern/shape + direct labels"
+      },
+      {
+        "situation": "Brand accent",
+        "decision": "Reserve for primary actions and key states"
+      }
+    ],
+    "STATES": [
+      "Light theme",
+      "Dark theme",
+      "Increased contrast",
+      "Disabled",
+      "Status (success/warning/error/info)",
+      "Data visualization"
+    ],
+    "EXAMPLE": {
+      "good": "\"Error state uses red icon + 'Error' text + red border; passes grayscale.\"",
+      "bad": "\"Status shown only by red vs green dots.\""
+    },
+    "FAILURE_MODES": [
+      "Color-only cues fail for color-blind users.",
+      "Inverted dark-mode palettes drop below contrast thresholds.",
+      "Hue-only distinctions collapse in grayscale or print.",
+      "Overuse of accent colors dilutes hierarchy."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-003.c1",
+      "text": "Semantic roles defined?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-003.c2",
+      "text": "Color not sole signal?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-003.c3",
+      "text": "Light/dark/contrast tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-003.c4",
+      "text": "Grayscale distinction preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Material Design 3 Color",
+      "url": "https://m3.material.io/styles/color/overview",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN CSS Color",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/color",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 690,
+    "rules": 164,
+    "checks": 33
+  }
+}

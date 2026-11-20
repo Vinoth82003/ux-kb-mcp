@@ -5,6 +5,7 @@ import type { LintIssue, LintReport } from "../schemas/lint";
 import type { ContentRepository } from "../content/repository";
 import { estimateTokens } from "../content/tokens";
 import { extractChecklist, extractRules } from "../content/parser";
+import { scanContent } from "../content/sanitizer";
 
 export interface LintOptions {
   warnTokens: number;
@@ -112,8 +113,16 @@ export function lintDoc(
     issues.push(issue("warning", "SEC002", "Missing Summary section", path));
   }
 
-  const rules = extractRules(doc);
-  issues.push(...lintRuleSequence(rules, doc, path));
+  for (const finding of scanContent(doc.body)) {
+    issues.push(
+      issue(
+        "error",
+        finding.code === "DISALLOWED_URL" ? "URL001" : "INJ001",
+        finding.message,
+        path,
+      ),
+    );
+  }
 
   for (const related of fm.related) {
     if (related === fm.id) {

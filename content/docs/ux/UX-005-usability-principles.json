@@ -1,0 +1,138 @@
+{
+  "id": "UX-005",
+  "title": "Usability Principles",
+  "rev": 2,
+  "etag": "sha256:d53863413b35b1cee08e9a063dc18372d0283eaca91787d31f3bfe3305e01080",
+  "status": "reviewed",
+  "domain": "ux",
+  "tags": [
+    "usability-principles",
+    "ux"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Usability is task effectiveness, efficiency and satisfaction in context; heuristics diagnose risk but do not replace user testing.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "UX-005.M1",
+        "text": "Define task success and critical errors before evaluation."
+      },
+      {
+        "id": "UX-005.M2",
+        "text": "Assess learnability, efficiency, error prevention, recovery and accessibility separately."
+      },
+      {
+        "id": "UX-005.M3",
+        "text": "Report severity with impact, evidence and recovery cost."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "UX-005.S1",
+        "text": "Use Nielsen heuristics as an inspection lens, not a conformance checklist."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "UX-005.A1",
+        "text": "Declare a design usable because it uses a component library."
+      },
+      {
+        "id": "UX-005.A2",
+        "text": "Average away a blocker on a critical task."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Critical task blocked",
+        "decision": "Block release"
+      },
+      {
+        "situation": "Avoidable friction",
+        "decision": "Prioritize by reach and severity"
+      },
+      {
+        "situation": "Cosmetic issue",
+        "decision": "Record proportionately"
+      }
+    ],
+    "STATES": [
+      "Learn",
+      "Perform",
+      "Error",
+      "Recover",
+      "Repeat"
+    ],
+    "FAILURE_MODES": [
+      "Averaging away a blocker on a critical task hides release risk.",
+      "Declaring usability from a component library ignores task evidence.",
+      "Heuristic findings without severity and recovery cost cannot be prioritized."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "UX-005.c1",
+      "text": "Success criteria explicit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-005.c2",
+      "text": "Critical failures retained?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-005.c3",
+      "text": "User testing planned for uncertainty?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group 10 Usability Heuristics",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 484,
+    "rules": 138,
+    "checks": 28
+  }
+}

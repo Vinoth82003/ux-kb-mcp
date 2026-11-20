@@ -1,0 +1,161 @@
+{
+  "id": "CMP-004",
+  "title": "Cards",
+  "rev": 2,
+  "etag": "sha256:18628f73c87688fddab75c845ba9c009d3d20c74f2458c7bf6571ff76896faa4",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "cards",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Cards group a coherent unit of content or action; they are not a default layout primitive.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-004.M1",
+        "text": "Use a card only when content has a meaningful boundary or independent scan unit."
+      },
+      {
+        "id": "CMP-004.M2",
+        "text": "If the whole card is clickable, provide one dominant destination and an accessible name; avoid competing nested actions."
+      },
+      {
+        "id": "CMP-004.M3",
+        "text": "Preserve semantic structure (heading, list, etc.) inside the card; do not rely on card chrome alone."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-004.S1",
+        "text": "Keep nested actions clearly separated and keyboard-focusable; provide hover/focus affordance."
+      },
+      {
+        "id": "CMP-004.S2",
+        "text": "Use consistent spacing and elevation tokens from the design system."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-004.A1",
+        "text": "Do not put every paragraph in a card or use grids without content rationale."
+      },
+      {
+        "id": "CMP-004.A2",
+        "text": "Do not nest multiple competing click targets in one card."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Coherent unit",
+        "decision": "Card with heading + summary + action"
+      },
+      {
+        "situation": "Multiple actions",
+        "decision": "Card container + separate action buttons"
+      },
+      {
+        "situation": "List of records",
+        "decision": "Table/list, not card grid"
+      },
+      {
+        "situation": "Marketing grid",
+        "decision": "Only when content relationships justify"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Selected",
+      "Loading",
+      "Empty",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "Project card groups name, status, owner and one Open action",
+      "bad": "every paragraph wrapped in a card in a three-column grid"
+    },
+    "FAILURE_MODES": [
+      "Card grids without content rationale create visual noise and scanning cost.",
+      "Whole-card clicks with nested actions cause accidental navigation.",
+      "Missing semantics make card content hard to navigate for assistive tech."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-004.c1",
+      "text": "Boundary signals real group?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-004.c2",
+      "text": "Click target unambiguous?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-004.c3",
+      "text": "Mobile order logical?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-004.c4",
+      "text": "Semantics preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Material Design 3",
+      "url": "https://m3.material.io/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 613,
+    "rules": 152,
+    "checks": 31
+  }
+}

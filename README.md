@@ -131,13 +131,20 @@ claude mcp add --transport http ux-kb http://127.0.0.1:3333/mcp \
 
 | Tool | Input | Output | Side effect |
 |---|---|---|---|
-| `start_session` | `feature` | `sessionId`, KB version, suggested IDs | creates session |
-| `get_stage_pack` | `sessionId`, `stage` | stage docs + routed docs | records fetched IDs |
-| `get_doc` | `sessionId`, `id` | one published doc | records fetched ID |
+| `start_session` | `feature`, `mode?`, `screen?`, `tokenBudget?`, `idempotencyKey?` | `sessionId`, mode, routing, next steps | creates/resumes session |
+| `start_gate` | `sessionId`, `screen`, `components?`, `screenType?`, `extraStates?` | gate items + counts | creates gate |
+| `report_check` | `sessionId`, `gateId`, `results[]` | accepted, rejected, weak, remaining | records results |
+| `gate_status` | `sessionId`, `gateId`, `view?` | done, counts, open items | none |
 | `search_kb` | `query`, `domain?`, `limit?` | IDs, titles, summaries | none |
-| `get_checklist` | `ids[]` | CHECK items only | none |
+| `get_stage_pack` | `sessionId`, `stage`, `depth?`, `maxTokens?`, `page?` | stage docs + routed docs | records fetched IDs |
+| `get_doc` | `sessionId`, `id`, `sections?`, `includeSources?`, `ifNoneMatch?`, `maxTokens?` | one published doc | records fetched ID |
+| `get_docs` | `sessionId`, `ids[]`, `sections?`, `includeSources?`, `maxTokens?` | batch docs | records fetched IDs |
+| `get_checklist` | `ids[]`, `depth?` | CHECK items (+verify) | none |
 | `verify_citations` | `sessionId`, `citedIds[]` | unfetched, unknown, deprecated | stores result |
-| `report_gap` | `topic`, `context` | acknowledgement | upserts gap |
+| `report_gap` | `topic`, `context`, `sessionId?` | ticket id, similar reports | upserts gap |
+| `report_false_positive` | `itemId`, `reason`, `context?`, `sessionId?` | ticket, noise score | records report |
+| `top_failures` | `domain?`, `limit?`, `window?` | failing items + rates | none |
+| `diff_since` | `sessionId`, `sinceVersion`, `ids[]` | changed docs + checks | none |
 
 Resources: `kb://doc/{id}`, `kb://pack/{stage}`, `kb://core`.
 
@@ -181,7 +188,7 @@ The seed is idempotent.
 ```bash
 pnpm lint:kb:strict                 # 0 errors, 0 warnings across 73 docs
 pnpm typecheck                      # tsc in core, mcp, stdio, web
-pnpm test                           # 35 core unit tests (incl. auth/security)
+pnpm test                           # 46 core unit tests (incl. auth/security)
 pnpm smoke                          # stdio end-to-end
 pnpm smoke:http                     # HTTP auth, pinning, revocation, 429
 pnpm --filter @ux-kb/web build      # Next.js production build

@@ -1,0 +1,128 @@
+{
+  "id": "EVAL-009",
+  "title": "Independent Critic Rubric",
+  "rev": 1,
+  "etag": "sha256:1a23084c5b6405f4f0cedc479be90da54a1b36c5802daf13aa5862e3cb32e8ba",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "critique",
+    "rubric",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "100-point rubric used by the independent critique step. Pass requires >=85 with zero critical defects and no more than three revisions.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-009.M1",
+        "text": "Score every proposal against all eight criteria below; do not skip a criterion."
+      },
+      {
+        "id": "EVAL-009.M2",
+        "text": "Deduct points only with evidence; every deduction states the user consequence."
+      },
+      {
+        "id": "EVAL-009.M3",
+        "text": "A critical defect (task blocker, data-loss risk, deceptive action/pricing, severe privacy/security or critical accessibility barrier) blocks regardless of score."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-009.S1",
+        "text": "Separate facts, assumptions and hypotheses in the evidence column."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-009.A1",
+        "text": "Do not treat a fetched doc ID as proof that a source semantically supports a claim."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Score >=85 and zero critical defects",
+        "decision": "Ready for approval"
+      },
+      {
+        "situation": "Score <85 or any critical defect",
+        "decision": "Revise (max three revisions)"
+      },
+      {
+        "situation": "More than three revisions",
+        "decision": "Stop and escalate"
+      }
+    ],
+    "STATES": [
+      "Draft",
+      "Critiqued",
+      "Revised",
+      "Ready for approval"
+    ],
+    "FAILURE_MODES": [
+      "A high score can hide a critical defect; check critical defects before score.",
+      "Evidence quality is the weakest criterion to fake; verify sources.",
+      "Three revisions exhausted means the proposal needs re-scoping, not more polish."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-009.c1",
+      "text": "All eight criteria scored?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-009.c2",
+      "text": "Every deduction has evidence and user consequence?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-009.c3",
+      "text": "Critical defects checked?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-009.c4",
+      "text": "Revision count <=3?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "UX-KB Core Agent Rules",
+      "url": "https://github.com/Vinoth82003/ux-kb-mcp/blob/main/content/core.md",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 466,
+    "rules": 180,
+    "checks": 37
+  }
+}

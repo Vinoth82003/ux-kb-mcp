@@ -1,0 +1,155 @@
+{
+  "id": "A11Y-003",
+  "title": "Keyboard Accessibility",
+  "rev": 2,
+  "etag": "sha256:7355242d5c87e80237d8a61b0c5891882f9cbbfcfce0ce507ea7fda3b10a5c62",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "keyboard-accessibility",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "All functionality must work by keyboard without traps, hidden focus or pointer-only gestures.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-003.M1",
+        "text": "SC 2.1.1: all functionality available from keyboard."
+      },
+      {
+        "id": "A11Y-003.M2",
+        "text": "SC 2.1.2: no keyboard trap; provide a documented escape."
+      },
+      {
+        "id": "A11Y-003.M3",
+        "text": "SC 2.4.11: focus not obscured by sticky headers or overlays."
+      },
+      {
+        "id": "A11Y-003.M4",
+        "text": "SC 2.5.7: provide a non-drag single-pointer alternative for dragging movements."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-003.S1",
+        "text": "Use native controls; implement arrow/Home/End/Escape patterns for custom widgets."
+      },
+      {
+        "id": "A11Y-003.S2",
+        "text": "Keep tab order aligned with visual and task order."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-003.A1",
+        "text": "Do not use positive tabindex or remove visible focus without replacement."
+      },
+      {
+        "id": "A11Y-003.A2",
+        "text": "Do not ship pointer-only interactions without a keyboard equivalent."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Native control available",
+        "decision": "Use native element"
+      },
+      {
+        "situation": "Custom widget needed",
+        "decision": "Implement published keyboard model and test"
+      },
+      {
+        "situation": "Focus moves into modal",
+        "decision": "Trap focus inside and restore on close"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Focus visible",
+      "Focus obscured risk",
+      "Modal open",
+      "Drag in progress",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "\"Sortable table header is a button with Enter/Space sort and aria-sort.\"",
+      "bad": "\"Clickable div with onClick only.\""
+    },
+    "FAILURE_MODES": [
+      "Custom widgets lose keyboard support after visual redesign.",
+      "Sticky headers obscure focused elements.",
+      "Drag-only reordering blocks keyboard users."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-003.c1",
+      "text": "Every action keyboard-operable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-003.c2",
+      "text": "No trap?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-003.c3",
+      "text": "Focus visible/not obscured?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-003.c4",
+      "text": "Drag has alternative?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Quick Reference",
+      "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C Understanding Keyboard",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 561,
+    "rules": 147,
+    "checks": 29
+  }
+}

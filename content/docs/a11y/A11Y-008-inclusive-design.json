@@ -1,0 +1,154 @@
+{
+  "id": "A11Y-008",
+  "title": "Inclusive Design",
+  "rev": 2,
+  "etag": "sha256:054e61ddb7fa879391d9a7eb9bfda426f4d211f500d54ffbefb6f972093dd824",
+  "status": "reviewed",
+  "domain": "accessibility",
+  "tags": [
+    "inclusive-design",
+    "accessibility"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Inclusive design identifies exclusion across ability, language, culture, device and context, then builds flexible paths.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "A11Y-008.M1",
+        "text": "Define the supported user and context range and test edge cases affecting task success."
+      },
+      {
+        "id": "A11Y-008.M2",
+        "text": "Provide equivalent paths for users with different abilities, devices, languages or contexts."
+      },
+      {
+        "id": "A11Y-008.M3",
+        "text": "Justify any assumption about user identity, input format or environment."
+      },
+      {
+        "id": "A11Y-008.M4",
+        "text": "Include people with disabilities in research and testing where feasible."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "A11Y-008.S1",
+        "text": "Accept flexible input formats where data integrity permits."
+      },
+      {
+        "id": "A11Y-008.S2",
+        "text": "Support localization and adaptable layouts."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "A11Y-008.A1",
+        "text": "Do not infer identity or intent from names, appearance or demographics."
+      },
+      {
+        "id": "A11Y-008.A2",
+        "text": "Do not ship single-path designs that exclude edge cases."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Narrow user assumption",
+        "decision": "Broaden range or document exclusion"
+      },
+      {
+        "situation": "Strict input format",
+        "decision": "Normalize and accept variants"
+      },
+      {
+        "situation": "Edge case rare",
+        "decision": "Test if task-critical"
+      },
+      {
+        "situation": "Localization",
+        "decision": "Plan content and layout flexibility"
+      }
+    ],
+    "STATES": [
+      "Baseline user",
+      "Constrained context",
+      "Alternate input",
+      "Localized",
+      "Edge case",
+      "Recovery"
+    ],
+    "EXAMPLE": {
+      "good": "\"Accept phone numbers with country code and normalize punctuation.\"",
+      "bad": "\"Reject names containing hyphens.\""
+    },
+    "FAILURE_MODES": [
+      "Excluding edge cases hides task failures.",
+      "Assumptions about devices or contexts reduce reach.",
+      "Inflexible inputs cause abandonment."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "A11Y-008.c1",
+      "text": "Exclusion risks recorded?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-008.c2",
+      "text": "Input assumptions justified?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-008.c3",
+      "text": "Equivalent paths exist?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "A11Y-008.c4",
+      "text": "Edge cases tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Microsoft Inclusive Design",
+      "url": "https://inclusive.microsoft.design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WAI Fundamentals",
+      "url": "https://www.w3.org/WAI/fundamentals/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 541,
+    "rules": 173,
+    "checks": 31
+  }
+}

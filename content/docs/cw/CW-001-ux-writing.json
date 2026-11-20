@@ -1,0 +1,164 @@
+{
+  "id": "CW-001",
+  "title": "UX Writing",
+  "rev": 2,
+  "etag": "sha256:677f562ed396beed8080a29ceeb43298334feca6623abcc0a9c362e2adf7eea0",
+  "status": "reviewed",
+  "domain": "content_writing",
+  "tags": [
+    "ux-writing",
+    "content-writing"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "UX writing helps users understand tasks, decisions and recovery through concise, consistent language.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CW-001.M1",
+        "text": "Name the user's task or outcome in the user's vocabulary; avoid internal system names."
+      },
+      {
+        "id": "CW-001.M2",
+        "text": "Use one canonical term per concept across labels, messages, docs and support."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CW-001.S1",
+        "text": "Lead with the action or outcome; put qualifying detail after."
+      },
+      {
+        "id": "CW-001.S2",
+        "text": "Use sentence case and active voice; keep sentences under ~20 words."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CW-001.A1",
+        "text": "Avoid promotional filler, cleverness, jargon and unexplained abbreviations."
+      },
+      {
+        "id": "CW-001.A2",
+        "text": "Avoid ambiguous pronouns and generic link text such as \"click here\" or \"learn more\"."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Task naming",
+        "decision": "Use verb + object, e.g. \"Download invoice\""
+      },
+      {
+        "situation": "Repeated concept",
+        "decision": "Choose one canonical term and reuse it"
+      },
+      {
+        "situation": "Technical term",
+        "decision": "Define on first use in user language"
+      },
+      {
+        "situation": "Tone",
+        "decision": "Match the user's state, not brand voice"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Scanning",
+      "Decision point",
+      "Error/recovery",
+      "Empty",
+      "Localized"
+    ],
+    "EXAMPLE": {
+      "good": "\"Download invoice (PDF, 240 KB)\"",
+      "bad": "\"Get it\""
+    },
+    "FAILURE_MODES": [
+      "Jargon passes review but blocks task completion.",
+      "Inconsistent terms make search and help fail.",
+      "Clever copy hides the action behind wordplay.",
+      "Overlong copy breaks scanning and localization."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CW-001.c1",
+      "text": "Task named?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-001.c2",
+      "text": "Terminology consistent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-001.c3",
+      "text": "Audience language appropriate?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-001.c4",
+      "text": "Links descriptive?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g How Users Read on the Web",
+      "url": "https://www.nngroup.com/articles/how-users-read-on-the-web/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Content Design",
+      "url": "https://www.gov.uk/guidance/content-design",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Microsoft Writing Style Guide",
+      "url": "https://learn.microsoft.com/en-us/style-guide/welcome/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 591,
+    "rules": 114,
+    "checks": 28
+  }
+}

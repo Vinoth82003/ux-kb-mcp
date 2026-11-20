@@ -1,0 +1,163 @@
+{
+  "id": "CW-003",
+  "title": "Error Messages",
+  "rev": 2,
+  "etag": "sha256:99d6c4dde0356a4a64804ab32f575248b7223301bcbc6d753b440050c59c8f0b",
+  "status": "reviewed",
+  "domain": "content_writing",
+  "tags": [
+    "error-messages",
+    "content-writing"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Error copy states what happened, impact and the next feasible action; message wording lives here, while error state behavior lives in INT-006.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CW-003.M1",
+        "text": "Use plain language and name the specific correction."
+      },
+      {
+        "id": "CW-003.M2",
+        "text": "Preserve the user's input and state what was retained."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CW-003.S1",
+        "text": "Give one clear recovery action; include format or range examples."
+      },
+      {
+        "id": "CW-003.S2",
+        "text": "Use calm, non-blaming tone; avoid \"invalid\" or \"illegal\"."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CW-003.A1",
+        "text": "Avoid raw codes, vague messages without next steps and blame."
+      },
+      {
+        "id": "CW-003.A2",
+        "text": "Avoid offering multiple possible fixes in one message; split or prioritize."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Single field",
+        "decision": "Inline message names the field and the fix"
+      },
+      {
+        "situation": "Multiple errors",
+        "decision": "Summary lists all errors; focus moves to the first"
+      },
+      {
+        "situation": "System failure",
+        "decision": "Explain status, retry option and support link"
+      },
+      {
+        "situation": "Permission failure",
+        "decision": "State missing access and the request path"
+      }
+    ],
+    "STATES": [
+      "Detected",
+      "Inline",
+      "Summary",
+      "Recovering",
+      "Recovered",
+      "Failed"
+    ],
+    "EXAMPLE": {
+      "good": "\"Enter a date after 1 January 2025.\"",
+      "bad": "\"Invalid date.\""
+    },
+    "FAILURE_MODES": [
+      "Vague messages force users to guess the fix.",
+      "Raw codes without explanation block recovery.",
+      "Cleared inputs force rework and abandonment.",
+      "Blaming language increases frustration and drop-off."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CW-003.c1",
+      "text": "Problem specific?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-003.c2",
+      "text": "Recovery feasible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-003.c3",
+      "text": "Input intact?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-003.c4",
+      "text": "Programmatically associated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-003.c5",
+      "text": "Tone non-blaming?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Error-Message Guidelines",
+      "url": "https://www.nngroup.com/articles/error-message-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Error Message",
+      "url": "https://design-system.service.gov.uk/components/error-message/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Error Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 576,
+    "rules": 116,
+    "checks": 32
+  }
+}

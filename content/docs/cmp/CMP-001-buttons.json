@@ -1,0 +1,179 @@
+{
+  "id": "CMP-001",
+  "title": "Buttons",
+  "rev": 2,
+  "etag": "sha256:647816dd491ef580b1108ba9a3ffc98f688d3abfe2c41c89955ea94c1cad590d",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "buttons",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "A button triggers an action; its label and visual hierarchy must predict its consequence and distinguish it from navigation.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-001.M1",
+        "text": "Use a verb + object label such as “Save changes”; keep prominent actions to one or two per view."
+      },
+      {
+        "id": "CMP-001.M2",
+        "text": "Use native `<button>` for actions and `<a>` only for navigation."
+      },
+      {
+        "id": "CMP-001.M3",
+        "text": "Give icon-only buttons an accessible name (visible text or aria-label)."
+      },
+      {
+        "id": "CMP-001.M4",
+        "text": "Provide a visible focus indicator and keyboard activation via Enter/Space."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-001.S1",
+        "text": "Use a lower-emphasis style for secondary actions and require explicit consequence or confirmation for destructive actions."
+      },
+      {
+        "id": "CMP-001.S2",
+        "text": "Meet target size: at least 24×24 CSS px (WCAG 2.5.8) and aim for 44–48 px for primary controls."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-001.A1",
+        "text": "Do not use generic “OK”/“Submit” when the outcome can be named; never leave icon-only controls unnamed."
+      },
+      {
+        "id": "CMP-001.A2",
+        "text": "Do not use buttons for navigation or links for actions."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Primary action",
+        "decision": "Single high-emphasis button per view"
+      },
+      {
+        "situation": "Secondary action",
+        "decision": "Lower-emphasis (outline/ghost) button"
+      },
+      {
+        "situation": "Destructive action",
+        "decision": "Explicit verb plus confirmation or undo"
+      },
+      {
+        "situation": "Icon-only control",
+        "decision": "Accessible name plus tooltip"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover",
+      "Focus visible",
+      "Active/pressed",
+      "Disabled",
+      "Loading",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "“[Cancel] [Save changes]” with Save as the single primary action",
+      "bad": "“[OK] [Submit]” or an icon-only trash button with no accessible name"
+    },
+    "FAILURE_MODES": [
+      "Generic labels hide the consequence until after activation.",
+      "Icon-only controls are unnamed for screen-reader users.",
+      "Undersized or clustered targets cause misactivation on touch."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-001.c1",
+      "text": "Label names the outcome?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-001.c2",
+      "text": "Primary hierarchy singular?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-001.c3",
+      "text": "Native element used?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-001.c4",
+      "text": "Accessible name present?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-001.c5",
+      "text": "Focus visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-001.c6",
+      "text": "Target size checked?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Apple HIG Buttons",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/buttons",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-003",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 666,
+    "rules": 178,
+    "checks": 43
+  }
+}

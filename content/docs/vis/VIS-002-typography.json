@@ -1,0 +1,180 @@
+{
+  "id": "VIS-002",
+  "title": "Typography",
+  "rev": 2,
+  "etag": "sha256:803475fd1908cbf3e6816b99754a6f0c2c353c19a2603bd91f831f64c33bc4ca",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "typography",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Typography is a system for reading, navigation and emphasis with measurable legibility.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-002.M1",
+        "text": "Define semantic styles for page title, section, body, label, helper and metadata."
+      },
+      {
+        "id": "VIS-002.M2",
+        "text": "Use relative units (rem/em) for font sizes and spacing; support 200% browser zoom without loss of content or function (WCAG 1.4.4)."
+      },
+      {
+        "id": "VIS-002.M3",
+        "text": "Keep body line length between 45 and 75 characters (aim ~65) and body line-height between 1.4 and 1.6."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-002.S1",
+        "text": "Use a type scale with at least 4 distinct sizes (e.g., 0.875, 1, 1.25, 1.5, 2, 2.5, 3 rem on a 16px base) and weights 400/500/600/700."
+      },
+      {
+        "id": "VIS-002.S2",
+        "text": "Meet WCAG 1.4.12 text spacing: line-height 1.5, paragraph spacing 2x font size, letter spacing 0.12em, word spacing 0.16em without clipping."
+      },
+      {
+        "id": "VIS-002.S3",
+        "text": "Test long strings, localization and 200% zoom."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-002.A1",
+        "text": "Thin weights (<400) for small text (<18px) and all-caps as the only distinction."
+      },
+      {
+        "id": "VIS-002.A2",
+        "text": "Fixed px font sizes for body copy or line-height below 1.3 for paragraphs."
+      },
+      {
+        "id": "VIS-002.A3",
+        "text": "Center-aligned long body copy (>3 lines) or justified text without hyphenation."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Body copy",
+        "decision": "1rem (16px) minimum, 1.4-1.6 line-height, 45-75ch"
+      },
+      {
+        "situation": "Headings",
+        "decision": "1.1-1.3 line-height, weight 600-700, shorter measure"
+      },
+      {
+        "situation": "Dense UI",
+        "decision": "0.875rem labels, tabular nums, 1.3 line-height"
+      },
+      {
+        "situation": "Localization",
+        "decision": "Allow 30-50% expansion; test wrapping"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Truncated/overflow",
+      "Zoom 200%",
+      "Localized",
+      "Dark mode"
+    ],
+    "EXAMPLE": {
+      "good": "\"Body 1rem/1.5, measure 65ch, headings 1.25-2rem weight 600.\"",
+      "bad": "\"14px gray body text with 1.1 line-height in a 120ch column.\""
+    },
+    "FAILURE_MODES": [
+      "Fixed small type fails zoom and low-vision users.",
+      "Long measure reduces reading speed and comprehension.",
+      "Tight line-height causes line collisions at large sizes.",
+      "All-caps or thin weights reduce legibility."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-002.c1",
+      "text": "Type roles map to hierarchy?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-002.c2",
+      "text": "200% zoom works?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-002.c3",
+      "text": "Line length 45-75ch?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-002.c4",
+      "text": "Line-height >=1.4 body?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-002.c5",
+      "text": "Text spacing (1.4.12) works?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "MDN Styling Text",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Resize Text",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Text Spacing",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group Line Length",
+      "url": "https://www.nngroup.com/articles/line-length-readability/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 760,
+    "rules": 163,
+    "checks": 38
+  }
+}

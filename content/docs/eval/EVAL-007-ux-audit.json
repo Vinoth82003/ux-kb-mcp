@@ -1,0 +1,126 @@
+{
+  "id": "EVAL-007",
+  "title": "UX Audit",
+  "rev": 2,
+  "etag": "sha256:9fe69c8fd4786fc50f489ae003fc3030dcd8ad6ccca26d80042cb52571932bbb",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "ux-audit",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "A UX audit combines heuristic inspection, accessibility, analytics and user evidence to prioritize risks.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-007.M1",
+        "text": "Audit critical journeys end-to-end including empty, error, permission, loading and responsive states."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-007.S1",
+        "text": "Separate observed defect, inferred risk and untested hypothesis."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-007.A1",
+        "text": "Do not issue generic scores without scope, evidence and severity."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Observed blocker",
+        "decision": "Block release"
+      },
+      {
+        "situation": "Inferred risk",
+        "decision": "Add task test"
+      },
+      {
+        "situation": "Untested hypothesis",
+        "decision": "Label as assumption"
+      }
+    ],
+    "STATES": [
+      "Scope definition",
+      "Heuristic inspection",
+      "Accessibility check",
+      "Analytics review",
+      "Prioritization"
+    ],
+    "EXAMPLE": {
+      "good": "Audit sign-up through first value, not only the form",
+      "bad": "Score homepage 8/10 with no scope or evidence"
+    },
+    "FAILURE_MODES": [
+      "Audits that skip error/permission states miss critical failures; include them.",
+      "Severity inflation reduces trust; calibrate with impact and reach.",
+      "Mixing observation with inference hides uncertainty; label each."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-007.c1",
+      "text": "Scope/journeys explicit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-007.c2",
+      "text": "Evidence types distinct?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-007.c3",
+      "text": "Priority includes impact/reach?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g How to Conduct a Heuristic Evaluation",
+      "url": "https://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "EVAL-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 451,
+    "rules": 94,
+    "checks": 25
+  }
+}

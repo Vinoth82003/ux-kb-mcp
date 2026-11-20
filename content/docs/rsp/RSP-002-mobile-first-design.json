@@ -1,0 +1,156 @@
+{
+  "id": "RSP-002",
+  "title": "Mobile-First Design",
+  "rev": 2,
+  "etag": "sha256:3830b1c417197372b42eaf62992d1468819d9b9253a4a6ab0a3a85c4f4f4c52b",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "mobile-first-design",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Mobile-first designs the smallest supported viewport around the primary task, then enhances for larger screens, touch and poor connectivity.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-002.M1",
+        "text": "Design the smallest supported viewport (320 CSS px) around the primary task."
+      },
+      {
+        "id": "RSP-002.M2",
+        "text": "Meet WCAG 2.2 AA SC 1.4.10 reflow on the mobile baseline."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-002.S1",
+        "text": "Account for thumb reach, interruptions and poor network."
+      },
+      {
+        "id": "RSP-002.S2",
+        "text": "Defer non-essential content and chrome; keep content-to-chrome ratio high."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-002.A1",
+        "text": "Do not hide essential functions to preserve desktop composition."
+      },
+      {
+        "id": "RSP-002.A2",
+        "text": "Do not assume desktop interactions (hover, precise pointer) on touch."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Core task unclear on narrow",
+        "decision": "Cut chrome; keep task"
+      },
+      {
+        "situation": "Secondary content",
+        "decision": "Progressive disclosure"
+      },
+      {
+        "situation": "Poor connectivity",
+        "decision": "Reduce payloads; cache"
+      },
+      {
+        "situation": "Touch precision",
+        "decision": "Follow RSP-005 sizes"
+      }
+    ],
+    "STATES": [
+      "Narrow baseline",
+      "Interrupted session",
+      "Offline/slow network",
+      "Touch input",
+      "Resumed task",
+      "Wide enhancement"
+    ],
+    "EXAMPLE": {
+      "good": "\"Checkout shows amount, payment and confirm first; secondary promos collapse.\"",
+      "bad": "\"Primary Pay button hidden in a hamburger to keep hero image.\""
+    },
+    "FAILURE_MODES": [
+      "Essential actions buried in menus on mobile.",
+      "State lost on interruption; no resume path.",
+      "Desktop-only hover reveals block mobile users.",
+      "Heavy assets fail on slow networks."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-002.c1",
+      "text": "Core task works at 320 CSS px?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-002.c2",
+      "text": "Secondary content discoverable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-002.c3",
+      "text": "Network constraints handled?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-002.c4",
+      "text": "State saved for interruptions?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Luke Wroblewski Mobile First",
+      "url": "https://www.lukew.com/ff/entry.asp?933",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Mobile User Experience",
+      "url": "https://www.nngroup.com/articles/mobile-ux/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN Responsive web design",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "RSP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 595,
+    "rules": 129,
+    "checks": 37
+  }
+}

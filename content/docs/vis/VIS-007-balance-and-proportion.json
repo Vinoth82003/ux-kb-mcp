@@ -1,0 +1,163 @@
+{
+  "id": "VIS-007",
+  "title": "Balance and Proportion",
+  "rev": 2,
+  "etag": "sha256:df91176fa23e649ddc0f676633f9656592b86c1acacd3ce05fee12965c9446c5",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "balance-and-proportion",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Balance distributes visual weight by task importance; symmetry is optional and decoration must not drive layout.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-007.M1",
+        "text": "Allocate visual weight (size, color saturation, density, position) to critical information and actions first."
+      },
+      {
+        "id": "VIS-007.M2",
+        "text": "Use whitespace to isolate high-priority content; keep decorative elements subordinate in weight."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-007.S1",
+        "text": "Prefer asymmetric layouts when tasks have unequal importance; align all blocks to the grid."
+      },
+      {
+        "id": "VIS-007.S2",
+        "text": "Keep primary content within a consistent measure (e.g., 60-75% of viewport) and secondary in the remainder."
+      },
+      {
+        "id": "VIS-007.S3",
+        "text": "Rebalance at breakpoints rather than forcing equal columns."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-007.A1",
+        "text": "Adding panels or cards solely to make columns look balanced."
+      },
+      {
+        "id": "VIS-007.A2",
+        "text": "Centering everything, which flattens priority."
+      },
+      {
+        "id": "VIS-007.A3",
+        "text": "Decorative imagery or color blocks heavier than task content."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Unequal importance",
+        "decision": "Give larger share to primary task"
+      },
+      {
+        "situation": "Empty secondary column",
+        "decision": "Remove or collapse, do not pad"
+      },
+      {
+        "situation": "Dense dashboard",
+        "decision": "Primary region dominates; KPIs subordinate"
+      },
+      {
+        "situation": "Marketing hero",
+        "decision": "Visual weight supports headline + CTA"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Dense content",
+      "Responsive",
+      "Empty/secondary empty",
+      "Loading"
+    ],
+    "EXAMPLE": {
+      "good": "\"Operational queue takes 70% width; KPI tiles stack in 30% sidebar.\"",
+      "bad": "\"Two equal columns where one holds a single button.\""
+    },
+    "FAILURE_MODES": [
+      "Equal columns imply equal importance and dilute focus.",
+      "Decorative panels add noise without task value.",
+      "Responsive reflow can leave empty, padded regions.",
+      "Visual weight misaligned with task priority slows decisions."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-007.c1",
+      "text": "Visual weight matches task?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-007.c2",
+      "text": "Density intentional?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-007.c3",
+      "text": "Decoration subordinate?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-007.c4",
+      "text": "No padding panels?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group Visual Hierarchy",
+      "url": "https://www.nngroup.com/articles/visual-hierarchy-ux-definition/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Layout",
+      "url": "https://m3.material.io/foundations/layout/understanding-layout/overview",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN CSS Layout",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 658,
+    "rules": 133,
+    "checks": 29
+  }
+}

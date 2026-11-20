@@ -1,0 +1,126 @@
+{
+  "id": "EVAL-008",
+  "title": "UX Metrics",
+  "rev": 2,
+  "etag": "sha256:a776abe4be393c4a9a0f60e3cc673b5bfe03bd21e4660162f8f9ce09ba4a67eb",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "ux-metrics",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "UX metrics quantify task outcomes; select measures tied to user and business goals.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-008.M1",
+        "text": "Define formula, population, event, period, segmentation and data quality."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-008.S1",
+        "text": "Combine effectiveness, efficiency and satisfaction; interpret qualitative evidence too."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-008.A1",
+        "text": "Do not use page views or time-on-page alone as proof of value."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Metric definition unclear",
+        "decision": "Pause reporting"
+      },
+      {
+        "situation": "Proxy metric only",
+        "decision": "Label as proxy and add guardrail"
+      },
+      {
+        "situation": "Qualitative conflict",
+        "decision": "Investigate before changing design"
+      }
+    ],
+    "STATES": [
+      "Baseline",
+      "Experiment",
+      "Segmentation",
+      "Guardrail review",
+      "Post-launch"
+    ],
+    "EXAMPLE": {
+      "good": "Task success = unassisted completions / participants attempting task",
+      "bad": "\"Engagement up 20%\" with no definition"
+    },
+    "FAILURE_MODES": [
+      "Vanity metrics can mask task failure; pair with outcome metrics.",
+      "Small samples create noise; state confidence and period.",
+      "Metric gaming follows incentives; review guardrails regularly."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-008.c1",
+      "text": "Formula/denominator stated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-008.c2",
+      "text": "Segments/time stated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-008.c3",
+      "text": "Guardrails and qualitative evidence?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g UX Metrics",
+      "url": "https://www.nngroup.com/articles/ux-metrics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Google HEART Framework",
+      "url": "https://research.google/pubs/pub36299/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "EVAL-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 438,
+    "rules": 84,
+    "checks": 26
+  }
+}

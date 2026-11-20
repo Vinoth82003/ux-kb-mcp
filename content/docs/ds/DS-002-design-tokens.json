@@ -1,0 +1,154 @@
+{
+  "id": "DS-002",
+  "title": "Design Tokens",
+  "rev": 2,
+  "etag": "sha256:484b49bda917a8d529344a7d9335b742c6b725640a83d8d40edcce8a59cdb054",
+  "status": "reviewed",
+  "domain": "design_systems",
+  "tags": [
+    "design-tokens",
+    "design-systems"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Tokens are named design decisions that let themes and components share consistent values across platforms.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "DS-002.M1",
+        "text": "Use semantic tokens for roles such as text-primary, surface-default and action-primary."
+      },
+      {
+        "id": "DS-002.M2",
+        "text": "Separate primitive palette/scale (color.blue.500) from semantic aliases (color.text.primary)."
+      },
+      {
+        "id": "DS-002.M3",
+        "text": "Store tokens in a platform-neutral format and generate platform outputs from one source."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "DS-002.S1",
+        "text": "Include type, value, description and deprecation metadata for each token."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "DS-002.A1",
+        "text": "Do not hardcode repeated values across components."
+      },
+      {
+        "id": "DS-002.A2",
+        "text": "Do not use primitive token names directly in component code."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "New repeated value",
+        "decision": "Add primitive + semantic alias"
+      },
+      {
+        "situation": "Theme-specific value",
+        "decision": "Alias per theme, keep primitive stable"
+      },
+      {
+        "situation": "Renaming a token",
+        "decision": "Add alias, deprecate old for one cycle"
+      },
+      {
+        "situation": "Platform difference",
+        "decision": "Generate from same source, not hand-maintain"
+      }
+    ],
+    "STATES": [
+      "Primitive",
+      "Semantic alias",
+      "Theme override",
+      "Deprecated",
+      "Removed"
+    ],
+    "EXAMPLE": {
+      "good": "\"Button uses color.action.primary which resolves to blue.600 in light and blue.400 in dark.\"",
+      "bad": "\"Button uses #2563EB hardcoded.\""
+    },
+    "FAILURE_MODES": [
+      "Hardcoded values drift between themes and platforms.",
+      "Primitive names in components block theming.",
+      "Token sprawl without metadata makes deprecation unsafe."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "DS-002.c1",
+      "text": "Semantic roles real and named by role?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-002.c2",
+      "text": "Primitives separated from aliases?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-002.c3",
+      "text": "Themes considered and measured?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "DS-002.c4",
+      "text": "Platform outputs generated from one source?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C Design Tokens Community Group",
+      "url": "https://www.w3.org/community/design-tokens/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "IBM Carbon Design System",
+      "url": "https://carbondesignsystem.com/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Color System",
+      "url": "https://m3.material.io/styles/color/overview",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 586,
+    "rules": 162,
+    "checks": 44
+  }
+}

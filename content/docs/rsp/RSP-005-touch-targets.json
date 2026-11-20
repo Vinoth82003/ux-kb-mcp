@@ -1,0 +1,137 @@
+{
+  "id": "RSP-005",
+  "title": "Touch Targets",
+  "rev": 2,
+  "etag": "sha256:38923a52d63ef02814dde1a7a1d7fc01c4a412e846dbe42f3f8e2cfa5d60aa75",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "touch-targets",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Touch target size reduces accidental activation and supports limited precision; meet WCAG 2.2 AA SC 2.5.8 (24×24 CSS px) and aim higher for comfort.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-005.M1",
+        "text": "Meet WCAG 2.2 AA SC 2.5.8: at least 24×24 CSS px unless an exception applies."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-005.S1",
+        "text": "Aim for 44–48 CSS px for important controls where space allows; this is comfort guidance, not WCAG AA minimum."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-005.A1",
+        "text": "Do not cluster undersized targets or make tiny icons the only action."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Dense toolbar",
+        "decision": "Increase separation or size"
+      },
+      {
+        "situation": "Important control",
+        "decision": "Aim 44–48 CSS px"
+      },
+      {
+        "situation": "Exception applies",
+        "decision": "Document justification"
+      },
+      {
+        "situation": "Touch input",
+        "decision": "Follow WCAG 24×24 CSS px"
+      }
+    ],
+    "STATES": [
+      "Pointer",
+      "Touch",
+      "Dense layout",
+      "Disabled",
+      "Focus visible",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "\"A 16px icon sits inside a 44px hit area; visible glyph size is not target size.\"",
+      "bad": "\"A 16px icon with no hit area is the only delete action.\""
+    },
+    "FAILURE_MODES": [
+      "Undersized targets cause accidental activation and fatigue.",
+      "Clustered targets make precise selection impossible.",
+      "Conflating glyph size with hit area hides WCAG failure.",
+      "Exceptions undocumented; conformance overstated."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-005.c1",
+      "text": "24×24 or exception?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-005.c2",
+      "text": "Adjacent targets separated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-005.c3",
+      "text": "Important controls comfortable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple HIG Layout",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/layout",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design Accessibility",
+      "url": "https://m3.material.io/foundations/accessible-design/accessibility-basics",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-001",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 527,
+    "rules": 99,
+    "checks": 25
+  }
+}

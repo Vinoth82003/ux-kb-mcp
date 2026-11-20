@@ -1,0 +1,164 @@
+{
+  "id": "INT-005",
+  "title": "Loading States",
+  "rev": 2,
+  "etag": "sha256:e3309f3ff143ef7e5a4439f51b6f01bd5f091b98c78edb297662e793463411e3",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "loading-states",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Loading states tell users whether an operation started, is progressing and can be cancelled, without faking progress.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-005.M1",
+        "text": "Use determinate progress only when measurable; otherwise label indeterminate progress."
+      },
+      {
+        "id": "INT-005.M2",
+        "text": "Prevent duplicate submissions and disable or relabel the triggering control during processing."
+      },
+      {
+        "id": "INT-005.M3",
+        "text": "Keep layout stable; avoid shifting content when loaders appear."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-005.S1",
+        "text": "Show feedback within 100 ms; use spinners/skeletons for <1 s and progress bars for longer tasks."
+      },
+      {
+        "id": "INT-005.S2",
+        "text": "Provide cancel and retry for operations longer than 10 s."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-005.A1",
+        "text": "Do not invent percentages or leave controls apparently active during submission."
+      },
+      {
+        "id": "INT-005.A2",
+        "text": "Do not block the whole UI for partial or background operations."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Operation length",
+        "decision": "Decision"
+      },
+      {
+        "situation": "<100 ms",
+        "decision": "No loader; instant feedback"
+      },
+      {
+        "situation": "100 ms–1 s",
+        "decision": "Indeterminate spinner or skeleton"
+      },
+      {
+        "situation": "1–10 s",
+        "decision": "Determinate bar if measurable"
+      },
+      {
+        "situation": ">10 s",
+        "decision": "Progress + cancel + retry"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Triggered",
+      "Pending",
+      "Progressing",
+      "Success",
+      "Failure",
+      "Cancelled"
+    ],
+    "EXAMPLE": {
+      "good": "\"'Uploading 3 of 8 files' with a cancel button; button reads 'Uploading…' and is disabled.\"",
+      "bad": "\"Fake 73% bar and an active Submit button.\""
+    },
+    "FAILURE_MODES": [
+      "Fake progress erodes trust when completion time differs.",
+      "Active controls during submission cause duplicate requests.",
+      "Layout shift from late loaders causes mis-clicks."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-005.c1",
+      "text": "Duplicate action prevented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-005.c2",
+      "text": "Progress truthful?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-005.c3",
+      "text": "Cancel/retry defined?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-005.c4",
+      "text": "Layout stable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Progress Indicators",
+      "url": "https://www.nngroup.com/articles/progress-indicators/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Response Times: The 3 Important Limits",
+      "url": "https://www.nngroup.com/articles/response-times-3-important-limits/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Status Messages",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-010",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 617,
+    "rules": 143,
+    "checks": 27
+  }
+}

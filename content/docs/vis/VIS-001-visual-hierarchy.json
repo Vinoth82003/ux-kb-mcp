@@ -1,0 +1,156 @@
+{
+  "id": "VIS-001",
+  "title": "Visual Hierarchy",
+  "rev": 2,
+  "etag": "sha256:c09c9cb2736d9825022a6989f74c04d41bc3979d058b66b74405a08ad19ff6a2",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "visual-hierarchy",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Hierarchy makes the next useful action and relationships among content levels perceptible through combined cues.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-001.M1",
+        "text": "Combine at least two cues (size, weight, color, position, whitespace) for each level; do not rely on size alone."
+      },
+      {
+        "id": "VIS-001.M2",
+        "text": "Provide one dominant page heading and one primary action per view; subordinate supporting content."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-001.S1",
+        "text": "Make the primary task identifiable within a quick scan of the screen."
+      },
+      {
+        "id": "VIS-001.S2",
+        "text": "Use a documented type/weight/space scale so levels stay consistent across screens."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-001.A1",
+        "text": "If two elements compete, reduce one or restructure the task."
+      },
+      {
+        "id": "VIS-001.A2",
+        "text": "Do not encode hierarchy through color alone (see VIS-003, A11Y-002)."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Primary action",
+        "decision": "Largest/boldest in its region, isolated by whitespace"
+      },
+      {
+        "situation": "Dense content",
+        "decision": "Optimize scanning order before decoration"
+      },
+      {
+        "situation": "Responsive reflow",
+        "decision": "Preserve level order; stack, do not flatten"
+      },
+      {
+        "situation": "Competing elements",
+        "decision": "Reduce one or split the task"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Hover/focus",
+      "Loading",
+      "Empty",
+      "Responsive",
+      "Long content"
+    ],
+    "EXAMPLE": {
+      "good": "\"Dashboard: KPI value 32px/bold, label 14px, comparison 12px muted, note 12px.\"",
+      "bad": "\"All dashboard text 16px with only color differences.\""
+    },
+    "FAILURE_MODES": [
+      "Equal visual weight causes users to miss the primary action.",
+      "Color-only hierarchy fails for color-blind and low-vision users.",
+      "Responsive reflow can flatten levels and hide priority.",
+      "Decorative elements compete with task content."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-001.c1",
+      "text": "Primary task apparent quickly?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-001.c2",
+      "text": "Heading order semantic?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-001.c3",
+      "text": "Secondary actions subordinate?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-001.c4",
+      "text": "At least two cues per level?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group Visual Hierarchy",
+      "url": "https://www.nngroup.com/articles/visual-hierarchy-ux-definition/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Typography",
+      "url": "https://m3.material.io/styles/typography/overview",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-007",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 632,
+    "rules": 138,
+    "checks": 35
+  }
+}

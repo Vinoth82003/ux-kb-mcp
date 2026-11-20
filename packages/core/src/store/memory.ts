@@ -7,7 +7,9 @@ import type {
   ComplianceRecord,
   CreateApiKeyInput,
   CreateSessionInput,
+  CreateGateInput,
   GapRecord,
+  GateRecord,
   KbStore,
   SessionRecord,
   UpsertUserInput,
@@ -21,6 +23,7 @@ export class MemoryStore implements KbStore {
   private readonly users = new Map<string, UserRecord>();
   private readonly keys = new Map<string, ApiKeyRecord>();
   private readonly sessions = new Map<string, SessionRecord>();
+  private readonly gates = new Map<string, GateRecord>();
   private readonly compliance: ComplianceRecord[] = [];
   private readonly gaps = new Map<string, GapRecord>();
   private readonly auditLog: AuditRecord[] = [];
@@ -145,6 +148,10 @@ export class MemoryStore implements KbStore {
       kbVersion: input.kbVersion,
       fetched: [],
       startedAt: new Date(),
+      mode: input.mode,
+      screen: input.screen,
+      tokenBudget: input.tokenBudget,
+      idempotencyKey: input.idempotencyKey ?? null,
     };
     this.sessions.set(record.id, record);
     return record;
@@ -152,6 +159,13 @@ export class MemoryStore implements KbStore {
 
   async getSession(id: string): Promise<SessionRecord | null> {
     return this.sessions.get(id) ?? null;
+  }
+
+  async getSessionByIdempotencyKey(apiKeyId: string, key: string): Promise<SessionRecord | null> {
+    for (const session of this.sessions.values()) {
+      if (session.apiKeyId === apiKeyId && session.idempotencyKey === key) return session;
+    }
+    return null;
   }
 
   async addFetched(sessionId: string, ids: string[]): Promise<void> {
@@ -243,5 +257,35 @@ export class MemoryStore implements KbStore {
 
   async listAudit(limit = 100): Promise<AuditRecord[]> {
     return this.auditLog.slice(-limit).reverse();
+  }
+
+  async createGate(input: CreateGateInput): Promise<GateRecord> {
+    const record: GateRecord = {
+      id: `gate_${randomUUID()}`,
+      sessionId: input.sessionId,
+      screen: input.screen,
+      components: input.components,
+      screenType: input.screenType,
+      extraStates: input.extraStates,
+      gateVersion: 1,
+      items: input.items,
+      results: {},
+      createdAt: new Date(),
+    };
+    this.gates.set(record.id, record);
+    return record;
+  }
+
+  async getGate(id: string): Promise<GateRecord | null> {
+    return this.gates.get(id) ?? null;
+  }
+
+  async saveGate(gate: GateRecord): Promise<void> {
+    this.gates.set(gate.id, gate);
+  }
+
+  async listGates(sessionId?: string): Promise<GateRecord[]> {
+    const all = [...this.gates.values()];
+    return sessionId ? all.filter((g) => g.sessionId === sessionId) : all;
   }
 }

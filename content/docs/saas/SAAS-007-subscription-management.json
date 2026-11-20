@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-007",
+  "title": "Subscription Management",
+  "rev": 2,
+  "etag": "sha256:6233515468c4ffa1a71cd524aac0c46a8db88d32b7660772993cd8dbc88bbc45",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "subscription-management",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Subscription management clarifies entitlement, renewal, changes and cancellation.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-007.M1",
+        "text": "Show current plan, billing period, next renewal and usage."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-007.S1",
+        "text": "Explain effective date and access/data impact of changes."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-007.A1",
+        "text": "Do not hide cancellation behind unrelated offers."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Plan change",
+        "decision": "State effective date and access"
+      },
+      {
+        "situation": "Cancellation",
+        "decision": "Make discoverable, no dark pattern"
+      },
+      {
+        "situation": "Renewal",
+        "decision": "Notify before charge"
+      }
+    ],
+    "STATES": [
+      "Active",
+      "Trial",
+      "Past due",
+      "Cancelled",
+      "Expired",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "Cancel at period end on 30 June; access remains until then",
+      "bad": "Cancel button hidden in settings submenu"
+    },
+    "FAILURE_MODES": [
+      "Hidden cancellation traps users; make discoverable.",
+      "Ambiguous effective dates cause disputes; state exact date.",
+      "Usage/entitlement unclear; show current plan and usage."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-007.c1",
+      "text": "Dates explicit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-007.c2",
+      "text": "Effective date clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-007.c3",
+      "text": "Cancellation discoverable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "FTC Click-to-Cancel Rule",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2024/10/federal-trade-commission-announces-final-click-cancel-rule-making-it-easier-consumers-end-recurring",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Deceptive Patterns (Brignull)",
+      "url": "https://www.deceptive.design/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 434,
+    "rules": 77,
+    "checks": 21
+  }
+}

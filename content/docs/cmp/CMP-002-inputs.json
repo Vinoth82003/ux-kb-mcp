@@ -1,0 +1,168 @@
+{
+  "id": "CMP-002",
+  "title": "Inputs",
+  "rev": 2,
+  "etag": "sha256:06e2e8d2820d5b8f09aff0040579f8facce09001f1ee93464b3f1cc1e708cf8d",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "inputs",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Inputs collect structured data; labels, constraints and feedback determine completion quality.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-002.M1",
+        "text": "Associate a persistent visible label with every field; placeholders are examples, not labels."
+      },
+      {
+        "id": "CMP-002.M2",
+        "text": "Use native input/select/textarea with appropriate type and autocomplete; preserve paste and autofill."
+      },
+      {
+        "id": "CMP-002.M3",
+        "text": "Identify input errors in text and associate them with the field (aria-describedby/aria-invalid)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-002.S1",
+        "text": "Show format constraints and required/optional status before submission; preserve valid data after errors."
+      },
+      {
+        "id": "CMP-002.S2",
+        "text": "Provide an accessible name, hint and (where needed) visible helper text adjacent to the field."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-002.A1",
+        "text": "Do not block paste or use placeholder-only labels."
+      },
+      {
+        "id": "CMP-002.A2",
+        "text": "Do not clear valid input on validation failure."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Single-line value",
+        "decision": "Native input with type and label"
+      },
+      {
+        "situation": "Constrained format",
+        "decision": "Hint + example + validation"
+      },
+      {
+        "situation": "Optional field",
+        "decision": "Mark optional or omit required marker consistently"
+      },
+      {
+        "situation": "Error",
+        "decision": "Inline message + preserve value + focus field"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Focus",
+      "Filled",
+      "Invalid",
+      "Disabled",
+      "Read-only",
+      "Loading",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "“Work email” label + hint “We send receipts here” + placeholder “name@company.com”; invalid value retained with a message",
+      "bad": "placeholder-only label “Enter email” that clears on error"
+    },
+    "FAILURE_MODES": [
+      "Placeholder-only labels disappear on input and fail screen readers.",
+      "Clearing valid values forces rework and abandonment.",
+      "Unannounced or color-only errors are missed by assistive-tech users."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-002.c1",
+      "text": "Visible persistent label?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-002.c2",
+      "text": "Required/optional clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-002.c3",
+      "text": "Paste/autofill works?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-002.c4",
+      "text": "Errors preserve data and are announced?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-002.c5",
+      "text": "Format constraints shown before submit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Form Design",
+      "url": "https://www.nngroup.com/articles/web-form-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-005",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 640,
+    "rules": 166,
+    "checks": 46
+  }
+}

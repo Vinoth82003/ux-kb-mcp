@@ -7,8 +7,11 @@ import type {
   ComplianceRecord,
   CreateApiKeyInput,
   CreateSessionInput,
+  CreateGateInput,
   GapRecord,
+  GateRecord,
   KbStore,
+  SessionMode,
   SessionRecord,
   UpsertUserInput,
   UsageInput,
@@ -19,6 +22,17 @@ import type {
 /** Postgres-backed store. Requires `prisma generate` and a migrated database. */
 export class PrismaStore implements KbStore {
   constructor(private readonly prisma: PrismaClient) {}
+  private readonly gates = new Map<string, GateRecord>();
+  private readonly sessionMeta = new Map<
+    string,
+    {
+      mode?: SessionMode;
+      screen?: string;
+      tokenBudget?: number;
+      idempotencyKey?: string | null;
+    }
+  >();
+  private readonly idempotencyIndex = new Map<string, string>();
 
   // --- users ---------------------------------------------------------------
 
@@ -125,17 +139,37 @@ export class PrismaStore implements KbStore {
   // --- sessions ------------------------------------------------------------
 
   async createSession(input: CreateSessionInput): Promise<SessionRecord> {
-    return this.prisma.session.create({
+    const row = await this.prisma.session.create({
       data: {
         apiKeyId: input.apiKeyId,
         feature: input.feature,
         kbVersion: input.kbVersion,
       },
     });
+    const meta = {
+      mode: input.mode,
+      screen: input.screen,
+      tokenBudget: input.tokenBudget,
+      idempotencyKey: input.idempotencyKey ?? null,
+    };
+    this.sessionMeta.set(row.id, meta);
+    if (input.idempotencyKey) {
+      this.idempotencyIndex.set(`${input.apiKeyId}::${input.idempotencyKey}`, row.id);
+    }
+    return { ...row, ...meta };
   }
 
   async getSession(id: string): Promise<SessionRecord | null> {
-    return this.prisma.session.findUnique({ where: { id } });
+    const row = await this.prisma.session.findUnique({ where: { id } });
+    if (!row) return null;
+    const meta = this.sessionMeta.get(id) ?? {};
+    return { ...row, ...meta };
+  }
+
+  async getSessionByIdempotencyKey(apiKeyId: string, key: string): Promise<SessionRecord | null> {
+    const id = this.idempotencyIndex.get(`${apiKeyId}::${key}`);
+    if (!id) return null;
+    return this.getSession(id);
   }
 
   async addFetched(sessionId: string, ids: string[]): Promise<void> {
@@ -239,5 +273,35 @@ export class PrismaStore implements KbStore {
       orderBy: { createdAt: "desc" },
       take: limit,
     });
+  }
+
+  async createGate(input: CreateGateInput): Promise<GateRecord> {
+    const record: GateRecord = {
+      id: `gate_${Math.random().toString(36).slice(2)}`,
+      sessionId: input.sessionId,
+      screen: input.screen,
+      components: input.components,
+      screenType: input.screenType,
+      extraStates: input.extraStates,
+      gateVersion: 1,
+      items: input.items,
+      results: {},
+      createdAt: new Date(),
+    };
+    this.gates.set(record.id, record);
+    return record;
+  }
+
+  async getGate(id: string): Promise<GateRecord | null> {
+    return this.gates.get(id) ?? null;
+  }
+
+  async saveGate(gate: GateRecord): Promise<void> {
+    this.gates.set(gate.id, gate);
+  }
+
+  async listGates(sessionId?: string): Promise<GateRecord[]> {
+    const all = [...this.gates.values()];
+    return sessionId ? all.filter((g) => g.sessionId === sessionId) : all;
   }
 }

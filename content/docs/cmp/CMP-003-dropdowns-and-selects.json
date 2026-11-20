@@ -1,0 +1,161 @@
+{
+  "id": "CMP-003",
+  "title": "Dropdowns and Selects",
+  "rev": 2,
+  "etag": "sha256:d98feab5dad832840bad910e4311a3425c5e4e445e845ec51e7cefafdb6d6b42",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "dropdowns-and-selects",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Selects suit finite option sets; they add interaction cost and hide alternatives.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-003.M1",
+        "text": "Use native `<select>` when option count and platform behavior fit; add typeahead/search for long lists."
+      },
+      {
+        "id": "CMP-003.M2",
+        "text": "Provide an accessible name and keyboard operability (native or APG listbox pattern)."
+      },
+      {
+        "id": "CMP-003.M3",
+        "text": "Group options with optgroup/headers and sort predictable catalogues."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-003.S1",
+        "text": "Prefer radios or segmented controls for 2–5 mutually exclusive choices that benefit from scanning (heuristic, not WCAG)."
+      },
+      {
+        "id": "CMP-003.S2",
+        "text": "Show loading/empty states and provide a clear option when the field is optional."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-003.A1",
+        "text": "Do not hide 2–5 mutually exclusive choices in a dropdown when radios scan faster (heuristic, not a WCAG criterion)."
+      },
+      {
+        "id": "CMP-003.A2",
+        "text": "Do not build a custom select without keyboard, focus and ARIA support."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "2–5 options, scan matters",
+        "decision": "Radios/segmented control"
+      },
+      {
+        "situation": "Many options",
+        "decision": "Native select with search"
+      },
+      {
+        "situation": "Custom widget needed",
+        "decision": "APG listbox pattern + keyboard model"
+      },
+      {
+        "situation": "Optional field",
+        "decision": "Include “None” option or clear control"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Open",
+      "Focus",
+      "Selected",
+      "Disabled",
+      "Loading/empty",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "Country list uses a searchable select; yes/no uses radios",
+      "bad": "3 yes/no options hidden in a dropdown"
+    },
+    "FAILURE_MODES": [
+      "Custom selects lose keyboard and assistive-tech support.",
+      "Hidden options increase selection errors and time.",
+      "Unsorted or ungrouped long lists impede scanning."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-003.c1",
+      "text": "Options distinct and grouped?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-003.c2",
+      "text": "Keyboard selection works?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-003.c3",
+      "text": "Loading/empty explained?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-003.c4",
+      "text": "Native or APG pattern followed?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 619,
+    "rules": 146,
+    "checks": 34
+  }
+}

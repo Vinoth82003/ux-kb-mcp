@@ -1,0 +1,126 @@
+{
+  "id": "EVAL-005",
+  "title": "Gestalt Evaluation",
+  "rev": 2,
+  "etag": "sha256:d4c7564f4a31abeeae13afbb451426373aafa9c3eeb6d14554376e0f8a4d9869",
+  "status": "reviewed",
+  "domain": "evaluation",
+  "tags": [
+    "gestalt-evaluation",
+    "evaluation"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Gestalt evaluation checks whether perceived grouping and continuity communicate intended information architecture; principles and definitions live in VIS-008.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "EVAL-005.M1",
+        "text": "Compare perceived groups with semantic relationships and interaction boundaries."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "EVAL-005.S1",
+        "text": "Apply VIS-008 principles (proximity, similarity, continuity, common region) deliberately; cite VIS-008 for definitions."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "EVAL-005.A1",
+        "text": "Do not group unrelated controls just because they share a card."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Ambiguous grouping",
+        "decision": "Add boundary or spacing per VIS-008"
+      },
+      {
+        "situation": "Dense form",
+        "decision": "Group by task, not layout convenience"
+      },
+      {
+        "situation": "Responsive reflow",
+        "decision": "Preserve perceived relationships"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Dense content",
+      "Responsive",
+      "Interactive states",
+      "Error states"
+    ],
+    "EXAMPLE": {
+      "good": "Label, input and error form one perceived group",
+      "bad": "Card groups submit button with unrelated settings"
+    },
+    "FAILURE_MODES": [
+      "Visual grouping can imply false hierarchy; verify with task scanning.",
+      "Consistent styling across different behaviors causes misclicks; differentiate roles.",
+      "Responsive reflow can break grouping; re-check at narrow widths."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "EVAL-005.c1",
+      "text": "Groups match task?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-005.c2",
+      "text": "Similar visuals mean similar roles?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "EVAL-005.c3",
+      "text": "Reflow preserves grouping?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Interaction Design Foundation Gestalt Principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Proximity: Gestalt Principle",
+      "url": "https://www.nngroup.com/articles/gestalt-proximity",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 496,
+    "rules": 105,
+    "checks": 25
+  }
+}

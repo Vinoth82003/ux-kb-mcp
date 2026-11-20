@@ -1,0 +1,159 @@
+{
+  "id": "INT-007",
+  "title": "Feedback and Confirmation",
+  "rev": 2,
+  "etag": "sha256:2a690848595b17fe0194ab8cadd0876016a6a9499271596c31d6e42381b247d5",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "feedback-and-confirmation",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Feedback closes the loop so users know whether an action was accepted, processing or rejected; match the message to backend truth.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-007.M1",
+        "text": "Acknowledge state-changing actions and distinguish queued, processing and completed."
+      },
+      {
+        "id": "INT-007.M2",
+        "text": "Show success only after backend confirmation; otherwise show processing or queued."
+      },
+      {
+        "id": "INT-007.M3",
+        "text": "Make the feedback perceivable (visual plus, where useful, assistive announcement)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-007.S1",
+        "text": "Use undo for reversible low-risk actions when safer than confirmation."
+      },
+      {
+        "id": "INT-007.S2",
+        "text": "Show feedback within 100 ms and keep it visible long enough to read (≥3 s for toasts)."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-007.A1",
+        "text": "Do not show success before backend confirmation."
+      },
+      {
+        "id": "INT-007.A2",
+        "text": "Do not overuse confirmation dialogs for reversible, low-risk actions."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Immediate and reversible",
+        "decision": "Update and offer undo (5–10 s)"
+      },
+      {
+        "situation": "Asynchronous",
+        "decision": "Show honest progress"
+      },
+      {
+        "situation": "Irreversible",
+        "decision": "Explain before commit"
+      },
+      {
+        "situation": "High risk",
+        "decision": "Require explicit confirmation"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Queued",
+      "Processing",
+      "Success",
+      "Failure",
+      "Reverted"
+    ],
+    "EXAMPLE": {
+      "good": "\"After archive, status reads 'Archived' with Undo for 8 s; Undo truly restores.\"",
+      "bad": "\"Toast says 'Done' before save completes, with no undo.\""
+    },
+    "FAILURE_MODES": [
+      "Premature success messages hide failures and break trust.",
+      "Missing undo forces heavy confirmation dialogs for trivial actions.",
+      "Feedback that disappears too quickly is missed by slow readers and screen readers."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-007.c1",
+      "text": "Feedback matches backend?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-007.c2",
+      "text": "Reversibility considered?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-007.c3",
+      "text": "Confirmation proportional?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-007.c4",
+      "text": "Feedback visible ≥3 s?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Confirmation Dialog",
+      "url": "https://www.nngroup.com/articles/confirmation-dialog/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Visibility of System Status",
+      "url": "https://www.nngroup.com/articles/visibility-system-status/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Status Messages",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "INT-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-010",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 621,
+    "rules": 155,
+    "checks": 32
+  }
+}

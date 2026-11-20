@@ -1,0 +1,137 @@
+{
+  "id": "RSP-004",
+  "title": "Adaptive Layouts",
+  "rev": 2,
+  "etag": "sha256:876cae8a82417a17a8fdc3e70e81bb6caae1d029376bac959a944f407b13920f",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "adaptive-layouts",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Adaptive layouts switch patterns when a different arrangement is more usable than fluid resizing, while preserving task and content parity.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-004.M1",
+        "text": "Change pattern only when task constraints justify it."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-004.S1",
+        "text": "Keep content order, naming and action semantics consistent."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-004.A1",
+        "text": "Do not remove data or change action meaning between variants."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Fluid layout works",
+        "decision": "Keep fluid"
+      },
+      {
+        "situation": "Pattern switch needed",
+        "decision": "Document justification + parity"
+      },
+      {
+        "situation": "Content parity risk",
+        "decision": "Keep same labels/data"
+      },
+      {
+        "situation": "Mobile constraint",
+        "decision": "Preserve targets and labels"
+      }
+    ],
+    "STATES": [
+      "Desktop variant",
+      "Mobile variant",
+      "Transition point",
+      "Degraded/empty",
+      "Error",
+      "Loading"
+    ],
+    "EXAMPLE": {
+      "good": "\"Mobile record view keeps sort and all essential fields from desktop grid.\"",
+      "bad": "\"Mobile drops the Delete action and renames Export to Download.\""
+    },
+    "FAILURE_MODES": [
+      "Adaptive variants drift in labels and actions.",
+      "Hidden data on mobile breaks task completion.",
+      "Pattern switches without user expectation cause disorientation.",
+      "Parity not documented; regressions slip."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-004.c1",
+      "text": "Task still achievable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-004.c2",
+      "text": "Content parity documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-004.c3",
+      "text": "Alternate pattern tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Responsive Web Design",
+      "url": "https://www.nngroup.com/articles/responsive-web-design-definition/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN Responsive web design",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
+      "relation": "authoritative"
+    },
+    {
+      "title": "web.dev Responsive design basics",
+      "url": "https://web.dev/responsive-web-design-basics/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "RSP-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-006",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 523,
+    "rules": 91,
+    "checks": 24
+  }
+}

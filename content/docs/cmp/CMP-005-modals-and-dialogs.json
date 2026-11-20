@@ -1,0 +1,172 @@
+{
+  "id": "CMP-005",
+  "title": "Modals and Dialogs",
+  "rev": 2,
+  "etag": "sha256:9de725d23c0aa76e4e3d79191acc517eeb69457143ad15e9253592bdae0ff9dd",
+  "status": "reviewed",
+  "domain": "components",
+  "tags": [
+    "modals-and-dialogs",
+    "components"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Dialogs interrupt context and should be reserved for focused decisions or contained tasks.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CMP-005.M1",
+        "text": "Move focus into the dialog, manage tab order, restore focus on close and provide a descriptive title."
+      },
+      {
+        "id": "CMP-005.M2",
+        "text": "Prefer native `<dialog>` with `showModal()` for modal dialogs; use `role=\"dialog\"`/`aria-modal` and `aria-labelledby` when custom."
+      },
+      {
+        "id": "CMP-005.M3",
+        "text": "Make the background inert (inert/aria-hidden) and prevent interaction behind the dialog."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CMP-005.S1",
+        "text": "Support Escape when safe and name the object/consequence for destructive actions."
+      },
+      {
+        "id": "CMP-005.S2",
+        "text": "Keep dialogs short; use a page or drawer for long workflows."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CMP-005.A1",
+        "text": "Do not use dialogs for long workflows or nested dialog stacks."
+      },
+      {
+        "id": "CMP-005.A2",
+        "text": "Do not leave focus in the background or allow background scroll."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Focused decision",
+        "decision": "Modal dialog with title + actions"
+      },
+      {
+        "situation": "Long task",
+        "decision": "Page or drawer, not dialog"
+      },
+      {
+        "situation": "Destructive action",
+        "decision": "Name object/consequence + confirm"
+      },
+      {
+        "situation": "Non-modal info",
+        "decision": "Popover/inline, not dialog"
+      }
+    ],
+    "STATES": [
+      "Closed",
+      "Opening",
+      "Open",
+      "Focus trapped",
+      "Closing",
+      "Error",
+      "Responsive"
+    ],
+    "EXAMPLE": {
+      "good": "“Delete Q4 forecast?” dialog with Cancel and Delete; focus on Cancel",
+      "bad": "nested dialogs or a five-step form in a modal"
+    },
+    "FAILURE_MODES": [
+      "Focus not restored disorients keyboard users.",
+      "Background interaction causes data loss or confusion.",
+      "Modal overuse interrupts flow for minor tasks."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CMP-005.c1",
+      "text": "Purpose named?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-005.c2",
+      "text": "Focus managed/restored?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-005.c3",
+      "text": "Escape behavior safe?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-005.c4",
+      "text": "Background inert?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CMP-005.c5",
+      "text": "Native dialog used where possible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "GOV.UK Design System Components",
+      "url": "https://design-system.service.gov.uk/components/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Apple Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN dialog element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-006",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 643,
+    "rules": 166,
+    "checks": 36
+  }
+}

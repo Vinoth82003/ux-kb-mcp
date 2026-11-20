@@ -1,0 +1,164 @@
+{
+  "id": "VIS-005",
+  "title": "Alignment and Composition",
+  "rev": 2,
+  "etag": "sha256:12b03dbc5a674e1603172de7686eb4fd2f03ad7c31a9df02a2a73c1e9f9afb42",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "alignment-and-composition",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Alignment creates a shared structure that supports comparison and scanning.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-005.M1",
+        "text": "Align related labels, values and actions to deliberate, shared edges (grid or baseline)."
+      },
+      {
+        "id": "VIS-005.M2",
+        "text": "Right-align numeric values and use tabular numerals; left-align row labels."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-005.S1",
+        "text": "Align form labels and inputs consistently (top or start) across a surface."
+      },
+      {
+        "id": "VIS-005.S2",
+        "text": "Use a grid with defined columns and gutters; keep baselines aligned for mixed content."
+      },
+      {
+        "id": "VIS-005.S3",
+        "text": "Preserve alignment order when reflowing responsively."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-005.A1",
+        "text": "Do not center-align long body copy or dense data without a reason."
+      },
+      {
+        "id": "VIS-005.A2",
+        "text": "Ragged, inconsistent edges that create false groupings."
+      },
+      {
+        "id": "VIS-005.A3",
+        "text": "Turning comparison data into cards when cross-row scanning matters (see CMP-009)."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Forms",
+        "decision": "Top-aligned labels, shared start edge"
+      },
+      {
+        "situation": "Numeric data",
+        "decision": "Right-aligned, tabular nums, units aligned"
+      },
+      {
+        "situation": "Mixed content",
+        "decision": "Baseline align; avoid mid-row vertical centering"
+      },
+      {
+        "situation": "Responsive",
+        "decision": "Stack preserving label/value relationship"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Dense data",
+      "Responsive",
+      "Empty",
+      "Loading",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "\"Invoice table: labels left, amounts right with tabular nums.\"",
+      "bad": "\"Amounts centered; labels right-aligned arbitrarily.\""
+    },
+    "FAILURE_MODES": [
+      "Misalignment slows comparison and causes reading errors.",
+      "Centered dense data breaks scanning.",
+      "Reflow can detach labels from values.",
+      "Inconsistent edges imply false grouping."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-005.c1",
+      "text": "Shared edges reinforce grouping?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-005.c2",
+      "text": "Numbers comparable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-005.c3",
+      "text": "Responsive order preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-005.c4",
+      "text": "Tabular nums for data?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group Alignment",
+      "url": "https://www.nngroup.com/articles/alignment/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design 3 Layout",
+      "url": "https://m3.material.io/foundations/layout/understanding-layout/overview",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-009",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-003",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 624,
+    "rules": 117,
+    "checks": 32
+  }
+}

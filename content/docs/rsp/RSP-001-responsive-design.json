@@ -1,0 +1,156 @@
+{
+  "id": "RSP-001",
+  "title": "Responsive Design",
+  "rev": 2,
+  "etag": "sha256:92073b3e0ad3158b6257c07351111d330ba71589585f3a8b65a8a7c5e6c67997",
+  "status": "reviewed",
+  "domain": "responsive",
+  "tags": [
+    "responsive-design",
+    "responsive"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Responsive design adapts layout, content and interaction to available space, input and zoom—not device names alone; meet WCAG 2.2 AA SC 1.4.10 reflow at 320 CSS px.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "RSP-001.M1",
+        "text": "Choose breakpoints where the current layout fails; test narrow widths, zoom and orientation."
+      },
+      {
+        "id": "RSP-001.M2",
+        "text": "Meet WCAG 2.2 AA SC 1.4.10 Reflow: content reflows without two-dimensional scrolling at 320 CSS px width (equivalent to 400% zoom at 1280 CSS px)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "RSP-001.S1",
+        "text": "Preserve task priority and content order across widths."
+      },
+      {
+        "id": "RSP-001.S2",
+        "text": "Use fluid grids, relative units and max-width so content adapts without horizontal scroll."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "RSP-001.A1",
+        "text": "Do not shrink desktop columns until text and controls become unusable."
+      },
+      {
+        "id": "RSP-001.A2",
+        "text": "Do not rely on device-name breakpoints or horizontal scrolling for core tasks."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Layout fits",
+        "decision": "Keep fluid"
+      },
+      {
+        "situation": "Content collides",
+        "decision": "Add breakpoint"
+      },
+      {
+        "situation": "Reflow fails at 320 CSS px",
+        "decision": "Remove 2D scroll; restructure"
+      },
+      {
+        "situation": "Interaction changes",
+        "decision": "Test adaptive pattern"
+      }
+    ],
+    "STATES": [
+      "Narrow (320 CSS px)",
+      "Medium",
+      "Wide",
+      "Zoom/reflow",
+      "Orientation",
+      "Touch/keyboard"
+    ],
+    "EXAMPLE": {
+      "good": "\"Settings page reflows from two columns to one ordered column at 320 CSS px with no horizontal scroll.\"",
+      "bad": "\"Desktop table shrinks to 8px text and requires sideways scrolling to read.\""
+    },
+    "FAILURE_MODES": [
+      "Fixed-width containers cause two-dimensional scrolling at 320 CSS px.",
+      "Content order changes across widths hide primary tasks.",
+      "Breakpoints chosen by device names break on in-between sizes.",
+      "Zoom to 400% reveals clipped or overlapping controls."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "RSP-001.c1",
+      "text": "Reflows at 320 CSS px without 2D scroll?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-001.c2",
+      "text": "Breakpoints content-driven?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-001.c3",
+      "text": "No unintended page scroll?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "RSP-001.c4",
+      "text": "Content order preserved?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN Responsive web design",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
+      "relation": "authoritative"
+    },
+    {
+      "title": "web.dev Responsive design basics",
+      "url": "https://web.dev/responsive-web-design-basics/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "A11Y-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 646,
+    "rules": 160,
+    "checks": 36
+  }
+}

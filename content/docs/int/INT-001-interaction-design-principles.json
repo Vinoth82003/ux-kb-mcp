@@ -1,0 +1,160 @@
+{
+  "id": "INT-001",
+  "title": "Interaction Design Principles",
+  "rev": 2,
+  "etag": "sha256:fd080ca59a47f3410ce7d41b7c46ee594c9cca4d52e9bda42b0853cffbfbd43a",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "interaction-design-principles",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Every interaction must expose a discoverable trigger, visible response, predictable result and a recovery path; design for the task outcome, not the screen.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-001.M1",
+        "text": "Define trigger, feedback, resulting state and recovery path for every action before implementation."
+      },
+      {
+        "id": "INT-001.M2",
+        "text": "Keep the interaction operable by keyboard, touch and assistive tech; never depend on a single modality."
+      },
+      {
+        "id": "INT-001.M3",
+        "text": "Preserve user input and context when an action fails or is cancelled."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-001.S1",
+        "text": "Make state changes visible within 100 ms and keep transitions interruptible."
+      },
+      {
+        "id": "INT-001.S2",
+        "text": "Offer undo for reversible actions and confirmation only for irreversible or high-impact ones."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-001.A1",
+        "text": "Do not make motion, sound or hidden gestures the only way to operate a feature."
+      },
+      {
+        "id": "INT-001.A2",
+        "text": "Do not ship an interaction whose success cannot be verified against a defined user outcome."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Immediate and reversible",
+        "decision": "Update UI and offer undo"
+      },
+      {
+        "situation": "Asynchronous",
+        "decision": "Show honest, cancellable progress"
+      },
+      {
+        "situation": "Irreversible or high impact",
+        "decision": "Explain consequence and require explicit confirm"
+      },
+      {
+        "situation": "Failure",
+        "decision": "Preserve input and offer retry or recovery"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Triggered",
+      "Pending",
+      "Success",
+      "Failure",
+      "Cancelled",
+      "Recovered"
+    ],
+    "EXAMPLE": {
+      "good": "\"Save button shows spinner, then 'Saved' or 'Couldn't save — retry', keeping edits.\"",
+      "bad": "\"Button disables silently and the form resets on error.\""
+    },
+    "FAILURE_MODES": [
+      "Hiding the recovery path turns a recoverable slip into data loss.",
+      "Relying on one modality excludes keyboard and assistive-tech users.",
+      "Unverified success states lead teams to ship interactions that look done but fail the task."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-001.c1",
+      "text": "Trigger and outcome documented?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-001.c2",
+      "text": "Feedback timing ≤100 ms?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-001.c3",
+      "text": "Recovery path exists and tested?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-001.c4",
+      "text": "Input preserved on failure?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g First Principles of Interaction Design",
+      "url": "https://www.nngroup.com/articles/first-principles-interaction-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group 10 Usability Heuristics",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-006",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 674,
+    "rules": 172,
+    "checks": 36
+  }
+}

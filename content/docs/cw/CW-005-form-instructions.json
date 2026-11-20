@@ -1,0 +1,156 @@
+{
+  "id": "CW-005",
+  "title": "Form Instructions",
+  "rev": 2,
+  "etag": "sha256:12f17d905b4f7f1a4fda5cdda012e1a64343338bf01131fa3812778ff1fd2dc9",
+  "status": "reviewed",
+  "domain": "content_writing",
+  "tags": [
+    "form-instructions",
+    "content-writing"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Form instructions explain required data, format, privacy and completion before submission.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "CW-005.M1",
+        "text": "State required/optional and non-obvious formats before entry."
+      },
+      {
+        "id": "CW-005.M2",
+        "text": "State what data is collected, why, and retention or sharing; link to the privacy policy before submission."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "CW-005.S1",
+        "text": "Use examples matching accepted formats, e.g. \"DD/MM/YYYY\"."
+      },
+      {
+        "id": "CW-005.S2",
+        "text": "Place instructions adjacent to the field; keep global notes above the form."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "CW-005.A1",
+        "text": "Do not put essential instructions in a distant paragraph."
+      },
+      {
+        "id": "CW-005.A2",
+        "text": "Do not hide privacy terms behind a generic \"Terms\" link."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Required/optional",
+        "decision": "Mark each field explicitly"
+      },
+      {
+        "situation": "Format",
+        "decision": "Show pattern plus a valid example"
+      },
+      {
+        "situation": "Privacy",
+        "decision": "State use, retention and policy link"
+      },
+      {
+        "situation": "Long guidance",
+        "decision": "Use progressive disclosure adjacent to the field"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Required/optional",
+      "Format hint",
+      "Validation",
+      "Success",
+      "Localized"
+    ],
+    "EXAMPLE": {
+      "good": "\"Date of birth (DD/MM/YYYY), e.g. 14/03/1990. We use this to verify age; see Privacy.\"",
+      "bad": "\"Enter DOB\" with no format or privacy note"
+    },
+    "FAILURE_MODES": [
+      "Hidden formats cause repeated validation errors.",
+      "Privacy surprises reduce trust and completion.",
+      "Distant instructions are missed at the point of entry.",
+      "Placeholder-only format hints vanish while typing."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "CW-005.c1",
+      "text": "Required status clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-005.c2",
+      "text": "Examples valid?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-005.c3",
+      "text": "Instructions adjacent?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "CW-005.c4",
+      "text": "Privacy stated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Form Design",
+      "url": "https://www.nngroup.com/articles/web-form-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Text Input",
+      "url": "https://design-system.service.gov.uk/components/text-input/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Labels or Instructions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CMP-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "A11Y-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 576,
+    "rules": 112,
+    "checks": 26
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "VIS-004",
+  "title": "Spacing and Layout",
+  "rev": 2,
+  "etag": "sha256:689c5b4e149e440e96d91eed23b729e11abc6b23ae809b4a5e9e93216ee02c18",
+  "status": "reviewed",
+  "domain": "visual_design",
+  "tags": [
+    "spacing-and-layout",
+    "visual-design"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Spacing expresses relationships and creates scan rhythm through a documented scale.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "VIS-004.M1",
+        "text": "Use a documented spacing scale; separate groups more than items within a group."
+      },
+      {
+        "id": "VIS-004.M2",
+        "text": "Use a 4px base scale: 0, 4, 8, 12, 16, 24, 32, 48, 64, 96 (px) (or rem equivalents); never one-off gaps."
+      },
+      {
+        "id": "VIS-004.M3",
+        "text": "Keep within-group gap smaller than between-group gap (e.g., 8-12px inside, 24-32px between)."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "VIS-004.S1",
+        "text": "Adapt page gutters and columns to content and viewport (e.g., 16px mobile, 24px tablet, 32px desktop)."
+      },
+      {
+        "id": "VIS-004.S2",
+        "text": "Cap content measure around 1200-1280px; use fluid widths below."
+      },
+      {
+        "id": "VIS-004.S3",
+        "text": "Preserve grouping and avoid clipping at narrow widths and 200% zoom (WCAG 1.4.10)."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "VIS-004.A1",
+        "text": "Do not invent one-off gaps for every component."
+      },
+      {
+        "id": "VIS-004.A2",
+        "text": "Equal spacing that erases grouping."
+      },
+      {
+        "id": "VIS-004.A3",
+        "text": "Horizontal scroll for primary content at 320px width."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Within component",
+        "decision": "4-12px between related items"
+      },
+      {
+        "situation": "Between groups",
+        "decision": "24-32px (or 2x within)"
+      },
+      {
+        "situation": "Page gutter",
+        "decision": "16/24/32 by breakpoint"
+      },
+      {
+        "situation": "Dense data",
+        "decision": "8-16px row gaps, align to grid"
+      }
+    ],
+    "STATES": [
+      "Default",
+      "Narrow/mobile",
+      "Wide/desktop",
+      "Zoom/reflow",
+      "Dense content",
+      "Empty"
+    ],
+    "EXAMPLE": {
+      "good": "\"Label 4px from input; 24px to next field group.\"",
+      "bad": "\"Every element separated by 16px regardless of relationship.\""
+    },
+    "FAILURE_MODES": [
+      "Equal spacing hides grouping and increases scan time.",
+      "One-off gaps break consistency and theming.",
+      "Fixed gutters cause clipping on narrow screens.",
+      "Reflow can collapse groups; re-check at 320px."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "VIS-004.c1",
+      "text": "Spacing tokens used?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-004.c2",
+      "text": "Grouping visible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-004.c3",
+      "text": "No clipping on narrow widths?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "VIS-004.c4",
+      "text": "Within < between gap?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Material Design 3 Layout",
+      "url": "https://m3.material.io/foundations/layout/understanding-layout/overview",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "MDN CSS Layout",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "VIS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "VIS-008",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "RSP-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "DS-002",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 649,
+    "rules": 146,
+    "checks": 29
+  }
+}

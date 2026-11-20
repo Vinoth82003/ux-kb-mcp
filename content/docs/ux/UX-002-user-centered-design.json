@@ -1,0 +1,143 @@
+{
+  "id": "UX-002",
+  "title": "User-Centered Design",
+  "rev": 2,
+  "etag": "sha256:046b6548c69a14b69dc3e30a2641d5df22d6558b324323935b75c56552dd1830",
+  "status": "reviewed",
+  "domain": "ux",
+  "tags": [
+    "user-centered-design",
+    "ux"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "User-centered design makes user tasks and evidence authoritative while treating business and technical constraints as explicit inputs.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "UX-002.M1",
+        "text": "Write research questions before choosing methods."
+      },
+      {
+        "id": "UX-002.M2",
+        "text": "Recruit people who represent the real task and context."
+      },
+      {
+        "id": "UX-002.M3",
+        "text": "Trace major decisions to findings, constraints or labeled hypotheses."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "UX-002.S1",
+        "text": "Use formative research early and summative evaluation after design stabilizes."
+      },
+      {
+        "id": "UX-002.S2",
+        "text": "Include assistive technology in relevant research scenarios."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "UX-002.A1",
+        "text": "Ask leading questions to validate a preferred solution."
+      },
+      {
+        "id": "UX-002.A2",
+        "text": "Treat stakeholder approval as proof of usability."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Need or problem unknown",
+        "decision": "Interview or observe users in context"
+      },
+      {
+        "situation": "Workflow known, usability unknown",
+        "decision": "Run task-based usability test"
+      },
+      {
+        "situation": "Prevalence or priority unknown",
+        "decision": "Survey after exploratory research"
+      }
+    ],
+    "STATES": [
+      "Recruit",
+      "Consent",
+      "Task",
+      "Observation",
+      "Synthesis"
+    ],
+    "FAILURE_MODES": [
+      "Recruiting people who do not match the real task or context produces findings that do not transfer.",
+      "Leading questions validate a preferred solution instead of revealing user needs.",
+      "Summative metrics without formative insight leave the cause of failure unexplained."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "UX-002.c1",
+      "text": "Method matches question?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-002.c2",
+      "text": "Participants match task?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-002.c3",
+      "text": "Findings include evidence and confidence?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "ISO 9241-210:2019 Human-centred design for interactive systems",
+      "url": "https://www.iso.org/standard/77520.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Nielsen Norman Group — When to Use Which User-Experience Research Methods",
+      "url": "https://www.nngroup.com/articles/which-ux-research-methods/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "GOV.UK Service Manual — User research",
+      "url": "https://www.gov.uk/service-manual/user-research",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 576,
+    "rules": 131,
+    "checks": 28
+  }
+}

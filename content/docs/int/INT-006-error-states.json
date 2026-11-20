@@ -1,0 +1,160 @@
+{
+  "id": "INT-006",
+  "title": "Error States",
+  "rev": 2,
+  "etag": "sha256:c98e7b98a32c0e8b95603a86f71662eaa125393f2daa9bc557efa5f06c615567",
+  "status": "reviewed",
+  "domain": "interaction",
+  "tags": [
+    "error-states",
+    "interaction"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "Error states identify the problem, preserve work and provide a feasible recovery action; message copy details live in CW-003.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "INT-006.M1",
+        "text": "Explain failure in user language and give a concrete next step."
+      },
+      {
+        "id": "INT-006.M2",
+        "text": "Preserve valid values and move focus to the error summary or first invalid field after failed submit."
+      },
+      {
+        "id": "INT-006.M3",
+        "text": "Announce errors to assistive tech (aria-live or focus move) without relying on color alone."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "INT-006.S1",
+        "text": "Show inline errors adjacent to the source and a summary for multiple errors."
+      },
+      {
+        "id": "INT-006.S2",
+        "text": "Distinguish blocking errors from warnings and non-blocking status."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "INT-006.A1",
+        "text": "Do not expose stack traces, internal codes or blame the user."
+      },
+      {
+        "id": "INT-006.A2",
+        "text": "Do not clear valid input or reset the form on error."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Single field error",
+        "decision": "Inline message + focus field"
+      },
+      {
+        "situation": "Multiple errors",
+        "decision": "Summary + focus first invalid field"
+      },
+      {
+        "situation": "Recoverable failure",
+        "decision": "Preserve input and offer retry"
+      },
+      {
+        "situation": "Blocking vs warning",
+        "decision": "Reserve modal for severe, blocking errors"
+      }
+    ],
+    "STATES": [
+      "Idle",
+      "Validating",
+      "Error",
+      "Warning",
+      "Recovering",
+      "Recovered",
+      "Failed"
+    ],
+    "EXAMPLE": {
+      "good": "\"'We couldn't save. Your edits are still here. Try again.' Focus moves to the summary; inputs retained.\"",
+      "bad": "\"'Error 500' toast, form cleared, focus lost.\""
+    },
+    "FAILURE_MODES": [
+      "Clearing valid input forces rework and abandonment.",
+      "Unannounced errors are invisible to screen-reader users.",
+      "Modal errors for minor issues interrupt flow unnecessarily."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "INT-006.c1",
+      "text": "Cause specific?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-006.c2",
+      "text": "Recovery feasible?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-006.c3",
+      "text": "Input retained?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "INT-006.c4",
+      "text": "Error announced?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "W3C WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "W3C WCAG 2.2 Understanding Error Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html",
+      "relation": "authoritative"
+    },
+    {
+      "title": "NN/g Error-Message Guidelines",
+      "url": "https://www.nngroup.com/articles/error-message-guidelines/",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "CW-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "INT-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 607,
+    "rules": 144,
+    "checks": 23
+  }
+}

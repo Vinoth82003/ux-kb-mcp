@@ -43,6 +43,16 @@ export interface PackResult {
   routedIds: string[];
   tokenEstimate: number;
   overBudget: boolean;
+
+  // M2 additions
+  depth?: "checklist" | "rules" | "full";
+  maxTokens?: number;
+  page?: number;
+  totalPages?: number;
+  deferredIds?: string[];
+  unchangedIds?: string[];
+  allIds?: string[];
+  baseIds?: string[];
 }
 
 export interface SearchHit {

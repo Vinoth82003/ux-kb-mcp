@@ -1,0 +1,135 @@
+{
+  "id": "UX-001",
+  "title": "What Is UX",
+  "rev": 2,
+  "etag": "sha256:4d39cda7f2e0a397d662c045e3d4044589b22a0ffe188a07771c9703d369ed69",
+  "status": "reviewed",
+  "domain": "ux",
+  "tags": [
+    "what-is-ux",
+    "ux"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "UX is the quality of the complete journey: usefulness, usability, accessibility, trust and context—not visual polish alone.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "UX-001.M1",
+        "text": "Define user, task, context and success outcome before proposing screens."
+      },
+      {
+        "id": "UX-001.M2",
+        "text": "Map discovery, entry, task completion, recovery and post-task touchpoints."
+      },
+      {
+        "id": "UX-001.M3",
+        "text": "Separate observed evidence from assumptions and name a validation method."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "UX-001.S1",
+        "text": "Measure task success, time, errors and confidence together."
+      },
+      {
+        "id": "UX-001.S2",
+        "text": "Include policy, data, support and device constraints."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "UX-001.A1",
+        "text": "Treat stakeholder preference or visual polish as usability evidence."
+      },
+      {
+        "id": "UX-001.A2",
+        "text": "Invent personas, quotes or conversion metrics."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "User, task or context unknown",
+        "decision": "Research before proposing screens"
+      },
+      {
+        "situation": "Evidence and assumption blurred",
+        "decision": "Label each and name a validation method"
+      },
+      {
+        "situation": "Journey has a gap (discovery, recovery, post-task)",
+        "decision": "Map and improve the full path"
+      }
+    ],
+    "STATES": [
+      "Discovery",
+      "Entry",
+      "In progress",
+      "Success",
+      "Failure/recovery",
+      "Exit"
+    ],
+    "FAILURE_MODES": [
+      "A polished screen can still fail the task; validate against the defined user outcome.",
+      "Optimizing one touchpoint while ignoring discovery or recovery leaves the end-to-end journey broken.",
+      "Personas or metrics invented without evidence produce decisions that do not match real users."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "UX-001.c1",
+      "text": "User and task explicit?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-001.c2",
+      "text": "Success measurable?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "UX-001.c3",
+      "text": "Evidence separated from assumptions?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "Nielsen Norman Group — The Definition of User Experience (UX)",
+      "url": "https://www.nngroup.com/articles/definition-user-experience/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "ISO 9241-210:2019 Human-centred design for interactive systems",
+      "url": "https://www.iso.org/standard/77520.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "UX-002",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "UX-005",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "EVAL-007",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 530,
+    "rules": 135,
+    "checks": 25
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "id": "SAAS-008",
+  "title": "Empty Dashboard States",
+  "rev": 2,
+  "etag": "sha256:1e1d4a1570f68d6e36bee377c0b938d8ce1b99a7f782424918ea66554ee55a5d",
+  "status": "reviewed",
+  "domain": "saas",
+  "tags": [
+    "empty-dashboard-states",
+    "saas"
+  ],
+  "appliesTo": [
+    "web",
+    "mobile"
+  ],
+  "summary": "An empty dashboard distinguishes setup incomplete, no activity, no permission and unavailable data.",
+  "sections": {
+    "MUST": [
+      {
+        "id": "SAAS-008.M1",
+        "text": "State the real reason and the next action that resolves it."
+      }
+    ],
+    "SHOULD": [
+      {
+        "id": "SAAS-008.S1",
+        "text": "Clearly label demo data and isolate it from production metrics."
+      }
+    ],
+    "AVOID": [
+      {
+        "id": "SAAS-008.A1",
+        "text": "Do not show blank charts, fake zeros or misleading summaries."
+      }
+    ],
+    "DECIDE": [
+      {
+        "situation": "Setup incomplete",
+        "decision": "Show minimum next step"
+      },
+      {
+        "situation": "No permission",
+        "decision": "Explain and request access"
+      },
+      {
+        "situation": "Demo data",
+        "decision": "Label and isolate"
+      }
+    ],
+    "STATES": [
+      "Setup incomplete",
+      "No activity",
+      "Filtered empty",
+      "No permission",
+      "Unavailable",
+      "Error"
+    ],
+    "EXAMPLE": {
+      "good": "\"No invoices yet — create your first\" with a Create action",
+      "bad": "Blank chart reading 0 with no reason or action"
+    },
+    "FAILURE_MODES": [
+      "Blank charts imply zero; state the reason.",
+      "Fake zeros mislead; distinguish missing/unavailable.",
+      "Demo data mixed with production; label and isolate."
+    ],
+    "CHECK": []
+  },
+  "checks": [
+    {
+      "id": "SAAS-008.c1",
+      "text": "Reason accurate?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-008.c2",
+      "text": "Setup action clear?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    },
+    {
+      "id": "SAAS-008.c3",
+      "text": "Demo data isolated?",
+      "severity": "minor",
+      "wcag": [],
+      "naForbidden": false
+    }
+  ],
+  "sources": [
+    {
+      "title": "NN/g Empty State Interface Design",
+      "url": "https://www.nngroup.com/articles/empty-state-interface-design/",
+      "relation": "authoritative"
+    },
+    {
+      "title": "Material Design Empty States",
+      "url": "https://m2.material.io/design/communication/empty-states.html",
+      "relation": "authoritative"
+    }
+  ],
+  "related": [
+    {
+      "id": "SAAS-001",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-003",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "CW-004",
+      "when": "the feature crosses into this topic"
+    },
+    {
+      "id": "SAAS-004",
+      "when": "the feature crosses into this topic"
+    }
+  ],
+  "tokenCost": {
+    "full": 428,
+    "rules": 80,
+    "checks": 19
+  }
+}
