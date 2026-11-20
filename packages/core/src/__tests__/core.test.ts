@@ -139,7 +139,7 @@ test("stage pack reports token estimate against its budget", () => {
   const pack = kb.pack("proposal");
   assert.ok(pack.tokenEstimate > 0);
   assert.equal(typeof pack.overBudget, "boolean");
-  assert.equal(pack.budgetTokens, 7500);
+  assert.equal(pack.budgetTokens, 10000);
 });
 
 test("checklist returns only CHECK items", () => {
