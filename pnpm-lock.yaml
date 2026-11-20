@@ -87,6 +87,9 @@ importers:
       '@ux-kb/mcp':
         specifier: workspace:*
         version: link:../../packages/mcp
+      '@ux-kb/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
       next:
         specifier: 16.4.6
         version: 16.4.6(@types/node@24.19.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -156,6 +159,19 @@ importers:
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/schemas:
+    dependencies:
+      '@ux-kb/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
+    devDependencies:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

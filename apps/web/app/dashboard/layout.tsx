@@ -1,74 +1,54 @@
 import Link from "next/link";
-import { signOut } from "@/auth";
 import { requireUser } from "@/lib/authz";
 
-export const dynamic = "force-dynamic";
+const NAV = [
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/dashboard/content", label: "Content" },
+  { href: "/dashboard/checks", label: "Checks" },
+  { href: "/dashboard/gate", label: "Core Gate" },
+  { href: "/dashboard/routing", label: "Routing" },
+  { href: "/dashboard/review", label: "Review" },
+  { href: "/dashboard/releases", label: "Releases" },
+  { href: "/dashboard/gaps", label: "Gaps" },
+  { href: "/dashboard/false-positives", label: "False positives" },
+  { href: "/dashboard/analytics", label: "Analytics" },
+  { href: "/dashboard/sessions", label: "Sessions" },
+  { href: "/dashboard/config", label: "Configuration" },
+  { href: "/dashboard/keys", label: "API keys" },
+  { href: "/dashboard/users", label: "Users & roles" },
+  { href: "/dashboard/audit", label: "Audit log" },
+];
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
-  const isAdmin = user.role === "ADMIN";
 
   return (
-    <div className="container" style={{ padding: "32px 0" }}>
-      <header
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <aside
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 16,
-          marginBottom: 24,
-          flexWrap: "wrap",
+          width: 220,
+          borderRight: "1px solid var(--border)",
+          padding: 16,
+          background: "var(--surface)",
         }}
       >
-        <div>
-          <p className="eyebrow" style={{ margin: 0 }}>
-            UX-KB dashboard
-          </p>
-          <h1 style={{ margin: "4px 0 0", fontSize: "1.6rem" }}>
-            {user.name ?? user.login}
-          </h1>
-          <p style={{ margin: "4px 0 0", color: "var(--muted)", fontSize: "0.85rem" }}>
-            github:{user.login}
-            {isAdmin ? " · admin" : ""}
-          </p>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>UX-KB Admin</div>
+        <nav aria-label="Admin navigation">
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {NAV.map((item) => (
+              <li key={item.href} style={{ marginBottom: 4 }}>
+                <Link href={item.href} style={{ display: "block", padding: "6px 8px", borderRadius: 6 }}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div style={{ marginTop: 16, fontSize: "0.8rem", color: "var(--muted)" }}>
+          Signed in as {user.login} ({user.role})
         </div>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <Link className="btn btn-ghost" href="/">
-            Public site
-          </Link>
-          <form
-            action={async () => {
-              "use server";
-              await signOut({ redirectTo: "/" });
-            }}
-          >
-            <button className="btn btn-ghost" type="submit">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
-
-      <nav
-        aria-label="Dashboard"
-        style={{
-          display: "flex",
-          gap: 16,
-          marginBottom: 32,
-          borderBottom: "1px solid var(--border)",
-          paddingBottom: 12,
-          flexWrap: "wrap",
-        }}
-      >
-        <Link href="/dashboard">Overview</Link>
-        <Link href="/dashboard/keys">API keys</Link>
-        <Link href="/dashboard/usage">Usage</Link>
-        <Link href="/dashboard/releases">Releases</Link>
-        {isAdmin && <Link href="/dashboard/users">Users</Link>}
-        {isAdmin && <Link href="/dashboard/gaps">Gaps</Link>}
-      </nav>
-
-      {children}
+      </aside>
+      <main style={{ flex: 1, padding: 24 }}>{children}</main>
     </div>
   );
 }

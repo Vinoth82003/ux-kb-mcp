@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./store": "./src/store/index.ts",
-    "./db": "./src/db.ts"
+    "./db": "./src/db.ts",
+    "./sanitizer": "./src/content/sanitizer.ts"
   },
   "types": "./src/index.ts",
   "scripts": {
