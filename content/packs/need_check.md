@@ -2,7 +2,7 @@
 
 ```yaml
 stage: need_check
-budget_tokens: 3500
+budget_tokens: 6000
 include_core_md: true
 always: [UX-001, UX-002, UX-003, UX-004]
 ```

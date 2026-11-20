@@ -2,7 +2,7 @@
 
 ```yaml
 stage: proposal
-budget_tokens: 7500
+budget_tokens: 10000
 include_core_md: true
 always: [VIS-001, VIS-002, VIS-003, VIS-004, VIS-006, INT-001, INT-005, INT-006, CW-004]
 ```

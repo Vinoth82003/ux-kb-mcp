@@ -2,7 +2,7 @@
 
 ```yaml
 stage: research
-budget_tokens: 3500
+budget_tokens: 6000
 include_core_md: true
 always: [UX-002, SAAS-003, SAAS-004, EVAL-007]
 ```

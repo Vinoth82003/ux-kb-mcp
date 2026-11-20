@@ -2,7 +2,7 @@
 
 ```yaml
 stage: critique
-budget_tokens: 4000
+budget_tokens: 7000
 include_core_md: true
 always: [EVAL-001, EVAL-002, EVAL-005, A11Y-001, DS-004]
 ```
