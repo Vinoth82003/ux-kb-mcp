@@ -36,8 +36,7 @@ export default function ScrollReveal() {
     if (motionQuery.matches || typeof IntersectionObserver === "undefined") {
       showAll();
     } else {
-      root.classList.add("reveal-armed");
-
+      // Do not hide content by default; only enhance with reveal when JS runs.
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {

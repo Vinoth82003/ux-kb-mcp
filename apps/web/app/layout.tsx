@@ -49,7 +49,7 @@ const themeInit = `(function(){try{var m=localStorage.getItem('theme-mode')||'sy
 // Arms scroll-reveal hidden states before first paint. If the client controller
 // never mounts (JS error, disabled JS), the armed class is dropped so every
 // section stays visible.
-const revealInit = `(function(){try{if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.documentElement.classList.add('reveal-armed');window.__uxkbRevealTimer=window.setTimeout(function(){document.documentElement.classList.remove('reveal-armed');},6000);}catch(e){}})();`;
+const revealInit = `(function(){try{if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
