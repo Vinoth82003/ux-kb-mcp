@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import QRCode from "qrcode";
 import { confirmMfaAction, disableMfaAction, startMfaSetupAction } from "./actions";
 
 export default function MfaPanel({ enabled }: { enabled: boolean }) {
   const [pending, startTransition] = useTransition();
   const [setup, setSetup] = useState<{ secret: string; otpauth: string } | null>(null);
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -21,6 +23,12 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
         return;
       }
       setSetup({ secret: result.secret, otpauth: result.otpauth });
+      try {
+        const url = await QRCode.toDataURL(result.otpauth, { margin: 1, width: 220, errorCorrectionLevel: "M" });
+        setQrDataUrl(url);
+      } catch {
+        setQrDataUrl(null);
+      }
     });
   }
 
@@ -35,6 +43,7 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
       }
       setSetup(null);
       setCode("");
+      setQrDataUrl(null);
       setNotice("Two-factor authentication is on. Sensitive actions now ask for a code.");
     });
   }
@@ -107,33 +116,71 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
       </p>
 
       {!setup ? (
-        <div className="adm-actions">
-          <button className="btn btn-primary" type="button" onClick={begin} disabled={pending}>
-            {pending ? "Starting…" : "Set up MFA"}
-          </button>
+        <div className="adm-stack" style={{ gap: 10 }}>
+          <p className="adm-help" style={{ margin: 0 }}>
+            Works with 1Password, Authy, Google Authenticator, Microsoft Authenticator,
+            and any TOTP-compatible app.
+          </p>
+          <div className="adm-actions">
+            <button className="btn btn-primary" type="button" onClick={begin} disabled={pending}>
+              {pending ? "Starting…" : "Set up MFA"}
+            </button>
+          </div>
         </div>
       ) : (
-        <>
-          <ol className="adm-doc-body" style={{ margin: 0, paddingLeft: 20 }}>
-            <li>Open your authenticator app and add an account manually.</li>
-            <li>
-              Enter this secret (spaces are ignored):
-              <br />
-              <code className="adm-code" style={{ display: "inline-block", marginTop: 6, wordBreak: "break-all" }}>
-                {setup.secret}
-              </code>
-            </li>
-            <li>Type the 6-digit code the app shows.</li>
-          </ol>
-          <div className="adm-inline">
-            <button className="btn btn-ghost" type="button" onClick={copySecret}>
-              {copied ? "Copied" : "Copy secret"}
-            </button>
-            <a className="btn btn-ghost" href={setup.otpauth}>
-              Open in authenticator
-            </a>
+        <div className="adm-stack" style={{ gap: 16 }}>
+          <div className="adm-grid adm-grid-2" style={{ alignItems: "start" }}>
+            <div className="adm-stack" style={{ gap: 10, alignItems: "center" }}>
+              <div
+                className="adm-card"
+                style={{ padding: 12, background: "#fff", display: "grid", placeItems: "center" }}
+                aria-label="QR code for your authenticator app"
+              >
+                {qrDataUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={qrDataUrl} alt="QR code containing the TOTP secret" width={220} height={220} />
+                ) : (
+                  <div className="adm-skeleton" style={{ width: 220, height: 220 }} />
+                )}
+              </div>
+              <p className="adm-help" style={{ margin: 0, textAlign: "center" }}>
+                Scan this with your authenticator app.
+              </p>
+            </div>
+
+            <ol className="adm-doc-body" style={{ margin: 0, paddingLeft: 20 }}>
+              <li>Open your authenticator app.</li>
+              <li>Tap the <strong>+</strong> button to add an account.</li>
+              <li>Select <strong>Other account</strong> (or “Enter a setup key”).</li>
+              <li>Scan the QR code on the left, or enter the details manually:</li>
+            </ol>
           </div>
-          <label className="adm-field" style={{ maxWidth: 220 }}>
+
+          <div className="adm-card" style={{ padding: 12 }}>
+            <dl className="adm-kv" style={{ gridTemplateColumns: "150px minmax(0, 1fr)" }}>
+              <dt>Account name</dt>
+              <dd><code className="adm-code">UX KB</code></dd>
+              <dt>Secret key</dt>
+              <dd style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                <code className="adm-code" style={{ wordBreak: "break-all" }}>{setup.secret}</code>
+                <button className="btn btn-ghost" type="button" onClick={copySecret} style={{ padding: "4px 8px", fontSize: "0.78rem" }}>
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </dd>
+              <dt>Type</dt>
+              <dd>Time-based (TOTP)</dd>
+              <dt>Digits</dt>
+              <dd>6</dd>
+              <dt>Period</dt>
+              <dd>30 seconds</dd>
+            </dl>
+            <p className="adm-help" style={{ marginTop: 8 }}>
+              Spaces in the secret are ignored. Store the secret somewhere safe if you
+              want a backup; it will not be shown again after enrollment.
+            </p>
+          </div>
+
+          <label className="adm-field" style={{ maxWidth: 260 }}>
             <span className="adm-label">Verification code</span>
             <input
               className="adm-input"
@@ -157,13 +204,14 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
                 setSetup(null);
                 setCode("");
                 setError(null);
+                setQrDataUrl(null);
               }}
               disabled={pending}
             >
               Cancel
             </button>
           </div>
-        </>
+        </div>
       )}
 
       {error && <p role="alert" className="adm-alert adm-alert-error">{error}</p>}
