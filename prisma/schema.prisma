@@ -92,6 +92,8 @@ model User {
   name        String?
   avatarUrl   String?
   role        Role      @default(MEMBER)
+  mfaSecret   String?
+  mfaEnabled  Boolean   @default(false)
   suspendedAt DateTime?
   createdAt   DateTime  @default(now())
   lastLoginAt DateTime?

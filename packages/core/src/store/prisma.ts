@@ -17,6 +17,7 @@ import type {
   UsageInput,
   UsageRecord,
   UserRecord,
+  UserRole,
 } from "./types";
 
 /** Postgres-backed store. Requires `prisma generate` and a migrated database. */
@@ -77,6 +78,15 @@ export class PrismaStore implements KbStore {
     return this.prisma.user.update({
       where: { id },
       data: { suspendedAt: suspended ? new Date() : null },
+    });
+  }
+
+  async setUserRole(id: string, role: UserRole): Promise<UserRecord | null> {
+    const existing = await this.prisma.user.findUnique({ where: { id } });
+    if (!existing) return null;
+    return this.prisma.user.update({
+      where: { id },
+      data: { role: role as any },
     });
   }
 

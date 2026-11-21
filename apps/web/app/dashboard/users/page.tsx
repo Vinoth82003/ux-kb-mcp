@@ -50,7 +50,7 @@ export default async function UsersPage() {
                   {user.suspendedAt ? "suspended" : "active"}
                 </td>
                 <td style={{ padding: 8 }}>
-                  <UserActions id={user.id} suspended={Boolean(user.suspendedAt)} />
+                  <UserActions id={user.id} suspended={Boolean(user.suspendedAt)} role={user.role} />
                 </td>
               </tr>
             ))}

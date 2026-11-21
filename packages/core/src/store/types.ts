@@ -145,6 +145,7 @@ export interface KbStore {
   getUser(id: string): Promise<UserRecord | null>;
   listUsers(): Promise<UserRecord[]>;
   setUserSuspended(id: string, suspended: boolean): Promise<UserRecord | null>;
+  setUserRole(id: string, role: UserRole): Promise<UserRecord | null>;
 
   // --- API keys ------------------------------------------------------------
   createKey(input: CreateApiKeyInput): Promise<ApiKeyRecord>;

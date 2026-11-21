@@ -16,6 +16,7 @@ import type {
   UsageInput,
   UsageRecord,
   UserRecord,
+  UserRole,
 } from "./types";
 
 /** In-memory store for tests and single-process local development. */
@@ -76,6 +77,13 @@ export class MemoryStore implements KbStore {
     const user = this.users.get(id);
     if (!user) return null;
     user.suspendedAt = suspended ? new Date() : null;
+    return user;
+  }
+
+  async setUserRole(id: string, role: UserRole): Promise<UserRecord | null> {
+    const user = this.users.get(id);
+    if (!user) return null;
+    user.role = role;
     return user;
   }
 
