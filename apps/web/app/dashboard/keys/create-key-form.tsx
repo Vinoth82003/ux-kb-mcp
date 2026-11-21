@@ -6,6 +6,33 @@ import { createKeyAction, type CreateKeyState } from "./actions";
 
 const initial: CreateKeyState = { key: null, name: null, error: null };
 
+const CONNECTORS = [
+  { id: "claude", label: "Claude Code" },
+  { id: "cursor", label: "Cursor" },
+  { id: "windsurf", label: "Windsurf" },
+  { id: "gemini", label: "Gemini CLI" },
+  { id: "chatgpt", label: "ChatGPT (custom connector)" },
+  { id: "generic", label: "Generic HTTP client" },
+];
+
+const ENDPOINT = "https://ux-kb-site.vercel.app/api/mcp";
+
+function buildCommand(connector: string, key: string): string {
+  switch (connector) {
+    case "claude":
+    case "gemini":
+      return `${connector === "claude" ? "claude" : "gemini"} mcp add ${connector === "claude" ? "--transport http ux-kb " : "ux-kb "}${ENDPOINT} \\\n  --header "Authorization: Bearer ${key}"`;
+    case "cursor":
+      return `{\n  "mcpServers": {\n    "ux-kb": {\n      "url": "${ENDPOINT}",\n      "headers": { "Authorization": "Bearer ${key}" }\n    }\n  }\n}`;
+    case "windsurf":
+      return `{\n  "mcpServers": {\n    "ux-kb": {\n      "serverUrl": "${ENDPOINT}",\n      "headers": { "Authorization": "Bearer ${key}" }\n    }\n  }\n}`;
+    case "chatgpt":
+      return `URL: ${ENDPOINT}\nHeader: Authorization: Bearer ${key}`;
+    default:
+      return `POST ${ENDPOINT}\nAuthorization: Bearer ${key}`;
+  }
+}
+
 export default function CreateKeyForm({
   maxRateLimit,
   defaultRateLimit,
@@ -19,6 +46,9 @@ export default function CreateKeyForm({
 }) {
   const [state, action, pending] = useActionState(createKeyAction, initial);
   const [copied, setCopied] = useState(false);
+  const [connector, setConnector] = useState("claude");
+  const [showKey, setShowKey] = useState(false);
+  const [commandCopied, setCommandCopied] = useState(false);
 
   async function copyKey() {
     if (!state.key) return;
@@ -28,6 +58,17 @@ export default function CreateKeyForm({
       setTimeout(() => setCopied(false), 1600);
     } catch {
       setCopied(false);
+    }
+  }
+
+  async function copyCommand() {
+    if (!state.key) return;
+    try {
+      await navigator.clipboard.writeText(buildCommand(connector, state.key));
+      setCommandCopied(true);
+      setTimeout(() => setCommandCopied(false), 1600);
+    } catch {
+      setCommandCopied(false);
     }
   }
 
@@ -106,12 +147,48 @@ export default function CreateKeyForm({
             Key for <strong>{state.name}</strong> created. Copy it now — it is stored
             only as a hash and will not be shown again.
           </p>
-          <code className="adm-code" style={{ display: "block", marginTop: 10, wordBreak: "break-all" }}>
-            {state.key}
-          </code>
-          <button className="btn btn-ghost" type="button" onClick={copyKey} style={{ marginTop: 10 }}>
-            {copied ? "Copied" : "Copy key"}
-          </button>
+          <div className="adm-inline" style={{ gap: 8, marginTop: 10 }}>
+            <code className="adm-code" style={{ flex: "1 1 auto", wordBreak: "break-all", padding: "8px 10px" }}>
+              {showKey ? state.key : "••••••••••••••••"}
+            </code>
+            <button className="btn btn-ghost" type="button" onClick={() => setShowKey((value) => !value)} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
+              {showKey ? "Hide" : "Show"}
+            </button>
+            <button className="btn btn-ghost" type="button" onClick={copyKey} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
+              {copied ? "Copied" : "Copy key"}
+            </button>
+          </div>
+
+          <div style={{ marginTop: 16 }}>
+            <div className="adm-section-head" style={{ marginBottom: 6 }}>
+              <span className="adm-label">Connection command (with your real key)</span>
+              <div className="adm-inline">
+                <select
+                  className="adm-select"
+                  value={connector}
+                  onChange={(event) => setConnector(event.target.value)}
+                  style={{ width: 180 }}
+                >
+                  {CONNECTORS.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+                <button className="btn btn-primary" type="button" onClick={copyCommand} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
+                  {commandCopied ? "Copied" : "Copy command"}
+                </button>
+              </div>
+            </div>
+            <pre className="adm-pre">
+              <code>{buildCommand(connector, showKey ? state.key : "<your-api-key>")}</code>
+            </pre>
+            <p className="adm-help" style={{ marginTop: 8 }}>
+              {showKey
+                ? "This command contains your real key. Copy it now; the key will not be shown again."
+                : "Toggle Show to embed your real key in the command, or copy the template with a placeholder."}
+            </p>
+          </div>
         </div>
       )}
     </section>
