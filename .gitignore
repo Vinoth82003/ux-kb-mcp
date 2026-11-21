@@ -13,3 +13,5 @@ packages/core/src/generated/
 
 QA-REPORT.md
 OPEN_QUESTIONS.md
+
+.playwright-mcp/
