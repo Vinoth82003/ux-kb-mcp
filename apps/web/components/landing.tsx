@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CODE_STDIO = `claude mcp add ux-kb -- node --import tsx \\
   /absolute/path/to/ux-kb/apps/stdio/src/index.ts`;
@@ -22,6 +22,9 @@ type Tab = "stdio" | "desktop" | "http";
 type ThemeMode = "system" | "light" | "dark";
 type ComparisonView = "both" | "before" | "after";
 type RevealVariant = "up" | "left" | "scale" | "rotate" | "fade" | "hero-mascot";
+
+const TABS: Tab[] = ["stdio", "desktop", "http"];
+const VIEWS: ComparisonView[] = ["both", "before", "after"];
 
 type MascotProps = {
   src: string;
@@ -89,6 +92,69 @@ export default function Landing() {
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [comparisonView, setComparisonView] = useState<ComparisonView>("both");
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const menu = mobileMenuRef.current;
+    if (menu) {
+      const focusables = menu.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length > 0) focusables[0].focus();
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuToggleRef.current?.focus();
+        return;
+      }
+      if (event.key === "Tab" && menu) {
+        const elements = menu.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!elements || elements.length === 0) return;
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  function handleTabKeyDown(e: React.KeyboardEvent, currentTab: Tab) {
+    const idx = TABS.indexOf(currentTab);
+    let next = idx;
+    if (e.key === "ArrowRight") next = (idx + 1) % TABS.length;
+    else if (e.key === "ArrowLeft") next = (idx - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = TABS.length - 1;
+    else return;
+    e.preventDefault();
+    setTab(TABS[next]);
+    document.getElementById(`tab-${TABS[next]}`)?.focus();
+  }
+
+  function handleViewKeyDown(e: React.KeyboardEvent, currentView: ComparisonView) {
+    const idx = VIEWS.indexOf(currentView);
+    let next = idx;
+    if (e.key === "ArrowRight") next = (idx + 1) % VIEWS.length;
+    else if (e.key === "ArrowLeft") next = (idx - 1 + VIEWS.length) % VIEWS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = VIEWS.length - 1;
+    else return;
+    e.preventDefault();
+    setComparisonView(VIEWS[next]);
+    document.getElementById(`comp-tab-${VIEWS[next]}`)?.focus();
+  }
 
   useEffect(() => {
     const resolve = () =>
@@ -176,6 +242,7 @@ export default function Landing() {
             </a>
           </nav>
           <button
+            ref={menuToggleRef}
             className="menu-toggle"
             type="button"
             aria-label="Toggle navigation menu"
@@ -196,12 +263,12 @@ export default function Landing() {
             </svg>
           </button>
           {menuOpen && (
-            <div id="mobile-menu" className="mobile-menu" role="dialog" aria-label="Navigation menu">
-              <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
-              <a href="#tools" onClick={() => setMenuOpen(false)}>Tools</a>
-              <a href="#connect" onClick={() => setMenuOpen(false)}>Connect</a>
-              <a href="#testing" onClick={() => setMenuOpen(false)}>Testing</a>
-              <a href="#showcase" onClick={() => setMenuOpen(false)}>Before &amp; After</a>
+            <div id="mobile-menu" ref={mobileMenuRef} className="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+              <a href="#how" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>How it works</a>
+              <a href="#tools" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>Tools</a>
+              <a href="#connect" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>Connect</a>
+              <a href="#testing" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>Testing</a>
+              <a href="#showcase" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>Before &amp; After</a>
               <button className="theme-toggle" type="button" onClick={cycleMode} aria-label={`Theme: ${modeLabel}. Click to change.`}>
                 <span aria-hidden="true" className="theme-icon">
                   {mode === "light" ? (
@@ -214,10 +281,10 @@ export default function Landing() {
                 </span>
                 {modeLabel}
               </button>
-              <a className="nav-cta" href="/signin" onClick={() => setMenuOpen(false)}>
+              <a className="nav-cta" href="/signin" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>
                 Sign in
               </a>
-              <a className="nav-cta nav-cta-primary" href="https://github.com/Vinoth82003/ux-kb-mcp" rel="noopener" onClick={() => setMenuOpen(false)}>
+              <a className="nav-cta nav-cta-primary" href="https://github.com/Vinoth82003/ux-kb-mcp" rel="noopener" onClick={() => { setMenuOpen(false); menuToggleRef.current?.focus(); }}>
                 GitHub
               </a>
             </div>
@@ -257,7 +324,7 @@ export default function Landing() {
                   <span>stage packs</span>
                 </li>
                 <li>
-                  <strong>7</strong>
+                  <strong>14</strong>
                   <span>MCP tools</span>
                 </li>
                 <li>
@@ -415,7 +482,7 @@ export default function Landing() {
                 <span>feature routes</span>
               </div>
               <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "180ms" } as React.CSSProperties}>
-                <strong>7</strong>
+                <strong>14</strong>
                 <span>MCP tools</span>
               </div>
               <div className="stat reveal-section rv-up" style={{ "--reveal-delay": "240ms" } as React.CSSProperties}>
@@ -440,7 +507,7 @@ export default function Landing() {
               <div className="section-header-copy reveal-section rv-fade">
                 <h2>Tool reference</h2>
                 <p className="section-lede">
-                  Seven tools, three resources. Search returns metadata; retrieve the full doc before relying on a rule.
+                  14 tools, three resources. Search returns metadata; verify compliance with deterministic screen gates.
                 </p>
               </div>
               <Mascot
@@ -472,6 +539,21 @@ export default function Landing() {
                   <td className="tool-desc">Core rules + stage docs + routed docs; records fetches.</td>
                 </tr>
                 <tr>
+                  <td className="tool-name">start_gate</td>
+                  <td className="tool-sig">sessionId, screen, type</td>
+                  <td className="tool-desc">Creates the Screen Gate checklist for a screen.</td>
+                </tr>
+                <tr>
+                  <td className="tool-name">report_check</td>
+                  <td className="tool-sig">sessionId, gateId, results[]</td>
+                  <td className="tool-desc">Records pass/fail/na/waive per gate item with evidence.</td>
+                </tr>
+                <tr>
+                  <td className="tool-name">gate_status</td>
+                  <td className="tool-sig">sessionId, gateId, view?</td>
+                  <td className="tool-desc">Authoritative done signal and recovery view.</td>
+                </tr>
+                <tr>
                   <td className="tool-name">get_doc</td>
                   <td className="tool-sig">sessionId, id</td>
                   <td className="tool-desc">One published document by ID.</td>
@@ -495,6 +577,11 @@ export default function Landing() {
                   <td className="tool-name">report_gap</td>
                   <td className="tool-sig">topic, context</td>
                   <td className="tool-desc">Upserts a missing-topic report.</td>
+                </tr>
+                <tr>
+                  <td className="tool-name">top_failures</td>
+                  <td className="tool-sig">limit?, window?</td>
+                  <td className="tool-desc">Ranks failing checks to spot ambiguous rules.</td>
                 </tr>
               </tbody>
             </table>
@@ -527,33 +614,45 @@ export default function Landing() {
             </div>
             <div className="tabs reveal-section rv-up" role="tablist" aria-label="Connection methods">
               <button
+                id="tab-stdio"
                 className={`tab ${tab === "stdio" ? "is-active" : ""}`}
                 role="tab"
                 aria-selected={tab === "stdio"}
+                aria-controls="panel-stdio"
+                tabIndex={tab === "stdio" ? 0 : -1}
                 onClick={() => setTab("stdio")}
+                onKeyDown={(e) => handleTabKeyDown(e, "stdio")}
               >
                 Claude Code (stdio)
               </button>
               <button
+                id="tab-desktop"
                 className={`tab ${tab === "desktop" ? "is-active" : ""}`}
                 role="tab"
                 aria-selected={tab === "desktop"}
+                aria-controls="panel-desktop"
+                tabIndex={tab === "desktop" ? 0 : -1}
                 onClick={() => setTab("desktop")}
+                onKeyDown={(e) => handleTabKeyDown(e, "desktop")}
               >
                 Cursor / Claude Desktop
               </button>
               <button
+                id="tab-http"
                 className={`tab ${tab === "http" ? "is-active" : ""}`}
                 role="tab"
                 aria-selected={tab === "http"}
+                aria-controls="panel-http"
+                tabIndex={tab === "http" ? 0 : -1}
                 onClick={() => setTab("http")}
+                onKeyDown={(e) => handleTabKeyDown(e, "http")}
               >
                 Streamable HTTP
               </button>
             </div>
 
             <div className="connect-panels reveal-section rv-fade">
-            <div className={`panel ${tab === "stdio" ? "is-active" : ""}`} hidden={tab !== "stdio"}>
+            <div id="panel-stdio" role="tabpanel" aria-labelledby="tab-stdio" tabIndex={0} className={`panel ${tab === "stdio" ? "is-active" : ""}`} hidden={tab !== "stdio"}>
               <pre>
                 <code>{CODE_STDIO}</code>
               </pre>
@@ -572,7 +671,7 @@ export default function Landing() {
               </button>
             </div>
 
-            <div className={`panel ${tab === "desktop" ? "is-active" : ""}`} hidden={tab !== "desktop"}>
+            <div id="panel-desktop" role="tabpanel" aria-labelledby="tab-desktop" tabIndex={0} className={`panel ${tab === "desktop" ? "is-active" : ""}`} hidden={tab !== "desktop"}>
               <pre>
                 <code>{CODE_DESKTOP}</code>
               </pre>
@@ -591,7 +690,7 @@ export default function Landing() {
               </button>
             </div>
 
-            <div className={`panel ${tab === "http" ? "is-active" : ""}`} hidden={tab !== "http"}>
+            <div id="panel-http" role="tabpanel" aria-labelledby="tab-http" tabIndex={0} className={`panel ${tab === "http" ? "is-active" : ""}`} hidden={tab !== "http"}>
               <pre>
                 <code>{CODE_HTTP}</code>
               </pre>
@@ -750,26 +849,38 @@ pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
 
             <div className="comparison-controls" role="tablist" aria-label="Comparison display options">
               <button
+                id="comp-tab-both"
                 type="button"
+                role="tab"
                 className={`comparison-tab ${comparisonView === "both" ? "is-active" : ""}`}
                 onClick={() => setComparisonView("both")}
+                onKeyDown={(e) => handleViewKeyDown(e, "both")}
                 aria-selected={comparisonView === "both"}
+                tabIndex={comparisonView === "both" ? 0 : -1}
               >
                 Side by side
               </button>
               <button
+                id="comp-tab-before"
                 type="button"
+                role="tab"
                 className={`comparison-tab ${comparisonView === "before" ? "is-active" : ""}`}
                 onClick={() => setComparisonView("before")}
+                onKeyDown={(e) => handleViewKeyDown(e, "before")}
                 aria-selected={comparisonView === "before"}
+                tabIndex={comparisonView === "before" ? 0 : -1}
               >
                 Before redesign
               </button>
               <button
+                id="comp-tab-after"
                 type="button"
+                role="tab"
                 className={`comparison-tab ${comparisonView === "after" ? "is-active" : ""}`}
                 onClick={() => setComparisonView("after")}
+                onKeyDown={(e) => handleViewKeyDown(e, "after")}
                 aria-selected={comparisonView === "after"}
+                tabIndex={comparisonView === "after" ? 0 : -1}
               >
                 After redesign
               </button>

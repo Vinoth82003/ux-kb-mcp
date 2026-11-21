@@ -17,13 +17,11 @@ export default function KeyActions({
   const [rotated, setRotated] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [code, setCode] = useState("");
+  const [confirming, setConfirming] = useState<"revoke" | "rotate" | null>(null);
 
-  function revoke() {
-    const confirmed = window.confirm(
-      `Revoke “${name}”?\n\nAny client using this key stops working immediately. This cannot be undone; issue a new key to restore access.`,
-    );
-    if (!confirmed) return;
+  function executeRevoke() {
     setError(null);
+    setConfirming(null);
     startTransition(async () => {
       const result = await revokeKeyAction(id, code.trim());
       if (result.error) setError(result.error);
@@ -31,12 +29,9 @@ export default function KeyActions({
     });
   }
 
-  function rotate() {
-    const confirmed = window.confirm(
-      `Rotate “${name}”?\n\nA new key is issued and this one is revoked in the same step. Update your MCP client with the new key immediately.`,
-    );
-    if (!confirmed) return;
+  function executeRotate() {
     setError(null);
+    setConfirming(null);
     startTransition(async () => {
       const result = await rotateKeyAction(id, code.trim());
       if (result.error) setError(result.error);
@@ -76,14 +71,48 @@ export default function KeyActions({
         </label>
       )}
 
-      <div className="adm-inline">
-        <button className="btn btn-ghost" type="button" onClick={rotate} disabled={pending}>
-          Rotate
-        </button>
-        <button className="btn btn-danger" type="button" onClick={revoke} disabled={pending}>
-          Revoke
-        </button>
-      </div>
+      {confirming === "revoke" && (
+        <div className="adm-confirm-banner" role="alert" style={{ background: "var(--error-bg)", border: "1px solid var(--error)", padding: 8, borderRadius: "var(--radius-sm)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: "0.8rem", color: "var(--text-primary)" }}>
+            Revoke “{name}”? Clients stop working immediately.
+          </p>
+          <div className="adm-inline" style={{ gap: 6 }}>
+            <button className="btn btn-danger" type="button" onClick={executeRevoke} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              {pending ? "Revoking…" : "Yes, revoke"}
+            </button>
+            <button className="btn btn-ghost" type="button" onClick={() => setConfirming(null)} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {confirming === "rotate" && (
+        <div className="adm-confirm-banner" role="alert" style={{ background: "var(--warning-bg)", border: "1px solid var(--warning)", padding: 8, borderRadius: "var(--radius-sm)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: "0.8rem", color: "var(--text-primary)" }}>
+            Rotate “{name}”? Issues new key and revokes old.
+          </p>
+          <div className="adm-inline" style={{ gap: 6 }}>
+            <button className="btn btn-primary" type="button" onClick={executeRotate} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              {pending ? "Rotating…" : "Yes, rotate"}
+            </button>
+            <button className="btn btn-ghost" type="button" onClick={() => setConfirming(null)} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!confirming && (
+        <div className="adm-inline">
+          <button className="btn btn-ghost" type="button" onClick={() => setConfirming("rotate")} disabled={pending}>
+            Rotate
+          </button>
+          <button className="btn btn-danger" type="button" onClick={() => setConfirming("revoke")} disabled={pending}>
+            Revoke
+          </button>
+        </div>
+      )}
 
       {error && (
         <span role="alert" className="adm-small" style={{ color: "var(--error)" }}>

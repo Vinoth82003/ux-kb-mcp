@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { createKeyAction, type CreateKeyState } from "./actions";
 
@@ -49,6 +49,13 @@ export default function CreateKeyForm({
   const [connector, setConnector] = useState("claude");
   const [showKey, setShowKey] = useState(false);
   const [commandCopied, setCommandCopied] = useState(false);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (state.error && errorRef.current) {
+      errorRef.current.focus();
+    }
+  }, [state.error]);
 
   async function copyKey() {
     if (!state.key) return;
@@ -136,7 +143,13 @@ export default function CreateKeyForm({
       </form>
 
       {state.error && (
-        <p role="alert" className="adm-alert adm-alert-error" style={{ marginTop: 12 }}>
+        <p
+          ref={errorRef}
+          tabIndex={-1}
+          role="alert"
+          className="adm-alert adm-alert-error"
+          style={{ marginTop: 12, outline: "none" }}
+        >
           {state.error}
         </p>
       )}

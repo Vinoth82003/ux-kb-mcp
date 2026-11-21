@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const NAV = [
@@ -37,11 +37,40 @@ export default function MemberSidebar({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    const sidebar = sidebarRef.current;
+    if (sidebar) {
+      const focusables = sidebar.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length > 0) focusables[0].focus();
+    }
+
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+      if (event.key === "Tab" && sidebar) {
+        const elements = sidebar.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!elements || elements.length === 0) return;
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
@@ -55,7 +84,7 @@ export default function MemberSidebar({
       <a className="adm-skip" href="#main-content">Skip to content</a>
 
       <div className="adm-topbar">
-        <button className="adm-menu-button" type="button" aria-expanded={open} aria-controls="member-sidebar" onClick={() => setOpen((v) => !v)}>
+        <button ref={menuButtonRef} className="adm-menu-button" type="button" aria-expanded={open} aria-controls="member-sidebar" onClick={() => setOpen((v) => !v)}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
           Menu
         </button>
@@ -65,9 +94,9 @@ export default function MemberSidebar({
         </Link>
       </div>
 
-      <button type="button" className={`adm-backdrop ${open ? "is-open" : ""}`} aria-label="Close navigation" tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} />
+      <button type="button" className={`adm-backdrop ${open ? "is-open" : ""}`} aria-label="Close navigation" tabIndex={open ? 0 : -1} onClick={() => { setOpen(false); menuButtonRef.current?.focus(); }} />
 
-      <aside id="member-sidebar" className={`adm-sidebar ${open ? "is-open" : ""}`}>
+      <aside id="member-sidebar" ref={sidebarRef} className={`adm-sidebar ${open ? "is-open" : ""}`}>
         <Link href="/member" className="adm-brand">
           <span className="adm-brand-mark" aria-hidden="true">UX</span>
           <span className="adm-brand-copy"><span>UX-KB</span><span className="adm-brand-sub">Member portal</span></span>

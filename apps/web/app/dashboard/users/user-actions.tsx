@@ -21,6 +21,7 @@ export default function UserActions({
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [code, setCode] = useState("");
+  const [confirming, setConfirming] = useState<"toggle" | { nextRole: string } | null>(null);
 
   function run(work: (code: string) => Promise<{ error?: string }>, success: string) {
     setError(null);
@@ -36,25 +37,16 @@ export default function UserActions({
     });
   }
 
-  function toggle() {
-    const verb = suspended ? "Restore" : "Suspend";
-    const consequence = suspended
-      ? `Restore github:${login}? They will be able to sign in again.`
-      : `Suspend github:${login}? They will be signed out of new sessions and every active API key they own will be revoked immediately.`;
-    if (!window.confirm(`${verb} account\n\n${consequence}`)) return;
+  function executeToggle() {
+    setConfirming(null);
     run(
       (stepUp) => setSuspendedAction(id, !suspended, stepUp),
       suspended ? `Restored github:${login}.` : `Suspended github:${login} and revoked their keys.`,
     );
   }
 
-  function changeRole(next: string) {
-    if (next === role) return;
-    const consequence =
-      next === "ADMIN"
-        ? `Give github:${login} full admin access: users, roles, API keys, releases, and audit export.`
-        : `Reduce github:${login} to a member. They keep read/write draft access but lose admin controls.`;
-    if (!window.confirm(`Change role to ${ROLE_LABELS[next] ?? next}?\n\n${consequence}`)) return;
+  function executeChangeRole(next: string) {
+    setConfirming(null);
     run(
       (stepUp) => setRoleAction(id, next, stepUp),
       `Role updated to ${ROLE_LABELS[next] ?? next}.`,
@@ -67,8 +59,14 @@ export default function UserActions({
         <span className="adm-label">Role</span>
         <select
           className="adm-select"
-          value={role}
-          onChange={(event) => changeRole(event.target.value)}
+          value={typeof confirming === "object" && confirming !== null && "nextRole" in confirming ? confirming.nextRole : role}
+          onChange={(event) => {
+            if (event.target.value !== role) {
+              setConfirming({ nextRole: event.target.value });
+            } else {
+              setConfirming(null);
+            }
+          }}
           disabled={pending}
         >
           {ASSIGNABLE_ROLES.map((assignable) => (
@@ -95,14 +93,48 @@ export default function UserActions({
         </label>
       )}
 
-      <button
-        className={suspended ? "btn btn-ghost" : "btn btn-danger"}
-        type="button"
-        onClick={toggle}
-        disabled={pending}
-      >
-        {suspended ? "Restore account" : "Suspend account"}
-      </button>
+      {confirming === "toggle" && (
+        <div className="adm-confirm-banner" role="alert" style={{ background: suspended ? "var(--info-bg)" : "var(--error-bg)", border: `1px solid ${suspended ? "var(--info)" : "var(--error)"}`, padding: 8, borderRadius: "var(--radius-sm)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: "0.8rem", color: "var(--text-primary)" }}>
+            {suspended ? `Restore github:${login}?` : `Suspend github:${login}? All keys revoked.`}
+          </p>
+          <div className="adm-inline" style={{ gap: 6 }}>
+            <button className={suspended ? "btn btn-primary" : "btn btn-danger"} type="button" onClick={executeToggle} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              {pending ? "Working…" : suspended ? "Confirm restore" : "Confirm suspend"}
+            </button>
+            <button className="btn btn-ghost" type="button" onClick={() => setConfirming(null)} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {typeof confirming === "object" && confirming !== null && "nextRole" in confirming && (
+        <div className="adm-confirm-banner" role="alert" style={{ background: "var(--warning-bg)", border: "1px solid var(--warning)", padding: 8, borderRadius: "var(--radius-sm)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: "0.8rem", color: "var(--text-primary)" }}>
+            Change github:{login} to {ROLE_LABELS[confirming.nextRole] ?? confirming.nextRole}?
+          </p>
+          <div className="adm-inline" style={{ gap: 6 }}>
+            <button className="btn btn-primary" type="button" onClick={() => executeChangeRole(confirming.nextRole)} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              {pending ? "Updating…" : "Confirm change"}
+            </button>
+            <button className="btn btn-ghost" type="button" onClick={() => setConfirming(null)} disabled={pending} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!confirming && (
+        <button
+          className={suspended ? "btn btn-ghost" : "btn btn-danger"}
+          type="button"
+          onClick={() => setConfirming("toggle")}
+          disabled={pending}
+        >
+          {suspended ? "Restore account" : "Suspend account"}
+        </button>
+      )}
 
       {error && (
         <span role="alert" className="adm-small" style={{ color: "var(--error)" }}>

@@ -12,6 +12,7 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [confirmingDisable, setConfirmingDisable] = useState(false);
 
   function begin() {
     setError(null);
@@ -49,10 +50,7 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
   }
 
   function disable() {
-    const confirmed = window.confirm(
-      "Turn off two-factor authentication?\n\nPublishing, key management, role changes, and release actions will no longer ask for an authenticator code.",
-    );
-    if (!confirmed) return;
+    setConfirmingDisable(false);
     setError(null);
     setNotice(null);
     startTransition(async () => {
@@ -97,11 +95,27 @@ export default function MfaPanel({ enabled }: { enabled: boolean }) {
             disabled={pending}
           />
         </label>
-        <div className="adm-actions">
-          <button className="btn btn-danger" type="button" onClick={disable} disabled={pending || code.length !== 6}>
-            {pending ? "Working…" : "Turn off MFA"}
-          </button>
-        </div>
+        {confirmingDisable ? (
+          <div className="adm-confirm-banner" role="alert" style={{ background: "var(--warning-bg)", border: "1px solid var(--warning)", padding: 12, borderRadius: "var(--radius-sm)", maxWidth: 420 }}>
+            <p style={{ margin: "0 0 8px", fontSize: "0.85rem", color: "var(--text-primary)" }}>
+              Turn off two-factor authentication? Publishing, key management, and administrative actions will no longer ask for an authenticator code.
+            </p>
+            <div className="adm-inline" style={{ gap: 8 }}>
+              <button className="btn btn-danger" type="button" onClick={disable} disabled={pending || code.length !== 6}>
+                {pending ? "Working…" : "Yes, turn off MFA"}
+              </button>
+              <button className="btn btn-ghost" type="button" onClick={() => setConfirmingDisable(false)} disabled={pending}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="adm-actions">
+            <button className="btn btn-danger" type="button" onClick={() => setConfirmingDisable(true)} disabled={pending || code.length !== 6}>
+              Turn off MFA
+            </button>
+          </div>
+        )}
         {error && <p role="alert" className="adm-alert adm-alert-error">{error}</p>}
         {notice && <p role="status" className="adm-alert adm-alert-success">{notice}</p>}
       </div>

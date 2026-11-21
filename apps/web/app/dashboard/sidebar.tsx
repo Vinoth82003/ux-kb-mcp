@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 type IconName =
@@ -209,11 +209,40 @@ export default function AdminSidebar({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    const sidebar = sidebarRef.current;
+    if (sidebar) {
+      const focusables = sidebar.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length > 0) focusables[0].focus();
+    }
+
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+      if (event.key === "Tab" && sidebar) {
+        const elements = sidebar.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!elements || elements.length === 0) return;
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
@@ -230,6 +259,7 @@ export default function AdminSidebar({
 
       <div className="adm-topbar">
         <button
+          ref={menuButtonRef}
           className="adm-menu-button"
           type="button"
           aria-expanded={open}
@@ -255,10 +285,13 @@ export default function AdminSidebar({
         className={`adm-backdrop ${open ? "is-open" : ""}`}
         aria-label="Close navigation"
         tabIndex={open ? 0 : -1}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+          menuButtonRef.current?.focus();
+        }}
       />
 
-      <aside id="admin-sidebar" className={`adm-sidebar ${open ? "is-open" : ""}`}>
+      <aside id="admin-sidebar" ref={sidebarRef} className={`adm-sidebar ${open ? "is-open" : ""}`}>
         <Link href="/dashboard" className="adm-brand">
           <span className="adm-brand-mark" aria-hidden="true">UX</span>
           <span className="adm-brand-copy">
