@@ -59,6 +59,12 @@ export const authConfig = {
         session.user.id = String(token.uid ?? token.sub ?? "");
         session.user.role = (token.role as "MEMBER" | "ADMIN" | undefined) ?? "MEMBER";
         session.user.login = String(token.login ?? "");
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaVerified =
+          Boolean(token.mfaVerified ?? true);
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaPending =
+          Boolean(token.mfaPending ?? false);
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaEnabled =
+          Boolean(token.mfaEnabled ?? false);
       }
       return session;
     },

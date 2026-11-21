@@ -2,6 +2,8 @@ import NextAuth, { type NextAuthResult } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
 import { getStore } from "./lib/store";
+import { issueProof, verifyProof } from "./lib/mfa-challenge";
+import { cookies } from "next/headers";
 
 // Fail fast: never allow dev auth in production.
 if (process.env.DEV_AUTH === "1" && process.env.NODE_ENV === "production") {
@@ -71,11 +73,13 @@ const providers = [
               role: "MEMBER" | "ADMIN";
               login: string;
               email: string;
+              mfaEnabled: boolean;
             } = {
               dbUserId: dbUser.id,
               role: dbUser.role,
               login: dbUser.login,
               email,
+              mfaEnabled: dbUser.mfaEnabled,
             };
             return enriched;
           },
@@ -163,11 +167,58 @@ export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
         dbUserId?: string;
         role?: "MEMBER" | "ADMIN";
         login?: string;
+        mfaEnabled?: boolean;
       };
       enriched.dbUserId = dbUser.id;
       enriched.role = dbUser.role;
       enriched.login = dbUser.login;
+      enriched.mfaEnabled = dbUser.mfaEnabled;
       return true;
+    },
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        const enriched = user as {
+          dbUserId?: string;
+          role?: "MEMBER" | "ADMIN";
+          login?: string;
+          mfaEnabled?: boolean;
+        };
+        token.uid = enriched.dbUserId ?? token.sub;
+        token.role = enriched.role ?? "MEMBER";
+        token.login = enriched.login ?? "";
+        token.mfaEnabled = enriched.mfaEnabled ?? false;
+        token.mfaVerified = !(enriched.mfaEnabled ?? false);
+        token.mfaPending = enriched.mfaEnabled ?? false;
+      }
+      if (trigger === "update" && session?.mfaVerified === true) {
+        const uid = String(token.uid ?? token.sub ?? "");
+        try {
+          const cookieStore = await cookies();
+          const proof = cookieStore.get("mfa_proof")?.value;
+          if (verifyProof(uid, proof)) {
+            token.mfaVerified = true;
+            token.mfaPending = false;
+            cookieStore.delete("mfa_proof");
+          }
+        } catch {
+          /* cookies() not available in this context */
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = String(token.uid ?? token.sub ?? "");
+        session.user.role = (token.role as "MEMBER" | "ADMIN" | undefined) ?? "MEMBER";
+        session.user.login = String(token.login ?? "");
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaVerified =
+          Boolean(token.mfaVerified ?? true);
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaPending =
+          Boolean(token.mfaPending ?? false);
+        (session.user as { mfaVerified?: boolean; mfaPending?: boolean; mfaEnabled?: boolean }).mfaEnabled =
+          Boolean(token.mfaEnabled ?? false);
+      }
+      return session;
     },
   },
   events: {
