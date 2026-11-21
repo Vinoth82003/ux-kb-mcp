@@ -142,7 +142,7 @@ Real keys are stored as HMAC-SHA256 hashes and must persist across processes,
 so key administration requires `DATABASE_URL`:
 
 ```bash
-pnpm kb:keys create --name laptop [--rate-limit 120] [--pin 1.0.0-rc.1]
+pnpm kb:keys create --name laptop [--rate-limit 120] [--pin 2.0.0]
 pnpm kb:keys list
 pnpm kb:keys revoke <id>
 pnpm kb:keys gaps [--all]

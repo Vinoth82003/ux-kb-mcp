@@ -230,7 +230,7 @@ export default function Landing() {
         <section className="hero" id="top">
           <div className="container hero-inner">
             <div className="reveal-section rv-up">
-              <p className="eyebrow">Cloud MCP knowledge base · v1.0.0-rc.1</p>
+              <p className="eyebrow">Cloud MCP knowledge base · v2.0.0</p>
               <h1>
                 UX knowledge your AI agent can <span className="accent">cite</span>.
               </h1>
@@ -886,7 +886,7 @@ pnpm smoke:http       # HTTP auth, pinning, revocation, 429`}</code>
             />
             <div>
               <p className="footer-brand">UX-KB</p>
-              <p className="footer-note">Content release candidate 1.0.0-rc.1 · 73 topic docs · MIT license</p>
+              <p className="footer-note">Content release candidate 2.0.0 · 73 topic docs · MIT license</p>
             </div>
           </div>
           <nav className="footer-nav" aria-label="Footer">

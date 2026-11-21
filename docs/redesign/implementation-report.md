@@ -46,7 +46,7 @@ Poses 02–12 are genuine SVG path data (not raster wrappers) but are auto-trace
 
 ## 7. Real metrics inspected, sources, date ranges, changes made
 
-See baseline audit §4. All product proof metrics (73 docs, 6 packs, 10 routes, 7 tools, 3 resources, 35 tests, v1.0.0-rc.1, MIT) verified against `/api/healthz` and repository sources on 2026-11-13. **No metric values changed** — all were already consistent. Traffic/performance/analytics data: NOT AVAILABLE (no instrumentation).
+See baseline audit §4. All product proof metrics (73 docs, 6 packs, 10 routes, 7 tools, 3 resources, 35 tests, v2.0.0, MIT) verified against `/api/healthz` and repository sources on 2026-11-13. **No metric values changed** — all were already consistent. Traffic/performance/analytics data: NOT AVAILABLE (no instrumentation).
 
 ## 8. Claims intentionally left unchanged
 

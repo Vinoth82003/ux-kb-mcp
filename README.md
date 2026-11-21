@@ -44,7 +44,7 @@ before proposing a design.
 | MCP resources | 3 |
 | Core unit tests | 35 |
 
-Content release candidate: `1.0.0-rc.1` (`content/release.json`).
+Content release candidate: `2.0.0` (`content/release.json`).
 
 ---
 

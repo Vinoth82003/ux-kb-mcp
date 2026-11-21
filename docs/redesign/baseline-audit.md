@@ -22,7 +22,7 @@
   - Authenticated: `/dashboard`, `/dashboard/gaps`, `/dashboard/keys`, `/dashboard/releases`, `/dashboard/usage`, `/dashboard/users`
   - Auth: `/signin`
 - **Landing sections (in order):** Header/Nav, Hero (`#top`), Problem, How it works (`#how`), What's inside, Tool reference (`#tools`), Connect an agent (`#connect`), Why it's different, Architecture, Testing (`#testing`), FAQ, Footer. Supporting route `/signin`.
-- **MCP:** 7 tools (`start_session`, `get_stage_pack`, `get_doc`, `search_kb`, `get_checklist`, `verify_citations`, `report_gap`), 3 resources (`kb://doc/{id}`, `kb://pack/{stage}`, `kb://core`). 6 stage packs, 10 feature routes, 73 topic docs, release `1.0.0-rc.1`.
+- **MCP:** 7 tools (`start_session`, `get_stage_pack`, `get_doc`, `search_kb`, `get_checklist`, `verify_citations`, `report_gap`), 3 resources (`kb://doc/{id}`, `kb://pack/{stage}`, `kb://core`). 6 stage packs, 10 feature routes, 73 topic docs, release `2.0.0`.
 
 ## 2. Existing design/theme audit
 
@@ -69,7 +69,7 @@ Product proof metrics (validated against deployed `/api/healthz` and repository)
 
 | Claim | Website value | Source-of-truth value | Source | Timestamp | Action |
 |---|---|---|---|---|---|
-| KB version | 1.0.0-rc.1 | 1.0.0-rc.1 | `content/release.json`, `/api/healthz` | 2026-11-13 | keep |
+| KB version | 2.0.0 | 2.0.0 | `content/release.json`, `/api/healthz` | 2026-11-13 | keep |
 | Topic docs | 73 | 73 | `/api/healthz` (`docs:73`), `content/` | 2026-11-13 | keep |
 | Stage packs | 6 | 6 | `content/packs/` (6 files) | 2026-11-13 | keep |
 | Feature routes | 10 | 10 | `content/routing/feature-routes.md` | 2026-11-13 | keep |

@@ -158,7 +158,7 @@ export default async function SignInPage({
           loading="lazy"
           decoding="async"
         />
-        <span>UX-KB · Content release candidate 1.0.0-rc.1 · MIT license</span>
+        <span>UX-KB · Content release candidate 2.0.0 · MIT license</span>
       </footer>
     </main>
   );
