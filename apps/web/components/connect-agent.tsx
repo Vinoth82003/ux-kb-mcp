@@ -54,17 +54,15 @@ const CONNECTORS: Connector[] = [
 export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
   const [connector, setConnector] = useState<string>("claude");
   const [selectedKeyId, setSelectedKeyId] = useState<string>(keys[0]?.id ?? "");
-  const [keyValue, setKeyValue] = useState<string>("");
-  const [showKey, setShowKey] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
+  const [showCommand, setShowCommand] = useState<boolean>(true);
 
   const selectedKey = keys.find((key) => key.id === selectedKeyId) ?? keys[0];
   const connectorDef = CONNECTORS.find((item) => item.id === connector) ?? CONNECTORS[0];
 
-  const displayKey = keyValue.trim() || `<your-api-key>`;
   const command = useMemo(
-    () => connectorDef.build(ENDPOINT, displayKey),
-    [connectorDef, displayKey],
+    () => connectorDef.build(ENDPOINT, "<your-api-key>"),
+    [connectorDef],
   );
 
   async function copy() {
@@ -130,46 +128,36 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
             </label>
           </div>
 
-          <label className="adm-field">
-            <span className="adm-label">
-              Your API key {selectedKey ? `for “${selectedKey.name}”` : ""}
-            </span>
-            <div className="adm-inline" style={{ gap: 8 }}>
-              <input
-                className="adm-input"
-                type={showKey ? "text" : "password"}
-                value={keyValue}
-                onChange={(event) => setKeyValue(event.target.value)}
-                placeholder="Paste your saved key to include it in the command"
-                autoComplete="off"
-                spellCheck={false}
-                style={{ flex: "1 1 auto" }}
-              />
-              <button
-                className="btn btn-ghost"
-                type="button"
-                onClick={() => setShowKey((value) => !value)}
-                style={{ padding: "8px 12px" }}
-              >
-                {showKey ? "Hide" : "Show"}
-              </button>
-            </div>
-            <p className="adm-help" style={{ marginTop: 4 }}>
-              The full key is never stored, so paste it here to build the command. Leave
-              blank to copy a template with a placeholder.
-            </p>
-          </label>
+          <p className="adm-help" style={{ margin: 0 }}>
+            The command uses <code className="adm-code">&lt;your-api-key&gt;</code> as a
+            placeholder. Replace it with the key you saved when you created it.
+            {selectedKey ? ` Selected key: ${selectedKey.name} (${selectedKey.prefix}…).` : ""}
+          </p>
 
           <div>
             <div className="adm-section-head" style={{ marginBottom: 6 }}>
               <span className="adm-label">Connection command</span>
-              <button className="btn btn-primary" type="button" onClick={copy} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
-                {copied ? "Copied" : "Copy"}
-              </button>
+              <div className="adm-inline">
+                <button
+                  className="btn btn-ghost"
+                  type="button"
+                  onClick={() => setShowCommand((value) => !value)}
+                  style={{ padding: "6px 12px", fontSize: "0.8rem" }}
+                >
+                  {showCommand ? "Hide" : "Show"}
+                </button>
+                <button className="btn btn-primary" type="button" onClick={copy} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
             </div>
-            <pre className="adm-pre">
-              <code>{command}</code>
-            </pre>
+            {showCommand ? (
+              <pre className="adm-pre">
+                <code>{command}</code>
+              </pre>
+            ) : (
+              <p className="adm-help" style={{ margin: 0 }}>Command hidden.</p>
+            )}
           </div>
 
           <p className="adm-help" style={{ margin: 0 }}>
