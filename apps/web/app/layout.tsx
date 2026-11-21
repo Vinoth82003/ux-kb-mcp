@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import ScrollReveal from "@/components/scroll-reveal";
+import SessionProvider from "@/components/session-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ScrollReveal />
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
