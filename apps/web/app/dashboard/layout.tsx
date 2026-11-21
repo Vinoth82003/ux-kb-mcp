@@ -1,20 +1,19 @@
-import type { Metadata } from "next";
-import { requireUser } from "@/lib/authz";
-import AdminSidebar from "./sidebar";
-import { signOutAction } from "./actions";
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/authz";
+import AdminSidebar from "../dashboard/sidebar";
+import { signOutAction } from "../dashboard/actions";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Admin — UX-KB",
-    template: "%s — UX-KB Admin",
-  },
+export const metadata = {
+  title: { default: "Admin — UX-KB", template: "%s — UX-KB Admin" },
   robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = await requireUser();
+  const user = await getSessionUser();
+  if (!user) redirect("/signin");
+  if (user.role !== "ADMIN") redirect("/member");
 
   return (
     <div className="adm-shell">
