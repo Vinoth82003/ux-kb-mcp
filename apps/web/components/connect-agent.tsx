@@ -121,7 +121,7 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
               >
                 {keys.map((key) => (
                   <option key={key.id} value={key.id}>
-                    {key.name} ({key.prefix}…)
+                    {key.name} ({key.prefix}...)
                   </option>
                 ))}
               </select>
@@ -134,9 +134,9 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
             {selectedKey ? (
               <>
                 {" "}Selected key: {selectedKey.name} (
-                {showKey ? `${selectedKey.prefix}…` : "••••••••"}).
+                {showKey ? `${selectedKey.prefix}...` : "********"}).
               </>
-            ) : ""}
+            ) : null}
           </p>
 
           <div>
