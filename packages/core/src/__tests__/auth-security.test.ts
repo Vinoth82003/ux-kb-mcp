@@ -87,11 +87,11 @@ test("expired keys stop authenticating", async () => {
 
 test("members cannot exceed their active-key quota", async () => {
   const store = new MemoryStore();
-  for (let index = 0; index < 3; index += 1) {
+  for (let index = 0; index < 5; index += 1) {
     await createApiKey(store, { name: `key-${index}`, ownerId: "user-1", role: "MEMBER" });
   }
   await assert.rejects(
-    () => createApiKey(store, { name: "key-4", ownerId: "user-1", role: "MEMBER" }),
+    () => createApiKey(store, { name: "key-6", ownerId: "user-1", role: "MEMBER" }),
     /active keys/,
   );
 

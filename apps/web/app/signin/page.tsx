@@ -139,7 +139,7 @@ export default async function SignInPage({
             Sign in to reach your keys, usage, and the verified knowledge base behind them.
           </p>
           <ul className="signin-benefits">
-            <li>Up to 3 active API keys, revocable at any time.</li>
+            <li>Up to 5 active API keys, revocable at any time.</li>
             <li>60 requests per minute and 10,000 per day by default.</li>
             <li>90-day keys by default, with a one-click rotation.</li>
             <li>Usage history scoped to your own keys.</li>

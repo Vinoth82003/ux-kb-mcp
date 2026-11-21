@@ -8,7 +8,7 @@ const KEY_PATTERN = /^uxkb_[A-Za-z0-9_-]{32}$/;
 const MAX_KEY_LENGTH = 64;
 
 export const KEY_LIMITS = {
-  MEMBER: { maxActiveKeys: 3, maxRateLimit: 120, defaultRateLimit: 60 },
+  MEMBER: { maxActiveKeys: 5, maxRateLimit: 120, defaultRateLimit: 60 },
   ADMIN: { maxActiveKeys: 10, maxRateLimit: 600, defaultRateLimit: 300 },
 } as const;
 

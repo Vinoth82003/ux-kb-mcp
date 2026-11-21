@@ -9,7 +9,7 @@ import { can } from "@/lib/policy";
 
 /** Sign the current browser session out and return to the public site. */
 export async function signOutAction(): Promise<void> {
-  await signOut({ redirectTo: "/" });
+  await signOut({ redirectTo: "/signin" });
 }
 
 /** Mark a gap as covered. Audited because it changes reviewer state. */
