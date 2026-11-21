@@ -90,6 +90,15 @@ export class PrismaStore implements KbStore {
     });
   }
 
+  async setUserMfa(id: string, secret: string | null, enabled: boolean): Promise<UserRecord | null> {
+    const existing = await this.prisma.user.findUnique({ where: { id } });
+    if (!existing) return null;
+    return this.prisma.user.update({
+      where: { id },
+      data: { mfaSecret: secret, mfaEnabled: enabled },
+    });
+  }
+
   // --- API keys ------------------------------------------------------------
 
   async createKey(input: CreateApiKeyInput): Promise<ApiKeyRecord> {
@@ -258,6 +267,12 @@ export class PrismaStore implements KbStore {
       where: includeResolved ? undefined : { resolved: false },
       orderBy: { count: "desc" },
     });
+  }
+
+  async resolveGap(id: string): Promise<GapRecord | null> {
+    const existing = await this.prisma.kbGap.findUnique({ where: { id } });
+    if (!existing) return null;
+    return this.prisma.kbGap.update({ where: { id }, data: { resolved: true } });
   }
 
   // --- audit ---------------------------------------------------------------

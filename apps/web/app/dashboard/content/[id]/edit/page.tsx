@@ -6,7 +6,7 @@ import EditorClient from "./editor-client";
 export const dynamic = "force-dynamic";
 
 export default async function EditDocPage({ params }: { params: Promise<{ id: string }> }) {
-  const user = await requireUser();
+  await requireUser();
   const { id } = await params;
   const kb = getKb();
   const doc = kb.doc(id.toUpperCase());

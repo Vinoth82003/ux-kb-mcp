@@ -50,6 +50,8 @@ export class MemoryStore implements KbStore {
       name: input.name ?? null,
       avatarUrl: input.avatarUrl ?? null,
       role: input.role ?? "MEMBER",
+      mfaSecret: null,
+      mfaEnabled: false,
       suspendedAt: null,
       createdAt: now,
       lastLoginAt: now,
@@ -84,6 +86,14 @@ export class MemoryStore implements KbStore {
     const user = this.users.get(id);
     if (!user) return null;
     user.role = role;
+    return user;
+  }
+
+  async setUserMfa(id: string, secret: string | null, enabled: boolean): Promise<UserRecord | null> {
+    const user = this.users.get(id);
+    if (!user) return null;
+    user.mfaSecret = secret;
+    user.mfaEnabled = enabled;
     return user;
   }
 
@@ -251,6 +261,16 @@ export class MemoryStore implements KbStore {
     return [...this.gaps.values()]
       .filter((gap) => includeResolved || !gap.resolved)
       .sort((a, b) => b.count - a.count);
+  }
+
+  async resolveGap(id: string): Promise<GapRecord | null> {
+    for (const gap of this.gaps.values()) {
+      if (gap.id !== id) continue;
+      gap.resolved = true;
+      gap.updatedAt = new Date();
+      return gap;
+    }
+    return null;
   }
 
   async audit(input: AuditInput): Promise<AuditRecord> {

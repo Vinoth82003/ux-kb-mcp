@@ -3,27 +3,47 @@
 import { useState, useTransition } from "react";
 import { revokeKeyAction, rotateKeyAction } from "./actions";
 
-export default function KeyActions({ id }: { id: string }) {
+export default function KeyActions({
+  id,
+  name,
+  mfaEnabled,
+}: {
+  id: string;
+  name: string;
+  mfaEnabled: boolean;
+}) {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [rotated, setRotated] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [code, setCode] = useState("");
 
   function revoke() {
-    if (!window.confirm("Revoke this key? Any client using it stops working immediately.")) return;
+    const confirmed = window.confirm(
+      `Revoke “${name}”?\n\nAny client using this key stops working immediately. This cannot be undone; issue a new key to restore access.`,
+    );
+    if (!confirmed) return;
     setError(null);
     startTransition(async () => {
-      const result = await revokeKeyAction(id);
+      const result = await revokeKeyAction(id, code.trim());
       if (result.error) setError(result.error);
+      else setCode("");
     });
   }
 
   function rotate() {
+    const confirmed = window.confirm(
+      `Rotate “${name}”?\n\nA new key is issued and this one is revoked in the same step. Update your MCP client with the new key immediately.`,
+    );
+    if (!confirmed) return;
     setError(null);
     startTransition(async () => {
-      const result = await rotateKeyAction(id);
+      const result = await rotateKeyAction(id, code.trim());
       if (result.error) setError(result.error);
-      else if (result.key) setRotated(result.key);
+      else if (result.key) {
+        setRotated(result.key);
+        setCode("");
+      }
     });
   }
 
@@ -39,34 +59,46 @@ export default function KeyActions({ id }: { id: string }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+    <div className="adm-stack" style={{ gap: 6, minWidth: 190 }}>
+      {mfaEnabled && (
+        <label className="adm-field">
+          <span className="adm-label">Authenticator code</span>
+          <input
+            className="adm-input"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={7}
+            placeholder="123456"
+            value={code}
+            onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))}
+            disabled={pending}
+          />
+        </label>
+      )}
+
+      <div className="adm-inline">
         <button className="btn btn-ghost" type="button" onClick={rotate} disabled={pending}>
           Rotate
         </button>
-        <button className="btn btn-ghost" type="button" onClick={revoke} disabled={pending}>
+        <button className="btn btn-danger" type="button" onClick={revoke} disabled={pending}>
           Revoke
         </button>
       </div>
+
       {error && (
-        <span role="alert" style={{ color: "#f87171", fontSize: "0.8rem" }}>
+        <span role="alert" className="adm-small" style={{ color: "var(--error)" }}>
           {error}
         </span>
       )}
+
       {rotated && (
-        <div
-          style={{
-            marginTop: 4,
-            padding: 10,
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            maxWidth: 420,
-          }}
-        >
-          <p style={{ margin: 0, fontSize: "0.78rem", color: "var(--muted)" }}>
-            New key (shown once):
+        <div className="adm-card" style={{ padding: 10, marginTop: 4 }}>
+          <p className="adm-help" style={{ marginBottom: 6 }}>
+            New key for {name} (shown once):
           </p>
-          <code style={{ display: "block", wordBreak: "break-all", marginTop: 6 }}>{rotated}</code>
+          <code className="adm-code" style={{ display: "block", wordBreak: "break-all" }}>
+            {rotated}
+          </code>
           <button className="btn btn-ghost" type="button" onClick={copy} style={{ marginTop: 8 }}>
             {copied ? "Copied" : "Copy"}
           </button>

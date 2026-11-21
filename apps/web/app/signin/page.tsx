@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const devAuth = process.env.DEV_AUTH === "1" && process.env.NODE_ENV !== "production";
 
-const DEV_ROLES = ["viewer", "editor", "reviewer", "publisher", "admin"];
+const DEV_ROLES = ["member", "admin"];
 
 const ERRORS: Record<string, string> = {
   OAuthAccountNotLinked: "That email is already linked to another sign-in method.",

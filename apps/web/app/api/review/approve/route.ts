@@ -1,33 +1,46 @@
 import { NextResponse } from "next/server";
-import { requireUserForAction } from "@/lib/authz";
+import { guardApi, readJsonBody } from "@/lib/api";
 import { recordAudit } from "@/lib/audit";
 
-// In-memory change requests (demo). Replace with DB table in production.
-const changeRequests = new Map<string, { id: string; authorId: string; status: string; approvers: string[] }>();
+// Change requests are not persisted yet, so the queue is intentionally empty.
+// The authorization path is real (and tested), which keeps the endpoint safe
+// until a ChangeRequest table lands.
+const changeRequests = new Map<
+  string,
+  { id: string; authorId: string; status: string; approvers: string[] }
+>();
 
 export async function POST(request: Request) {
-  const user = await requireUserForAction();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const guard = await guardApi(request, "doc.publish", { mutating: true, stepUp: true });
+  if (guard.response) return guard.response;
 
-  let body: { changeRequestId?: string };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
-  const id = body.changeRequestId;
+  const parsed = await readJsonBody<{ changeRequestId?: string }>(request);
+  if (parsed.response) return parsed.response;
+  const id = (parsed.data.changeRequestId ?? "").trim();
   if (!id) return NextResponse.json({ error: "changeRequestId required" }, { status: 400 });
 
-  const cr = changeRequests.get(id);
-  if (!cr) return NextResponse.json({ error: "Change request not found" }, { status: 404 });
-
-  // Four-eyes rule: author cannot approve their own change.
-  if (cr.authorId === user.id) {
-    return NextResponse.json({ error: "Self-approval is not allowed (four-eyes rule)." }, { status: 403 });
+  const changeRequest = changeRequests.get(id);
+  if (!changeRequest) {
+    return NextResponse.json(
+      { error: "No such change request. The review queue is not persisted in this deployment." },
+      { status: 404 },
+    );
   }
 
-  cr.approvers.push(user.id);
-  cr.status = "approved";
-  await recordAudit({ user, action: "change.approve", target: id, metadata: { approver: user.id } });
-  return NextResponse.json({ ok: true, changeRequest: cr });
+  if (changeRequest.authorId === guard.user.id) {
+    return NextResponse.json(
+      { error: "Self-approval is not allowed (four-eyes rule)." },
+      { status: 403 },
+    );
+  }
+
+  changeRequest.approvers.push(guard.user.id);
+  changeRequest.status = "approved";
+  await recordAudit({
+    user: guard.user,
+    action: "change.approve",
+    target: id,
+    metadata: { approver: guard.user.id },
+  });
+  return NextResponse.json({ ok: true, changeRequest });
 }

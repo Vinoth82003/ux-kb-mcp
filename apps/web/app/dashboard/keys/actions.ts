@@ -5,6 +5,7 @@ import { createApiKey, KbError, KEY_LIMITS } from "@ux-kb/core";
 import { getStore } from "@/lib/store";
 import { requireUserForAction } from "@/lib/authz";
 import { recordAudit } from "@/lib/audit";
+import { verifyStepUp } from "@/lib/mfa-guard";
 
 const NAME_PATTERN = /^[\p{L}\p{N} ._:/-]{1,64}$/u;
 const EXPIRY_DAYS = new Set([30, 90, 365]);
@@ -37,6 +38,9 @@ export async function createKeyAction(
 ): Promise<CreateKeyState> {
   const user = await requireUserForAction();
   if (!user) return { key: null, name: null, error: "Your session expired. Sign in again." };
+
+  const stepUp = await verifyStepUp(user, String(formData.get("mfaCode") ?? ""));
+  if (!stepUp.ok) return { key: null, name: null, error: stepUp.error ?? "MFA code required." };
 
   const name = String(formData.get("name") ?? "").trim();
   if (!name) return { key: null, name: null, error: "Give the key a name." };
@@ -84,9 +88,12 @@ export async function createKeyAction(
   }
 }
 
-export async function revokeKeyAction(id: string): Promise<KeyActionResult> {
+export async function revokeKeyAction(id: string, mfaCode = ""): Promise<KeyActionResult> {
   const user = await requireUserForAction();
   if (!user) return { error: "Your session expired. Sign in again." };
+
+  const stepUp = await verifyStepUp(user, mfaCode);
+  if (!stepUp.ok) return { error: stepUp.error ?? "MFA code required." };
 
   const store = await getStore();
   const key = await store.getKey(id);
@@ -101,9 +108,12 @@ export async function revokeKeyAction(id: string): Promise<KeyActionResult> {
   return {};
 }
 
-export async function rotateKeyAction(id: string): Promise<KeyActionResult> {
+export async function rotateKeyAction(id: string, mfaCode = ""): Promise<KeyActionResult> {
   const user = await requireUserForAction();
   if (!user) return { error: "Your session expired. Sign in again." };
+
+  const stepUp = await verifyStepUp(user, mfaCode);
+  if (!stepUp.ok) return { error: stepUp.error ?? "MFA code required." };
 
   const store = await getStore();
   const old = await store.getKey(id);

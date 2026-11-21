@@ -1,5 +1,6 @@
 import { getStore } from "@/lib/store";
 import { requireUser } from "@/lib/authz";
+import PageHeader from "../page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -11,49 +12,67 @@ export default async function UsagePage() {
     store.listKeysByOwner(user.id),
   ]);
   const keyName = new Map(keys.map((key) => [key.id, key.name]));
+  const failures = usage.filter((entry) => !entry.ok).length;
 
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Recent usage</h2>
-      <p style={{ color: "var(--muted)", marginTop: 0 }}>
-        The last 100 tool calls made with your keys.
-      </p>
+      <PageHeader
+        eyebrow="Settings"
+        title="Recent usage"
+        description="The last 100 tool calls made with your keys. Arguments are recorded for troubleshooting; never paste secrets into a tool call."
+      />
 
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 640 }}>
-          <thead>
-            <tr style={{ textAlign: "left", borderBottom: "1px solid var(--border)" }}>
-              <th style={{ padding: 8 }}>Time</th>
-              <th style={{ padding: 8 }}>Key</th>
-              <th style={{ padding: 8 }}>Tool</th>
-              <th style={{ padding: 8 }}>OK</th>
-              <th style={{ padding: 8 }}>Latency</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usage.length === 0 && (
-              <tr>
-                <td colSpan={5} style={{ padding: 16, color: "var(--muted)" }}>
-                  No calls yet. Connect an agent with one of your keys.
-                </td>
-              </tr>
-            )}
-            {usage.map((entry) => (
-              <tr key={entry.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                <td style={{ padding: 8 }}>{entry.createdAt.toLocaleString()}</td>
-                <td style={{ padding: 8 }}>{keyName.get(entry.apiKeyId) ?? "deleted key"}</td>
-                <td style={{ padding: 8 }}>
-                  <code>{entry.tool}</code>
-                </td>
-                <td style={{ padding: 8, color: entry.ok ? "#4ade80" : "#f87171" }}>
-                  {entry.ok ? "yes" : "no"}
-                </td>
-                <td style={{ padding: 8 }}>{entry.latencyMs}ms</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="adm-stats">
+        <div className="adm-stat">
+          <span className="adm-stat-value">{usage.length}</span>
+          <span className="adm-stat-label">Calls sampled</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">{failures}</span>
+          <span className="adm-stat-label">Failed</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">{new Set(usage.map((entry) => entry.apiKeyId)).size}</span>
+          <span className="adm-stat-label">Keys used</span>
+        </div>
       </div>
+
+      {usage.length === 0 ? (
+        <div className="adm-empty">
+          <strong>No calls yet</strong>
+          <p>Connect an agent with one of your keys and calls will appear here.</p>
+        </div>
+      ) : (
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <caption className="sr-only">Recent tool calls</caption>
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Key</th>
+                <th scope="col">Tool</th>
+                <th scope="col">Result</th>
+                <th scope="col">Latency</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usage.map((entry) => (
+                <tr key={entry.id}>
+                  <td className="adm-nowrap">{entry.createdAt.toLocaleString()}</td>
+                  <td>{keyName.get(entry.apiKeyId) ?? "deleted key"}</td>
+                  <td><code className="adm-code">{entry.tool}</code></td>
+                  <td>
+                    <span className={`adm-badge ${entry.ok ? "adm-badge-success" : "adm-badge-danger"}`}>
+                      {entry.ok ? "ok" : "error"}
+                    </span>
+                  </td>
+                  <td className="adm-nowrap">{entry.latencyMs}ms</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

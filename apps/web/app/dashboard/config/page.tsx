@@ -1,48 +1,113 @@
-"use client";
+import { getModePolicy } from "@ux-kb/core";
+import { getKb } from "@/lib/kb";
+import { requireUser } from "@/lib/authz";
+import PageHeader from "../page-header";
+import ConfigTester from "./config-tester";
 
-import { useState } from "react";
-import { sanitizeContent } from "@ux-kb/core/sanitizer";
+export const dynamic = "force-dynamic";
 
-export default function ConfigPage() {
-  const [text, setText] = useState("");
-  const [findings, setFindings] = useState<ReturnType<typeof sanitizeContent>["findings"]>([]);
+const MODES = ["quick", "audit", "full"] as const;
 
-  function test() {
-    setFindings(sanitizeContent(text).findings);
-  }
+export default async function ConfigPage() {
+  await requireUser();
+  const kb = getKb();
+  const policies = MODES.map((mode) => getModePolicy(mode));
 
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Configuration</h2>
-      <h3>Modes and budgets (defaults)</h3>
-      <ul>
-        <li>quick: session 3,000 · stage packs disabled</li>
-        <li>audit: session 8,000 · packs audit+critique · cap 2,500</li>
-        <li>full: session 30,000 · all packs · cap 4,000</li>
-      </ul>
-      <h3 style={{ marginTop: 24 }}>Sanitizer tester</h3>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        rows={8}
-        style={{ width: "100%", fontFamily: "monospace", padding: 10, borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)", color: "var(--text)" }}
+      <PageHeader
+        eyebrow="Settings"
+        title="Configuration"
+        description="Read-only view of the MCP mode policy plus a tester for the content sanitizer. Deployment-level values live in environment variables and the content tree."
       />
-      <button className="btn btn-primary" onClick={test} style={{ marginTop: 8 }}>Test</button>
-      <div style={{ marginTop: 12 }}>
-        {findings.length === 0 ? (
-          <p style={{ color: "#4ade80" }}>No findings — content is clean.</p>
-        ) : (
-          findings.map((f, i) => (
-            <div key={i} style={{ color: "#f87171", fontSize: "0.85rem" }}>
-              {f.code}: {f.match}
-            </div>
-          ))
-        )}
+
+      <div className="adm-alert adm-alert-info" style={{ marginBottom: 16 }}>
+        This deployment reads configuration from <code className="adm-code">content/</code> and
+        the server environment. Editing here is disabled so a panel session cannot
+        silently change what every agent receives.
       </div>
-      <h3 style={{ marginTop: 24 }}>Rate limits</h3>
-      <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
-        Defaults: 60 calls/min, 600/hour per key. Editing wired in a future milestone.
-      </p>
+
+      <div className="adm-stats">
+        <div className="adm-stat">
+          <span className="adm-stat-value">{kb.version}</span>
+          <span className="adm-stat-label">Content release</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">{kb.docs().length}</span>
+          <span className="adm-stat-label">Documents</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">{kb.versionedDocs().length}</span>
+          <span className="adm-stat-label">Versioned docs</span>
+        </div>
+      </div>
+
+      <section aria-labelledby="modes-title">
+        <h2 id="modes-title" className="adm-section-title">
+          Mode policy
+        </h2>
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <caption className="sr-only">Session modes and their budgets</caption>
+            <thead>
+              <tr>
+                <th scope="col">Mode</th>
+                <th scope="col">Session budget</th>
+                <th scope="col">Stage packs</th>
+                <th scope="col">Critique</th>
+                <th scope="col">Approval before code</th>
+              </tr>
+            </thead>
+            <tbody>
+              {policies.map((policy) => (
+                <tr key={policy.mode}>
+                  <td>
+                    <code className="adm-code">{policy.mode}</code>
+                  </td>
+                  <td>{policy.budget.toLocaleString()} tokens</td>
+                  <td className="adm-muted">
+                    {policy.stagePack === "disabled"
+                      ? "disabled"
+                      : policy.stagePack === "all"
+                        ? "all"
+                        : policy.stagePack.stages.join(", ")}
+                  </td>
+                  <td className="adm-muted">{policy.critique}</td>
+                  <td>{policy.approvalRequiredBeforeCode ? "required" : "no"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="adm-help" style={{ marginTop: 10 }}>
+          Per-document budgets live with each document and are enforced by the pack
+          builder, not by this panel.
+        </p>
+      </section>
+
+      <section className="adm-section" aria-labelledby="sanitizer-title">
+        <div className="adm-section-head">
+          <h2 id="sanitizer-title" className="adm-section-title">
+            Sanitizer tester
+          </h2>
+          <span className="adm-help">Runs locally in your browser</span>
+        </div>
+        <ConfigTester />
+      </section>
+
+      <section className="adm-section" aria-labelledby="limits-title">
+        <h2 id="limits-title" className="adm-section-title">
+          Rate limits
+        </h2>
+        <dl className="adm-kv">
+          <dt>Per key</dt>
+          <dd>60 calls/min · 600/hour by default; admins may raise the per-minute cap</dd>
+          <dt>Daily</dt>
+          <dd>10,000 calls per key</dd>
+          <dt>Failure behaviour</dt>
+          <dd>429 with a Retry-After header; usage is still logged</dd>
+        </dl>
+      </section>
     </div>
   );
 }

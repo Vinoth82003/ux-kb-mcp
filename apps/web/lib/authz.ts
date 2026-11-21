@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import type { UserRecord } from "@ux-kb/core/store";
 import { getStore } from "./store";
+import { can, type Action } from "./policy";
 
 /** Resolve the signed-in user from the session and re-read the database row. */
 export async function getSessionUser(): Promise<UserRecord | null> {
@@ -27,11 +28,25 @@ export async function requireUser(): Promise<UserRecord> {
 /** Page guard for admin-only surfaces. */
 export async function requireAdmin(): Promise<UserRecord> {
   const user = await requireUser();
-  if (user.role !== "ADMIN") redirect("/dashboard");
+  if (user.role !== "ADMIN") redirect("/forbidden");
+  return user;
+}
+
+/** Page guard for a specific capability. */
+export async function requireAction(action: Action): Promise<UserRecord> {
+  const user = await requireUser();
+  if (!can(user, action)) redirect("/forbidden");
   return user;
 }
 
 /** Server-action guard: returns null instead of redirecting. */
 export async function requireUserForAction(): Promise<UserRecord | null> {
   return getSessionUser();
+}
+
+/** Server-action guard for a specific capability. */
+export async function requireActionForAction(action: Action): Promise<UserRecord | null> {
+  const user = await getSessionUser();
+  if (!can(user, action)) return null;
+  return user;
 }

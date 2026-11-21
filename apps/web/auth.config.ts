@@ -9,6 +9,8 @@ import GitHub from "next-auth/providers/github";
 export const authConfig = {
   trustHost: true,
   secret: process.env.AUTH_SECRET,
+  // Auth.js prefixes cookies with __Secure- and marks them Secure in production.
+  useSecureCookies: process.env.NODE_ENV === "production",
   providers: [
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
@@ -21,10 +23,24 @@ export const authConfig = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
+    // Admin sessions are deliberately short-lived; the JWT is refreshed every
+    // 30 minutes while the user is active.
+    maxAge: 8 * 60 * 60,
+    updateAge: 30 * 60,
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Only same-origin destinations are allowed, which closes the open
+      // redirect that a crafted callbackUrl would otherwise create.
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      try {
+        const parsed = new URL(url);
+        if (parsed.origin === baseUrl) return url;
+      } catch {
+        /* fall through */
+      }
+      return `${baseUrl}/dashboard`;
+    },
     async jwt({ token, user }) {
       if (user) {
         const enriched = user as {

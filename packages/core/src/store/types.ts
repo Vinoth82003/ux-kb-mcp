@@ -8,6 +8,9 @@ export interface UserRecord {
   name: string | null;
   avatarUrl: string | null;
   role: UserRole;
+  /** Encrypted TOTP secret. Never send this to the client. */
+  mfaSecret: string | null;
+  mfaEnabled: boolean;
   suspendedAt: Date | null;
   createdAt: Date;
   lastLoginAt: Date | null;
@@ -146,6 +149,7 @@ export interface KbStore {
   listUsers(): Promise<UserRecord[]>;
   setUserSuspended(id: string, suspended: boolean): Promise<UserRecord | null>;
   setUserRole(id: string, role: UserRole): Promise<UserRecord | null>;
+  setUserMfa(id: string, secret: string | null, enabled: boolean): Promise<UserRecord | null>;
 
   // --- API keys ------------------------------------------------------------
   createKey(input: CreateApiKeyInput): Promise<ApiKeyRecord>;
@@ -175,6 +179,7 @@ export interface KbStore {
   // --- gaps ----------------------------------------------------------------
   upsertGap(topic: string, context: string): Promise<GapRecord>;
   listGaps(includeResolved?: boolean): Promise<GapRecord[]>;
+  resolveGap(id: string): Promise<GapRecord | null>;
 
   // --- audit ---------------------------------------------------------------
   audit(input: AuditInput): Promise<AuditRecord>;

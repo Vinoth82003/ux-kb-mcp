@@ -1,61 +1,139 @@
 import { coreScreenGateItems, screenTypeExtraItems } from "@ux-kb/core";
-import { getKb } from "@/lib/kb";
 import { requireUser } from "@/lib/authz";
-
+import PageHeader from "../page-header";
 import GatePreview from "./gate-preview";
 
+export const dynamic = "force-dynamic";
+
+const SCREEN_TYPES = [
+  "list",
+  "detail",
+  "form",
+  "dashboard",
+  "settings",
+  "auth",
+  "empty-state",
+  "other",
+] as const;
+
 export default async function GatePage() {
-  const user = await requireUser();
+  await requireUser();
   const items = coreScreenGateItems();
-  const extras = ["list", "form", "dashboard", "detail", "settings", "auth", "empty-state", "other"].map((t) => ({
-    type: t,
-    items: screenTypeExtraItems(t),
-  }));
+  const extras = SCREEN_TYPES.map((type) => ({ type, items: screenTypeExtraItems(type) }));
 
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Core Screen Gate</h2>
-      <p style={{ color: "var(--muted)" }}>
-        {items.length} core items. Warns when more than 12.
-        {items.length > 12 && <span style={{ color: "#f87171" }}> ⚠ exceeds 12</span>}
-      </p>
+      <PageHeader
+        eyebrow="Knowledge"
+        title="Core screen gate"
+        description="The baseline checklist every screen must satisfy. The preview runs the same gate builder as the MCP start_gate tool, so the item set and token estimate match production."
+      />
 
-      <h3>Core items (SCR.*)</h3>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 640 }}>
-        <thead>
-          <tr style={{ textAlign: "left", borderBottom: "1px solid var(--border)" }}>
-            <th style={{ padding: 8 }}>ID</th>
-            <th style={{ padding: 8 }}>Check</th>
-            <th style={{ padding: 8 }}>Severity</th>
-            <th style={{ padding: 8 }}>NA forbidden</th>
-            <th style={{ padding: 8 }}>Has verify</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((it) => (
-            <tr key={it.id} style={{ borderBottom: "1px solid var(--border)" }}>
-              <td style={{ padding: 8 }}><code>{it.id}</code></td>
-              <td style={{ padding: 8 }}>{it.check}</td>
-              <td style={{ padding: 8 }}>{it.severity}</td>
-              <td style={{ padding: 8 }}>{it.naForbidden ? "yes" : "no"}</td>
-              <td style={{ padding: 8 }}>{it.verify?.hint ? "yes" : "no"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <h3 style={{ marginTop: 24 }}>Screen-type extras</h3>
-      {extras.map((e) => (
-        <div key={e.type} style={{ marginBottom: 12 }}>
-          <strong>{e.type}</strong>: {e.items.length === 0 ? "none" : e.items.map((i) => i.id).join(", ")}
+      <div className="adm-stats">
+        <div className="adm-stat">
+          <span className="adm-stat-value">{items.length}</span>
+          <span className="adm-stat-label">Core items</span>
+          <span className="adm-stat-hint">target ≤ 12</span>
         </div>
-      ))}
+        <div className="adm-stat">
+          <span className="adm-stat-value">{items.filter((item) => item.severity === "blocker").length}</span>
+          <span className="adm-stat-label">Blockers</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">
+            {items.filter((item) => item.severity === "major").length}
+          </span>
+          <span className="adm-stat-label">Major</span>
+        </div>
+        <div className="adm-stat">
+          <span className="adm-stat-value">
+            {items.filter((item) => item.verify?.hint).length}/{items.length}
+          </span>
+          <span className="adm-stat-label">With verify hint</span>
+        </div>
+      </div>
 
-      <h3 style={{ marginTop: 24 }}>Gate preview</h3>
-      <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
-        Pick a screen type + components; the preview calls the same code path as the MCP <code>start_gate</code>.
-      </p>
-      <GatePreview />
+      {items.length > 12 && (
+        <p className="adm-alert adm-alert-warning" role="status" style={{ marginBottom: 16 }}>
+          The core gate has {items.length} items, above the 12-item target. Prune or merge
+          items before the next release.
+        </p>
+      )}
+
+      <section aria-labelledby="core-items-title">
+        <div className="adm-section-head">
+          <h2 id="core-items-title" className="adm-section-title">
+            Core items (SCR.*)
+          </h2>
+        </div>
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <caption className="sr-only">Core screen gate items</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Check</th>
+                <th scope="col">Severity</th>
+                <th scope="col">N/A forbidden</th>
+                <th scope="col">Verify hint</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id}>
+                  <td><code className="adm-code">{item.id}</code></td>
+                  <td>{item.check}</td>
+                  <td>
+                    <span
+                      className={`adm-badge ${item.severity === "blocker" ? "adm-badge-danger" : item.severity === "major" ? "adm-badge-warning" : "adm-badge-neutral"}`}
+                    >
+                      {item.severity}
+                    </span>
+                  </td>
+                  <td>{item.naForbidden ? "yes" : "—"}</td>
+                  <td className={item.verify?.hint ? "" : "adm-muted"}>
+                    {item.verify?.hint ?? "missing"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="adm-section" aria-labelledby="extras-title">
+        <h2 id="extras-title" className="adm-section-title">
+          Screen-type extras
+        </h2>
+        <div className="adm-grid adm-grid-3">
+          {extras.map((extra) => (
+            <div className="adm-card" key={extra.type}>
+              <h3 className="adm-section-title" style={{ fontSize: "0.92rem" }}>
+                {extra.type}
+              </h3>
+              {extra.items.length === 0 ? (
+                <p className="adm-help" style={{ margin: 0 }}>No extra items.</p>
+              ) : (
+                <div className="adm-inline">
+                  {extra.items.map((item) => (
+                    <code key={item.id} className="adm-code">{item.id}</code>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="adm-section" aria-labelledby="preview-title">
+        <div className="adm-section-head">
+          <h2 id="preview-title" className="adm-section-title">
+            Gate preview
+          </h2>
+          <span className="adm-help">No content is stored</span>
+        </div>
+        <GatePreview />
+      </section>
     </div>
   );
 }

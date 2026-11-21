@@ -61,7 +61,6 @@ export function parseRedirectUris(input: unknown): string[] | null {
 /** Trim control characters and cap the display name at 80 characters. */
 export function sanitizeClientName(input: unknown): string {
   const raw = typeof input === "string" ? input : "";
-  // eslint-disable-next-line no-control-regex
   const cleaned = raw.replace(/[\u0000-\u001f\u007f]/g, "").trim();
   return cleaned.slice(0, 80) || "MCP client";
 }

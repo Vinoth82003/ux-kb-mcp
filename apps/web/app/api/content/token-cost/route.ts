@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
 import { convertMarkdownToJson } from "@ux-kb/core";
-import { requireUserForAction } from "@/lib/authz";
+import { guardApi, readJsonBody } from "@/lib/api";
 
 export async function POST(request: Request) {
-  const user = await requireUserForAction();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  let body: { markdown?: string };
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
-  const markdown = (body.markdown ?? "").trim();
-  if (!markdown) return NextResponse.json({ error: "markdown required" }, { status: 400 });
+  const guard = await guardApi(request, "doc.read", { mutating: true });
+  if (guard.response) return guard.response;
+
+  const parsed = await readJsonBody<{ markdown?: string }>(request);
+  if (parsed.response) return parsed.response;
+  const markdown = (parsed.data.markdown ?? "").trim();
+  if (!markdown) {
+    return NextResponse.json({ error: "markdown required" }, { status: 400 });
+  }
+
   try {
     const doc = convertMarkdownToJson(markdown);
     return NextResponse.json({ tokenCost: doc.tokenCost, id: doc.id, title: doc.title });
-  } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 400 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : String(error) },
+      { status: 400 },
+    );
   }
 }

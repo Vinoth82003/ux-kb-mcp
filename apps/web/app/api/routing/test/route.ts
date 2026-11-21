@@ -1,17 +1,29 @@
 import { NextResponse } from "next/server";
 import { getKb } from "@/lib/kb";
-import { requireUserForAction } from "@/lib/authz";
+import { guardApi, readJsonBody } from "@/lib/api";
 
 export async function POST(request: Request) {
-  const user = await requireUserForAction();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  let body: { feature?: string };
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
-  const feature = (body.feature ?? "").trim();
+  const guard = await guardApi(request, "doc.read", { mutating: true });
+  if (guard.response) return guard.response;
+
+  const parsed = await readJsonBody<{ feature?: string }>(request);
+  if (parsed.response) return parsed.response;
+  const feature = (parsed.data.feature ?? "").trim();
   if (!feature) return NextResponse.json({ error: "feature required" }, { status: 400 });
+
   const kb = getKb();
   const routed = kb.routeFeature(feature);
-  const routes = kb.repo.routes().filter((r) => r.match.some((m) => feature.toLowerCase().includes(m.toLowerCase())));
-  const tags = routes.flatMap((r) => r.match).filter((t, i, a) => a.indexOf(t) === i);
-  return NextResponse.json({ feature, tags, routedDocIds: routed, matchedRules: routes.length });
+  const routes = kb.repo
+    .routes()
+    .filter((route) => route.match.some((match) => feature.toLowerCase().includes(match.toLowerCase())));
+  const tags = routes
+    .flatMap((route) => route.match)
+    .filter((tag, index, all) => all.indexOf(tag) === index);
+
+  return NextResponse.json({
+    feature,
+    tags,
+    routedDocIds: routed,
+    matchedRules: routes.length,
+  });
 }

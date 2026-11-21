@@ -82,14 +82,13 @@ function Mascot({
 export default function Landing() {
   const [tab, setTab] = useState<Tab>("stdio");
   const [copied, setCopied] = useState<string | null>(null);
-  const [mode, setMode] = useState<ThemeMode>("system");
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    if (typeof window === "undefined") return "system";
+    const stored = window.localStorage.getItem("theme-mode");
+    return stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [comparisonView, setComparisonView] = useState<ComparisonView>("both");
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem("theme-mode");
-    if (stored === "light" || stored === "dark" || stored === "system") setMode(stored);
-  }, []);
 
   useEffect(() => {
     const resolve = () =>

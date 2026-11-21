@@ -1,5 +1,6 @@
 import { getStore } from "@/lib/store";
-import { requireUser } from "@/lib/authz";
+import { requireAdmin } from "@/lib/authz";
+import PageHeader from "../page-header";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -7,63 +8,116 @@ export const dynamic = "force-dynamic";
 export default async function AuditPage({
   searchParams,
 }: {
-  searchParams: Promise<{ action?: string; actor?: string }>;
+  searchParams: Promise<{ action?: string; actor?: string; target?: string }>;
 }) {
-  const user = await requireUser();
+  await requireAdmin();
   const params = await searchParams;
   const store = await getStore();
-  const entries = await store.listAudit(500);
-  const filtered = entries.filter((e) => {
-    if (params.action && !e.action.includes(params.action)) return false;
-    if (params.actor && !e.actor.includes(params.actor)) return false;
+  const entries = await store.listAudit(1000);
+  const q = (value: string | undefined) => (value ?? "").trim().toLowerCase();
+  const action = q(params.action);
+  const actor = q(params.actor);
+  const target = q(params.target);
+  const filtered = entries.filter((entry) => {
+    if (action && !entry.action.toLowerCase().includes(action)) return false;
+    if (actor && !entry.actor.toLowerCase().includes(actor)) return false;
+    if (target && !entry.target.toLowerCase().includes(target)) return false;
     return true;
   });
+  const isFiltered = Boolean(action || actor || target);
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h2 style={{ marginTop: 0 }}>Audit log</h2>
-        <Link href="/api/audit/export" className="btn btn-ghost">Export JSON</Link>
-      </div>
-      <form method="get" style={{ display: "flex", gap: 8, margin: "12px 0" }}>
-        <input name="action" defaultValue={params.action ?? ""} placeholder="action contains" style={{ padding: 8, borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)", color: "var(--text)" }} />
-        <input name="actor" defaultValue={params.actor ?? ""} placeholder="actor contains" style={{ padding: 8, borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)", color: "var(--text)" }} />
-        <button type="submit" className="btn btn-ghost">Filter</button>
+      <PageHeader
+        eyebrow="Operations"
+        title="Audit log"
+        description="Append-only record of sign-ins, mutations, exports, and denied access. Rows cannot be edited or deleted from the panel."
+        actions={
+          <a className="btn btn-ghost" href="/api/audit/export">
+            Export JSON
+          </a>
+        }
+      />
+
+      <form method="get" className="adm-toolbar" role="search">
+        <label className="adm-field" style={{ flex: "1 1 180px" }}>
+          <span className="adm-label">Action contains</span>
+          <input
+            className="adm-input"
+            name="action"
+            defaultValue={params.action ?? ""}
+            placeholder="key.rotate"
+          />
+        </label>
+        <label className="adm-field" style={{ flex: "1 1 180px" }}>
+          <span className="adm-label">Actor contains</span>
+          <input
+            className="adm-input"
+            name="actor"
+            defaultValue={params.actor ?? ""}
+            placeholder="github:login"
+          />
+        </label>
+        <label className="adm-field" style={{ flex: "1 1 180px" }}>
+          <span className="adm-label">Target contains</span>
+          <input
+            className="adm-input"
+            name="target"
+            defaultValue={params.target ?? ""}
+            placeholder="doc or key id"
+          />
+        </label>
+        <button type="submit" className="btn btn-primary">
+          Filter
+        </button>
+        {isFiltered && (
+          <Link className="btn btn-ghost" href="/dashboard/audit">
+            Clear
+          </Link>
+        )}
       </form>
-      <p style={{ color: "var(--muted)", marginTop: 0 }}>
-        Append-only. {filtered.length} of {entries.length} entries.
+
+      <p className="adm-help" style={{ marginBottom: 10 }}>
+        {filtered.length} of {entries.length} most recent entries.
       </p>
-      <div style={{ overflowX: "auto", marginTop: 12 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 720 }}>
-          <thead>
-            <tr style={{ textAlign: "left", borderBottom: "1px solid var(--border)" }}>
-              <th style={{ padding: 8 }}>When</th>
-              <th style={{ padding: 8 }}>Actor</th>
-              <th style={{ padding: 8 }}>Action</th>
-              <th style={{ padding: 8 }}>Target</th>
-              <th style={{ padding: 8 }}>IP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 && (
+
+      {filtered.length === 0 ? (
+        <div className="adm-empty">
+          <strong>No matching entries</strong>
+          <p>Widen the filters, or clear them to see every recorded event.</p>
+          <Link className="btn btn-ghost" href="/dashboard/audit">
+            Clear filters
+          </Link>
+        </div>
+      ) : (
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <caption className="sr-only">Audit events, newest first</caption>
+            <thead>
               <tr>
-                <td colSpan={5} style={{ padding: 16, color: "var(--muted)" }}>
-                  No audit entries.
-                </td>
+                <th scope="col">When</th>
+                <th scope="col">Actor</th>
+                <th scope="col">Action</th>
+                <th scope="col">Target</th>
+                <th scope="col">IP</th>
               </tr>
-            )}
-            {filtered.map((e) => (
-              <tr key={e.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                <td style={{ padding: 8 }}>{new Date(e.createdAt).toLocaleString()}</td>
-                <td style={{ padding: 8 }}>{e.actor}</td>
-                <td style={{ padding: 8 }}>{e.action}</td>
-                <td style={{ padding: 8 }}>{e.target}</td>
-                <td style={{ padding: 8 }}>{e.ip ?? "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filtered.map((entry) => (
+                <tr key={entry.id}>
+                  <td className="adm-nowrap">{new Date(entry.createdAt).toLocaleString()}</td>
+                  <td>{entry.actor}</td>
+                  <td>
+                    <code className="adm-code">{entry.action}</code>
+                  </td>
+                  <td className="adm-muted">{entry.target}</td>
+                  <td className="adm-muted adm-nowrap">{entry.ip ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

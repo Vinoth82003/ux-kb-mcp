@@ -8,7 +8,9 @@ if (process.env.DEV_AUTH === "1" && process.env.NODE_ENV === "production") {
   throw new Error("DEV_AUTH=1 is not allowed in production.");
 }
 
-const DEV_ROLES = ["viewer", "editor", "reviewer", "publisher", "admin"] as const;
+// The database enum is MEMBER | ADMIN. Dev logins mirror those two roles only;
+// additional names would advertise capabilities the policy cannot grant.
+const DEV_ROLES = ["member", "admin"] as const;
 type DevRole = (typeof DEV_ROLES)[number];
 
 function devRoleFromEmail(email: string): DevRole | null {
@@ -64,13 +66,18 @@ const providers = [
               role: role === "admin" ? "ADMIN" : "MEMBER",
             });
 
-            const enriched: any = {
+            const enriched: {
+              dbUserId: string;
+              role: "MEMBER" | "ADMIN";
+              login: string;
+              email: string;
+            } = {
               dbUserId: dbUser.id,
               role: dbUser.role,
               login: dbUser.login,
               email,
             };
-            return enriched as any;
+            return enriched;
           },
         }),
       ]
@@ -83,6 +90,13 @@ export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user, profile, account }) {
+      // The dev Credentials provider has no GitHub profile. Its `authorize`
+      // callback already created the user and enriched the object with a DB id.
+      if (account?.provider === "dev") {
+        const dev = user as { dbUserId?: string; login?: string };
+        return Boolean(dev.dbUserId && dev.login);
+      }
+
       const gh = profile as
         | { id?: number | string; login?: string; name?: string; email?: string; avatar_url?: string }
         | null;
@@ -154,6 +168,28 @@ export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
       enriched.role = dbUser.role;
       enriched.login = dbUser.login;
       return true;
+    },
+  },
+  events: {
+    // Audit sign-outs so the audit log can distinguish an intentional exit from
+    // an expired or revoked session.
+    async signOut(message) {
+      const token = "token" in message ? message.token : null;
+      const uid = token?.uid ?? token?.sub;
+      if (!uid) return;
+      try {
+        const store = await getStore();
+        await store.audit({
+          actor: `github:${String(token?.login ?? uid)}`,
+          actorUserId: String(uid),
+          action: "auth.signout",
+          target: String(uid),
+        });
+      } catch (error) {
+        console.error("auth.signout_audit_failed", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   },
 });
