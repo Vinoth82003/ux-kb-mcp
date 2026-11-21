@@ -1,6 +1,20 @@
 import NextAuth, { type NextAuthResult } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
 import { getStore } from "./lib/store";
+
+// Fail fast: never allow dev auth in production.
+if (process.env.DEV_AUTH === "1" && process.env.NODE_ENV === "production") {
+  throw new Error("DEV_AUTH=1 is not allowed in production.");
+}
+
+const DEV_ROLES = ["viewer", "editor", "reviewer", "publisher", "admin"] as const;
+type DevRole = (typeof DEV_ROLES)[number];
+
+function devRoleFromEmail(email: string): DevRole | null {
+  const local = email.split("@")[0]?.toLowerCase() ?? "";
+  return (DEV_ROLES as readonly string[]).includes(local) ? (local as DevRole) : null;
+}
 
 function adminLogins(): Set<string> {
   return new Set(
@@ -18,8 +32,54 @@ function adminLogins(): Set<string> {
  * Logins listed in ALLOWED_GITHUB_LOGINS become admins. Suspended accounts are
  * rejected at the door.
  */
+const devAuthEnabled = process.env.DEV_AUTH === "1" && process.env.NODE_ENV !== "production";
+
+const providers = [
+  ...authConfig.providers,
+  ...(devAuthEnabled
+    ? [
+        Credentials({
+          id: "dev",
+          name: "Dev credentials",
+          credentials: {
+            email: { label: "Email", type: "email" },
+            password: { label: "Password", type: "password" },
+          },
+          async authorize(credentials) {
+            const email = String(credentials?.email ?? "").trim().toLowerCase();
+            const password = String(credentials?.password ?? "");
+            const expected = process.env.DEV_PASSWORD ?? "dev";
+            if (password !== expected) return null;
+            const role = devRoleFromEmail(email);
+            if (!role) return null;
+
+            const store = await getStore();
+            const githubId = `dev:${role}`;
+            const dbUser = await store.upsertUser({
+              githubId,
+              login: role,
+              email,
+              name: `Dev ${role}`,
+              avatarUrl: null,
+              role: role === "admin" ? "ADMIN" : "MEMBER",
+            });
+
+            const enriched: any = {
+              dbUserId: dbUser.id,
+              role: dbUser.role,
+              login: dbUser.login,
+              email,
+            };
+            return enriched as any;
+          },
+        }),
+      ]
+    : []),
+];
+
 export const { handlers, auth, signIn, signOut }: NextAuthResult = NextAuth({
   ...authConfig,
+  providers,
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user, profile, account }) {

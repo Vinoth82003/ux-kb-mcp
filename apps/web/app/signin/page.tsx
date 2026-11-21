@@ -8,8 +8,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+const devAuth = process.env.DEV_AUTH === "1" && process.env.NODE_ENV !== "production";
+
+const DEV_ROLES = ["viewer", "editor", "reviewer", "publisher", "admin"];
+
 const ERRORS: Record<string, string> = {
-  AccessDenied: "That GitHub account is suspended or not permitted to sign in.",
   OAuthAccountNotLinked: "That email is already linked to another sign-in method.",
   OAuthSignin: "Could not start the GitHub sign-in. Try again.",
   OAuthCallback: "GitHub returned an invalid response. Try again.",
@@ -82,6 +85,25 @@ export default async function SignInPage({
             </button>
           </form>
 
+          {devAuth && (
+            <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid var(--border)" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--muted)" }}>Dev login (DEV_AUTH=1)</p>
+              {DEV_ROLES.map((role) => (
+                <form
+                  key={role}
+                  action={async () => {
+                    "use server";
+                    await signIn("dev", { email: `${role}@dev.local`, password: process.env.DEV_PASSWORD ?? "dev", redirectTo: callbackUrl });
+                  }}
+                  style={{ display: "inline-block", marginRight: 8, marginBottom: 8 }}
+                >
+                  <button className="btn btn-ghost" type="submit">
+                    Sign in as {role}
+                  </button>
+                </form>
+              ))}
+            </div>
+          )}
           <p className="signin-trust">
             <img
               className="signin-trust-mascot"
