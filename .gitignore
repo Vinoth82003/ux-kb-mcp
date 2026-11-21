@@ -10,3 +10,6 @@ apps/*/.next/
 packages/core/src/generated/
 .vercel/
 *.tsbuildinfo
+
+QA-REPORT.md
+OPEN_QUESTIONS.md
