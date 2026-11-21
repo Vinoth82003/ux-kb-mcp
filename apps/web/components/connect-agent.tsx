@@ -55,7 +55,7 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
   const [connector, setConnector] = useState<string>("claude");
   const [selectedKeyId, setSelectedKeyId] = useState<string>(keys[0]?.id ?? "");
   const [copied, setCopied] = useState<boolean>(false);
-  const [showCommand, setShowCommand] = useState<boolean>(true);
+  const [showKey, setShowKey] = useState<boolean>(false);
 
   const selectedKey = keys.find((key) => key.id === selectedKeyId) ?? keys[0];
   const connectorDef = CONNECTORS.find((item) => item.id === connector) ?? CONNECTORS[0];
@@ -130,8 +130,13 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
 
           <p className="adm-help" style={{ margin: 0 }}>
             The command uses <code className="adm-code">&lt;your-api-key&gt;</code> as a
-            placeholder. Replace it with the key you saved when you created it.
-            {selectedKey ? ` Selected key: ${selectedKey.name} (${selectedKey.prefix}…).` : ""}
+            placeholder. Replace it with your saved key.
+            {selectedKey ? (
+              <>
+                {" "}Selected key: {selectedKey.name} (
+                {showKey ? `${selectedKey.prefix}…` : "••••••••"}).
+              </>
+            ) : ""}
           </p>
 
           <div>
@@ -141,23 +146,19 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
                 <button
                   className="btn btn-ghost"
                   type="button"
-                  onClick={() => setShowCommand((value) => !value)}
+                  onClick={() => setShowKey((value) => !value)}
                   style={{ padding: "6px 12px", fontSize: "0.8rem" }}
                 >
-                  {showCommand ? "Hide" : "Show"}
+                  {showKey ? "Hide key" : "Show key"}
                 </button>
                 <button className="btn btn-primary" type="button" onClick={copy} style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
                   {copied ? "Copied" : "Copy"}
                 </button>
               </div>
             </div>
-            {showCommand ? (
-              <pre className="adm-pre">
-                <code>{command}</code>
-              </pre>
-            ) : (
-              <p className="adm-help" style={{ margin: 0 }}>Command hidden.</p>
-            )}
+            <pre className="adm-pre">
+              <code>{command}</code>
+            </pre>
           </div>
 
           <p className="adm-help" style={{ margin: 0 }}>
