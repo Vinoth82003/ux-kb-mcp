@@ -3,6 +3,7 @@ import { getKb } from "@/lib/kb";
 import { getStore } from "@/lib/store";
 import { requireUser } from "@/lib/authz";
 import PageHeader from "./page-header";
+import ConnectAgent from "@/components/connect-agent";
 
 export const dynamic = "force-dynamic";
 
@@ -21,10 +22,6 @@ export default async function DashboardOverview() {
   // eslint-disable-next-line react-hooks/purity
   const since = Date.now() - 24 * 60 * 60 * 1000;
   const callsToday = usage.filter((entry) => entry.createdAt.getTime() >= since).length;
-  const nextExpiry = active
-    .map((key) => key.expiresAt)
-    .filter((value): value is Date => value instanceof Date)
-    .sort((a, b) => a.getTime() - b.getTime())[0];
 
   return (
     <div>
@@ -67,39 +64,9 @@ export default async function DashboardOverview() {
         </div>
       </div>
 
-      <div className="adm-grid adm-grid-2">
-        <section className="adm-card" aria-labelledby="connect-title">
-          <h2 id="connect-title" className="adm-section-title">
-            {active.length === 0 ? "Create your first API key" : "Connect an agent"}
-          </h2>
-          {active.length === 0 ? (
-            <>
-              <p className="adm-desc">
-                Keys are shown once and stored only as a hash. Store yours in the MCP
-                client config and never commit it.
-              </p>
-              <Link className="btn btn-primary" href="/dashboard/keys" style={{ marginTop: 12 }}>
-                Create a key
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className="adm-desc" style={{ marginBottom: 10 }}>
-                Send the key as a Bearer token to the hosted MCP endpoint.
-              </p>
-              <pre className="adm-pre">
-                <code>{`claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \\
-  --header "Authorization: Bearer <your-key>"`}</code>
-              </pre>
-              {nextExpiry && (
-                <p className="adm-help" style={{ marginTop: 10 }}>
-                  Next key expiry: {nextExpiry.toLocaleDateString()}
-                </p>
-              )}
-            </>
-          )}
-        </section>
+      <ConnectAgent keys={active.map((key) => ({ id: key.id, name: key.name, prefix: key.prefix }))} />
 
+      <div className="adm-grid adm-grid-2" style={{ marginTop: 16 }}>
         <section className="adm-card" aria-labelledby="security-title">
           <div className="adm-section-head">
             <h2 id="security-title" className="adm-section-title">Security posture</h2>
@@ -136,45 +103,45 @@ export default async function DashboardOverview() {
             </p>
           )}
         </section>
-      </div>
 
-      <section className="adm-section" aria-labelledby="activity-title">
-        <div className="adm-section-head">
-          <h2 id="activity-title" className="adm-section-title">Recent activity</h2>
-          <Link href="/dashboard/audit" className="adm-small">
-            Open audit log
-          </Link>
-        </div>
-        {audit.length === 0 ? (
-          <div className="adm-empty">
-            <strong>No activity yet</strong>
-            <p>Sign-ins and mutations will appear here.</p>
+        <section className="adm-card" aria-labelledby="activity-title">
+          <div className="adm-section-head">
+            <h2 id="activity-title" className="adm-section-title">Recent activity</h2>
+            <Link href="/dashboard/audit" className="adm-small">
+              Open audit log
+            </Link>
           </div>
-        ) : (
-          <div className="adm-table-wrap">
-            <table className="adm-table">
-              <thead>
-                <tr>
-                  <th scope="col">When</th>
-                  <th scope="col">Actor</th>
-                  <th scope="col">Action</th>
-                  <th scope="col">Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                {audit.map((entry) => (
-                  <tr key={entry.id}>
-                    <td className="adm-nowrap">{entry.createdAt.toLocaleString()}</td>
-                    <td>{entry.actor}</td>
-                    <td><code className="adm-code">{entry.action}</code></td>
-                    <td>{entry.target}</td>
+          {audit.length === 0 ? (
+            <div className="adm-empty">
+              <strong>No activity yet</strong>
+              <p>Sign-ins and mutations will appear here.</p>
+            </div>
+          ) : (
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr>
+                    <th scope="col">When</th>
+                    <th scope="col">Actor</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Target</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
+                </thead>
+                <tbody>
+                  {audit.map((entry) => (
+                    <tr key={entry.id}>
+                      <td className="adm-nowrap">{entry.createdAt.toLocaleString()}</td>
+                      <td>{entry.actor}</td>
+                      <td><code className="adm-code">{entry.action}</code></td>
+                      <td>{entry.target}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

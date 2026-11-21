@@ -1,6 +1,7 @@
 import { getStore } from "@/lib/store";
 import { requireUser } from "@/lib/authz";
 import PageHeader from "@/app/dashboard/page-header";
+import ConnectAgent from "@/components/connect-agent";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -41,41 +42,21 @@ export default async function MemberOverview() {
         </div>
       </div>
 
-      <div className="adm-grid adm-grid-2">
-        <div className="adm-card">
-          <h2 className="adm-section-title">Connect an agent</h2>
-          {active.length === 0 ? (
-            <>
-              <p className="adm-desc">Create a key to start using UX-KB from your MCP client.</p>
-              <Link className="btn btn-primary" href="/member/keys" style={{ marginTop: 12 }}>
-                Create a key
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className="adm-desc" style={{ marginBottom: 10 }}>
-                Send your key as a Bearer token to the hosted MCP endpoint.
-              </p>
-              <pre className="adm-pre">
-                <code>{`claude mcp add --transport http ux-kb https://ux-kb-site.vercel.app/api/mcp \\\n  --header "Authorization: Bearer <your-key>"`}</code>
-              </pre>
-            </>
-          )}
-        </div>
-        <div className="adm-card">
-          <h2 className="adm-section-title">Security</h2>
-          <dl className="adm-kv">
-            <dt>Role</dt>
-            <dd>Member</dd>
-            <dt>MFA</dt>
-            <dd>{user.mfaEnabled ? "enabled" : "not enrolled"}</dd>
-            <dt>Session</dt>
-            <dd>JWT · 8 hours</dd>
-          </dl>
-          <Link className="btn btn-ghost" href="/member/security" style={{ marginTop: 12 }}>
-            Manage security
-          </Link>
-        </div>
+      <ConnectAgent keys={active.map((key) => ({ id: key.id, name: key.name, prefix: key.prefix }))} />
+
+      <div className="adm-card" style={{ marginTop: 16 }}>
+        <h2 className="adm-section-title">Security</h2>
+        <dl className="adm-kv">
+          <dt>Role</dt>
+          <dd>Member</dd>
+          <dt>MFA</dt>
+          <dd>{user.mfaEnabled ? "enabled" : "not enrolled"}</dd>
+          <dt>Session</dt>
+          <dd>JWT · 8 hours</dd>
+        </dl>
+        <Link className="btn btn-ghost" href="/member/security" style={{ marginTop: 12 }}>
+          Manage security
+        </Link>
       </div>
 
       <div className="adm-alert adm-alert-info" style={{ marginTop: 16 }}>
