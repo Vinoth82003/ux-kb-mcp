@@ -55,7 +55,7 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
   const [connector, setConnector] = useState<string>("claude");
   const [selectedKeyId, setSelectedKeyId] = useState<string>(keys[0]?.id ?? "");
   const [copied, setCopied] = useState<boolean>(false);
-  const [showKey, setShowKey] = useState<boolean>(false);
+  const [showKey, setShowKey] = useState<boolean>(true);
 
   const selectedKey = keys.find((key) => key.id === selectedKeyId) ?? keys[0];
   const connectorDef = CONNECTORS.find((item) => item.id === connector) ?? CONNECTORS[0];
@@ -64,6 +64,8 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
     () => connectorDef.build(ENDPOINT, "<your-api-key>"),
     [connectorDef],
   );
+
+  const displayCommand = showKey ? command : command.replace(/<your-api-key>/g, "••••••••");
 
   async function copy() {
     try {
@@ -157,7 +159,7 @@ export default function ConnectAgent({ keys }: { keys: KeyOption[] }) {
               </div>
             </div>
             <pre className="adm-pre">
-              <code>{command}</code>
+              <code>{displayCommand}</code>
             </pre>
           </div>
 
