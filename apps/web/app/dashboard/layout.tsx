@@ -10,6 +10,7 @@ const NAV = [
   { href: "/dashboard/gaps", label: "Gaps" },
   { href: "/dashboard/false-positives", label: "False positives" },
   { href: "/dashboard/analytics", label: "Analytics" },
+  { href: "/dashboard/sessions", label: "Sessions" },
   { href: "/dashboard/config", label: "Configuration" },
   { href: "/dashboard/keys", label: "API keys" },
   { href: "/dashboard/users", label: "Users & roles" },
